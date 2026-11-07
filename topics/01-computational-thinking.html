@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Computational Thinking notes: Python fundamentals, data types, loops, decisions, functions, and the standard set, relation and function code patterns.">
+<meta name="theme-color" content="#0f2727">
+<title>01 · Computational Thinking — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link active" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 01</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 01</span>
+      <h1>Computational Thinking</h1>
+      <p class="lede">The aim of the module is to learn to offload hard — or merely boring — computational tasks to computers. This topic starts that process: Python fundamentals first, then the standard code patterns used to implement the mathematics in the rest of the module.</p>
+      <div class="meta-row">
+        <span class="pill">2 lectures</span>
+        <span class="pill amber">Python</span>
+        <span class="pill blue">Exam: read &amp; execute code</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#what-is-ct">What computational thinking means</a></li>
+        <li><a href="#python">Python fundamentals</a></li>
+        <li><a href="#pythontutor">Using PythonTutor with Colab</a></li>
+        <li><a href="#toolkit">The Python toolkit</a></li>
+        <li><a href="#quantifiers">Testing quantifiers with <code>all</code> / <code>any</code></a></li>
+        <li><a href="#styles">Coding styles and functions</a></li>
+        <li><a href="#set-tasks">Set tasks in Python</a></li>
+        <li><a href="#relation-tasks">Relation tasks in Python</a></li>
+        <li><a href="#function-task">Function task in Python</a></li>
+        <li><a href="#exam">Exam guidance</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="what-is-ct">What computational thinking means</h2>
+    <p><strong>Computational thinking</strong> is the skill of recognising when a problem is better solved by a machine, describing the solution precisely enough for a machine to execute it, and then translating that description into a programming language. You will not master it in one semester, but the module builds the foundations:</p>
+    <ul>
+      <li>recognising <strong>repetition</strong> (loops) and <strong>choice</strong> (conditionals);</li>
+      <li>storing and organising data in <strong>collections</strong>;</li>
+      <li>packaging reusable logic into <strong>functions</strong>;</li>
+      <li>moving fluently between <strong>mathematical notation</strong> and <strong>Python</strong>.</li>
+    </ul>
+
+    <div class="definition">
+      <span class="box-label">Working definition</span>
+      <p>Computational thinking is the process of <strong>formulating a problem and its solution</strong> so that the solution can be carried out by a computer — including abstraction, decomposition, pattern recognition, and algorithm design.</p>
+    </div>
+
+    <h2 id="python">Python fundamentals</h2>
+
+    <h3 id="history">A very brief history</h3>
+    <ul>
+      <li>Invented in the Netherlands in the early 1990s by <strong>Guido van Rossum</strong>.</li>
+      <li>Named after <strong>Monty Python</strong>, not the snake.</li>
+      <li>Designed to be scalable, object-oriented and functional from the beginning.</li>
+      <li><strong>Python 3.0</strong> was released in 2008 to fix design flaws in Python 2.</li>
+      <li>Today it is the dominant language for machine learning and data mining.</li>
+    </ul>
+
+    <h3 id="data-types">Data and data types</h3>
+    <p>Every piece of data in Python is an <strong>object</strong>. Objects have <em>attributes</em> (data stored inside them) and <em>methods</em> (operations that act on them). Python determines the type automatically — unlike languages such as Processing or Java where you must declare it — and the type determines what operations are legal.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>Meaning</th><th>Examples</th></tr></thead>
+        <tbody>
+          <tr><td><code>None</code></td><td>Represents missing data</td><td><code>None</code></td></tr>
+          <tr><td><code>bool</code></td><td>Boolean truth value</td><td><code>True</code>, <code>False</code></td></tr>
+          <tr><td><code>int</code></td><td>Whole numbers (arbitrary precision)</td><td><code>-2</code>, <code>0</code>, <code>42</code></td></tr>
+          <tr><td><code>float</code></td><td>Floating-point numbers</td><td><code>-2123.1</code>, <code>1.0</code>, <code>3.14</code></td></tr>
+          <tr><td><code>str</code></td><td>Sequence of characters</td><td><code>' '</code>, <code>'Hi'</code>, <code>'4'</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Use <code>type(x)</code> to inspect the type of a value. A value can change type after an operation — for example, division always produces a <code>float</code>:</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">types.py</span><span class="code-lang">python</span></div>
+<pre><code>w = None
+x = 4
+y = '4'
+z = 4.0
+
+print(type(w), type(x), type(y), type(z))
+
+x = x * 10
+y = y * 10          # string repetition: '4' becomes '4444444444'
+z = z * 10
+
+print(type(w), type(x), type(y), type(z))</code></pre>
+</div>
+
+    <p>Notice that <code>'4' * 10</code> repeats the string; it does not multiply numerically. This is why the <em>type</em> matters.</p>
+
+    <h3 id="collections-preview">Collections: sets and lists</h3>
+    <p>The module uses two collections constantly. The distinction is fundamental:</p>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Set — unordered, distinct</h4>
+        <p>A collection where order does not matter and duplicates are impossible. Written with braces in Python, but an empty set must be created with <code>set()</code> because <code>{}</code> is a dictionary.</p>
+      </div>
+      <div class="mini-card">
+        <h4>List — ordered, repeatable</h4>
+        <p>A sequence: positions matter (index starts at 0) and values may repeat. <em>Ordered</em> does not mean <em>sorted</em>; it means each element has a position.</p>
+      </div>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">collections_preview.py</span><span class="code-lang">python</span></div>
+<pre><code># Sets
+z = set()                 # empty set
+a = {1, 3, 1, 2, 1, 5, 4} # duplicates ignored
+b = {1, 'a', 3}
+
+print(len(a))             # size of set
+print(a &amp; b)               # intersection
+print(a | b)               # union
+print(a - b)               # set difference
+print(b - a)
+
+# Lists
+z = []                    # empty list
+a = [1, 3, 1, 2, 1, 5, 4]
+b = [1, 3]
+
+print(len(a))
+print(a + b)              # concatenation
+print(a[2])               # zero-based indexing
+print(a[2:5])             # slicing: semi-open [2, 5)
+print(a[-4])              # negative indexing from the end</code></pre>
+</div>
+
+    <h3 id="loops">Looping: <code>for</code> and <code>while</code></h3>
+    <p>Use a <code>for</code> loop when you know how many times to repeat, or when you are iterating over a collection. Python's <code>for</code> is really a <strong>for-each</strong> loop. Use <code>range</code> to generate a sequence of integers; note that Python intervals are <strong>semi-open</strong>: <code>range(5)</code> gives \(0,1,2,3,4\).</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">loops.py</span><span class="code-lang">python</span></div>
+<pre><code># for-each over a list
+for letter in ['a', 'e', 'i', 'o', 'u']:
+    print(letter, 'is a vowel')
+
+# BEWARE: a set has no order, so the order of iteration is not guaranteed
+for letter in {'a', 'e', 'i', 'o', 'u'}:
+    print(letter, 'is a vowel')
+
+# range builds an integer sequence: 0, 1, 2, 3, 4
+for x in range(5):
+    print(x)
+
+# Use while when the number of repetitions is unknown
+k = 0
+while k &lt; 5:
+    print(k)
+    k += 1</code></pre>
+</div>
+
+    <div class="note">
+      <span class="box-label">Why for-each is safer</span>
+      <p>A classic <code>for</code> loop in C/Java has an explicit counter and is prone to <strong>off-by-one errors</strong>. Python's for-each loop iterates over the values themselves, which removes most of that risk.</p>
+    </div>
+
+    <h3 id="decisions">Making decisions: <code>if</code>, <code>elif</code>, <code>else</code></h3>
+    <p>Conditionals choose which block of code runs. Only the first matching branch executes.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">fizz_buzz.py</span><span class="code-lang">python</span></div>
+<pre><code># Multiples of 3 → "fuzz", multiples of 5 → "buzz",
+# multiples of 15 → "fuzz buzz"
+for k in range(1, 21):
+    if k % 15 == 0:
+        print("fuzz buzz")
+    elif k % 3 == 0:
+        print("fuzz")
+    elif k % 5 == 0:
+        print("buzz")
+    else:
+        print(k)</code></pre>
+</div>
+
+    <p>The order matters: test <code>k % 15 == 0</code> <em>before</em> <code>k % 3 == 0</code>, otherwise multiples of 15 would print only <code>"fuzz"</code>.</p>
+
+    <h3 id="functions">Functions: <code>def</code> and <code>return</code></h3>
+    <p>A function is a named block of code that runs only when called. Data goes in through <strong>parameters</strong> and comes back through <strong><code>return</code></strong>.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">functions.py</span><span class="code-lang">python</span></div>
+<pre><code>def add(num1, num2):
+    print("Number 1", num1)
+    print("Number 2", num2)
+    result = num1 + num2
+    return result
+
+ans = add(5, 7)
+print("Function returned", ans)</code></pre>
+</div>
+
+    <div class="tip">
+      <span class="box-label">Exam habit</span>
+      <p>When reading a function, identify three things immediately: <strong>name</strong>, <strong>parameters</strong>, and <strong>return value</strong>. Then trace the body with a small concrete input.</p>
+    </div>
+
+    <h2 id="pythontutor">Using PythonTutor with Colab</h2>
+    <p>PythonTutor lets you step through code one line at a time and watch the values of variables change. The workflow is:</p>
+    <ol class="steps">
+      <li>Open the notebook and run the first setup cell.</li>
+      <li>If Colab warns that the notebook was not authored by Google, click <strong>Run anyway</strong>.</li>
+      <li>Run the second cell. You should see <em>“Python practical setup tools version 23.2”</em>.</li>
+      <li>Use the PythonTutor controls to step forwards and backwards through the code, inspecting data values and output.</li>
+    </ol>
+
+    <div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">powers_of_two.py</span><span class="code-lang">python</span></div>
+<pre><code>powers = [0, 1, 2, 3, 4, 5, 6]
+for p in powers:
+    print(p, 2**p)</code></pre>
+</div>
+
+    <h2 id="toolkit">The Python toolkit</h2>
+    <p>This is the condensed reference you should be able to read fluently.</p>
+
+    <h3 id="conversions">Conversions and built-ins</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Expression</th><th>Result</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><code>int('153')</code></td><td><code>153</code></td><td>String to integer</td></tr>
+          <tr><td><code>int('3f', 16)</code></td><td><code>63</code></td><td>Second argument is the base</td></tr>
+          <tr><td><code>int(-11.24e8)</code></td><td><code>-1124000000</code></td><td>Scientific notation is a float</td></tr>
+          <tr><td><code>int(15.56)</code></td><td><code>15</code></td><td>Truncates the decimal part</td></tr>
+          <tr><td><code>round(15.58, 1)</code></td><td><code>15.6</code></td><td>Round to 1 decimal place</td></tr>
+          <tr><td><code>float('15.56')</code></td><td><code>15.56</code></td><td>String to float</td></tr>
+          <tr><td><code>bool(x)</code></td><td><code>False</code> for <code>None</code>, zero or empty containers</td><td>Truthiness</td></tr>
+          <tr><td><code>str(x)</code></td><td>String representation of <code>x</code></td><td></td></tr>
+          <tr><td><code>chr(65)</code> / <code>ord('A')</code></td><td><code>'A'</code> / <code>65</code></td><td>Character ↔ ASCII code</td></tr>
+          <tr><td><code>list('abc')</code></td><td><code>['a', 'b', 'c']</code></td><td>String to list of characters</td></tr>
+          <tr><td><code>set(['one', 'two'])</code></td><td><code>{'one', 'two'}</code></td><td>List to set</td></tr>
+          <tr><td><code>dict([(3, 'three'), (1, 'one')])</code></td><td><code>{3: 'three', 1: 'one'}</code></td><td>List of pairs to dictionary</td></tr>
+          <tr><td><code>'a:b:c'.split(':')</code></td><td><code>['a', 'b', 'c']</code></td><td>String → list</td></tr>
+          <tr><td><code>':'.join(['a', 'b'])</code></td><td><code>'a:b'</code></td><td>List → string</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="container-ops">Operations on containers</h3>
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Sets</h4>
+        <p><code>s.add(x)</code>, <code>s.update(s2)</code>, <code>s.clear()</code>, <code>s.remove(x)</code>; operators <code>|</code> (union), <code>&amp;</code> (intersection), <code>-</code> (difference).</p>
+      </div>
+      <div class="mini-card">
+        <h4>Lists</h4>
+        <p><code>a.append(x)</code>, <code>a.extend(a2)</code>, <code>a.insert(i, x)</code>, <code>a.pop()</code>; concatenation with <code>+</code>; indexing and slicing.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Generic</h4>
+        <p><code>min(c)</code>, <code>max(c)</code>, <code>sum(c)</code>, <code>sorted(c)</code>, <code>len(c)</code>, <code>all(c)</code>, <code>any(c)</code>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Comprehensions</h4>
+        <p><code>[expr for x in c if cond]</code> builds a list; switch the brackets to <code>{ }</code> to build a set. This is the idiomatic Python style.</p>
+      </div>
+    </div>
+
+    <h3 id="indexing">Indexing and slicing</h3>
+    <p>For a sequence <code>A = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]</code>:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Slice</th><th>Result</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>A[9]</code></td><td><code>512</code></td><td>Zero-based index</td></tr>
+          <tr><td><code>A[3:6]</code></td><td><code>[8, 16, 32]</code></td><td>Start inclusive, end exclusive</td></tr>
+          <tr><td><code>A[1:-1]</code></td><td><code>[2, 4, 8, 16, 32, 64, 128, 256, 512]</code></td><td>Drop first and last</td></tr>
+          <tr><td><code>A[::2]</code></td><td><code>[1, 4, 16, 64, 256, 1024]</code></td><td>Every second element</td></tr>
+          <tr><td><code>A[::-1]</code></td><td><code>[1024, ..., 1]</code></td><td>Reverse the sequence</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="loop-patterns">Looping over collections</h3>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">loop_patterns.py</span><span class="code-lang">python</span></div>
+<pre><code>A = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+
+# Loop over values
+for value in A:
+    print(value)
+
+# Count and loop over values
+for k, value in enumerate(A):
+    print(k, value)
+
+# Loop over positions
+for k in range(len(A)):
+    print(k, A[k])
+
+# break exits immediately; continue skips to the next iteration
+for value in A:
+    if value == 64:
+        break
+    print(value)</code></pre>
+</div>
+
+    <h2 id="quantifiers">Testing quantifiers with <code>all</code> / <code>any</code></h2>
+    <p>This is one of the most useful links between logic and code. A predicate is a statement that depends on a variable, e.g. <em>“\(x\) contains the digit 3”</em>.</p>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Universal: \(\forall x \in A,\ P(x)\)</h4>
+        <p><strong>True</strong> only if \(P(x)\) is true for <em>every</em> element. <strong>False</strong> as soon as one counterexample is found. In Python: <code>all(P(x) for x in A)</code>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Existential: \(\exists x \in A,\ P(x)\)</h4>
+        <p><strong>True</strong> as soon as one witness is found. <strong>False</strong> only if \(P(x)\) is false for every element. In Python: <code>any(P(x) for x in A)</code>.</p>
+      </div>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">quantifiers.py</span><span class="code-lang">python</span></div>
+<pre><code>def prop(x):
+    return '3' in str(x)
+
+A = {3, 13, 23, 16}
+
+print(any(prop(x) for x in A))   # True  — at least one contains a 3
+print(all(prop(x) for x in A))   # False — 16 does not</code></pre>
+</div>
+
+    <div class="tip">
+      <span class="box-label">Connection</span>
+      <p>Negation swaps the quantifier: \(\neg \forall x\,P(x) \equiv \exists x\,\neg P(x)\). In code, <code>not all(...)</code> is the same as <code>any(not ...)</code>. This is exactly the rule from Topic 02.</p>
+    </div>
+
+    <h2 id="styles">Coding styles and functions</h2>
+    <p>There are several equally valid ways to write a predicate like “are sets \(A\) and \(B\) disjoint?”. You should be able to read all of them, even if you prefer one.</p>
+
+    <h3 id="single-vs-multiple">Single vs multiple output statements</h3>
+    <p><strong>Single output:</strong> use a result variable, then print once at the end. <strong>Multiple output:</strong> print inside the loop and use the loop's <code>else</code> clause (which runs only if the loop was not exited by <code>break</code>).</p>
+
+    <div class="grid-2">
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">single_output.py</span><span class="code-lang">python</span></div>
+<pre><code>A = {2, 3, 5, 7}
+B = {4, 5, 6}
+
+result = True
+for x in A:
+    if x in B:
+        result = False
+        break
+
+print(result)</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">multiple_output.py</span><span class="code-lang">python</span></div>
+<pre><code>A = {2, 3, 5, 7}
+B = {4, 5, 6}
+
+for x in A:
+    if x in B:
+        print(False)
+        break
+else:
+    print(True)</code></pre>
+      </div>
+    </div>
+
+    <h3 id="single-vs-multiple-return">Single vs multiple return statements</h3>
+    <p>As a function, the multiple-return style is usually shorter and flatter:</p>
+
+    <div class="grid-2">
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">single_return.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_disjoint(A, B):
+    result = True
+    for x in A:
+        if x in B:
+            result = False
+            break
+    return result</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">multiple_return.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_disjoint(A, B):
+    for x in A:
+        if x in B:
+            return False
+    return True</code></pre>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Reading tip</span>
+      <p>The multiple-return version needs no <code>break</code> and no loop <code>else</code>: <code>return</code> exits the function immediately. The notes use this style because it is the cleanest to read.</p>
+    </div>
+
+    <h2 id="set-tasks">Set tasks in Python</h2>
+    <p>The following functions implement the set concepts from Topic 03. Learn the <em>pattern</em>, not the exact variable names — exam code may differ.</p>
+
+    <h3 id="is-equal">Equality: \(A = B\)</h3>
+    <p>Two sets are equal iff they have the same elements. First compare sizes (cheap), then check every element of \(A\) is in \(B\).</p>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_equal.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_equal(A, B):
+    if len(A) != len(B):
+        return False
+    return all(x in B for x in A)</code></pre>
+</div>
+
+    <h3 id="is-disjoint">Disjoint: \(A \cap B = \varnothing\)</h3>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_disjoint.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_disjoint(A, B):
+    return all(x not in B for x in A)</code></pre>
+</div>
+
+    <h3 id="is-subset">Subset: \(A \subseteq B\)</h3>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_subset.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_subset(A, B):
+    return all(x in B for x in A)</code></pre>
+</div>
+
+    <h3 id="is-proper-subset">Proper subset: \(A \subset B\)</h3>
+    <p>Every element of \(A\) is in \(B\), and \(B\) is strictly larger.</p>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_proper_subset.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_proper_subset(A, B):
+    return all(x in B for x in A) and len(A) &lt; len(B)</code></pre>
+</div>
+
+    <h3 id="set-ops">Set operations</h3>
+    <div class="grid-2">
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">intersection.py</span><span class="code-lang">python</span></div>
+<pre><code>def intersection(A, B):
+    return {x for x in A if x in B}</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">union.py</span><span class="code-lang">python</span></div>
+<pre><code>def union(A, B):
+    C = A.copy()
+    for x in B:
+        C.add(x)
+    return C</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">set_difference.py</span><span class="code-lang">python</span></div>
+<pre><code>def set_difference(A, B):
+    return {x for x in A if x not in B}</code></pre>
+      </div>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">symmetric_difference.py</span><span class="code-lang">python</span></div>
+<pre><code>def symmetric_difference(A, B):
+    C = set()
+    for x in A:
+        if x not in B:
+            C.add(x)
+    for x in B:
+        if x not in A:
+            C.add(x)
+    return C</code></pre>
+      </div>
+    </div>
+
+    <h3 id="cartesian-product">Cartesian product: \(A \times B\)</h3>
+    <p>Use a nested loop (or a double comprehension) to build every ordered pair.</p>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">cartesian_product.py</span><span class="code-lang">python</span></div>
+<pre><code>def cartesian_product(A, B):
+    return {(a, b) for a in A for b in B}</code></pre>
+</div>
+
+    <div class="warning">
+      <span class="box-label">Watch out</span>
+      <p><code>C = A</code> does <strong>not</strong> make a copy of a set — both names point to the same object. Use <code>C = A.copy()</code> when you intend to build a new set starting from \(A\).</p>
+    </div>
+
+    <h2 id="relation-tasks">Relation tasks in Python</h2>
+    <p>A relation is a set of ordered pairs. The patterns below are used again in Topic 04.</p>
+
+    <h3 id="is-relation">Is \(R\) a relation from \(A\) to \(B\)?</h3>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_relation.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_relation(R, A, B):
+    for (a, b) in R:
+        if a not in A:
+            return False
+        if b not in B:
+            return False
+    return True</code></pre>
+</div>
+
+    <h3 id="relation-properties">The relation properties</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Mathematical condition</th><th>Python check</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reflexive</strong></td><td>\((a,a) \in R\) for all \(a \in A\)</td><td><code>all((a,a) in R for a in A)</code></td></tr>
+          <tr><td><strong>Symmetric</strong></td><td>\((a,b) \in R \Rightarrow (b,a) \in R\)</td><td><code>all((b,a) in R for (a,b) in R)</code></td></tr>
+          <tr><td><strong>Transitive</strong></td><td>\((a,b),(b,c) \in R \Rightarrow (a,c) \in R\)</td><td>nested loop over pairs</td></tr>
+          <tr><td><strong>Irreflexive</strong></td><td>\((a,a) \notin R\) for all \(a\)</td><td><code>not any((a,a) in R for a in A)</code></td></tr>
+          <tr><td><strong>Antisymmetric</strong></td><td>\((a,b),(b,a) \in R \Rightarrow a=b\)</td><td><code>not ((b,a) in R and a != b)</code></td></tr>
+          <tr><td><strong>Asymmetric</strong></td><td>\((a,b) \in R \Rightarrow (b,a) \notin R\)</td><td><code>(b,a) not in R</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">relation_properties.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_reflexive(R, A):
+    return all((a, a) in R for a in A)
+
+def is_symmetric(R):
+    for (a, b) in R:
+        if (b, a) not in R:
+            return False
+    return True
+
+def is_transitive(R):
+    for (a, b) in R:
+        for (c, d) in R:
+            if b == c and (a, d) not in R:
+                return False
+    return True
+
+def is_irreflexive(R, A):
+    return not any((a, a) in R for a in A)
+
+def is_antisymmetric(R):
+    for (a, b) in R:
+        if (b, a) in R and a != b:
+            return False
+    return True
+
+def is_asymmetric(R):
+    for (a, b) in R:
+        if (b, a) in R:
+            return False
+    return True</code></pre>
+</div>
+
+    <div class="note">
+      <span class="box-label">Transitivity, visually</span>
+      <p>The nested loop is searching for a <strong>two-hop path</strong> \(a \to b = c \to d\). Transitivity says that whenever such a path exists, the shortcut \(a \to d\) must also be present.</p>
+    </div>
+
+    <h3 id="surjective-injective">Surjective and injective</h3>
+    <p>A relation is <strong>surjective</strong> (onto) if its image equals the target, and <strong>injective</strong> (one-to-one) if no target element has more than one incoming arrow.</p>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">surjective_injective.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_surjective(R, B):
+    image = {b for (_, b) in R}
+    return image == B
+
+def is_injective(R):
+    tmp = [b for (_, b) in R]
+    return len(tmp) == len(set(tmp))</code></pre>
+</div>
+
+    <p>The injective check uses a standard Python trick: convert a list to a set, which removes duplicates, then compare lengths.</p>
+
+    <h2 id="function-task">Function task in Python</h2>
+    <p>A function is a relation in which every element of \(A\) appears <strong>exactly once</strong> as a first coordinate — at most once (not a one-to-many relation) and at least once (defined on the whole source).</p>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">is_function.py</span><span class="code-lang">python</span></div>
+<pre><code>def is_function(R, A):
+    tmp = [a for (a, _) in R]
+    D = set(tmp)
+
+    # "at most once" and "at least once"
+    return len(tmp) == len(D) and D == A</code></pre>
+</div>
+
+    <div class="tip">
+      <span class="box-label">Two conditions, one line</span>
+      <p><code>len(tmp) == len(D)</code> checks that no first coordinate is repeated (<em>at most once</em>). <code>D == A</code> checks that every element of the source appears (<em>at least once</em>). Together: exactly once.</p>
+    </div>
+
+    <h2 id="exam">Exam guidance</h2>
+    <div class="split">
+      <div class="panel">
+        <h3>What you will be asked</h3>
+        <ul class="checklist">
+          <li>Read a Python function and state its purpose.</li>
+          <li>Trace code with a given input and produce the output.</li>
+          <li>Identify which mathematical property a function tests.</li>
+          <li>Recognise equivalent implementations written in a different style.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>What you will <em>not</em> be asked</h3>
+        <p>You are <strong>not</strong> expected to write large programs from scratch in the exam. The emphasis is on <strong>reading and executing</strong> code — the same skill you practise in the multiple-choice quizzes and the practical notebooks.</p>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Common traps</span>
+      <ul>
+        <li><code>range(1, 11)</code> stops at 10 — Python intervals are semi-open.</li>
+        <li><code>{}</code> is an empty <em>dictionary</em>, not an empty set; use <code>set()</code>.</li>
+        <li>Sets are unordered, so never rely on the iteration order of a set.</li>
+        <li><code>'4' * 10</code> repeats a string; it does not compute \(4 \times 10\).</li>
+        <li>In an <code>if/elif</code> chain, only the first true branch runs — order your tests carefully.</li>
+        <li><code>return</code> exits the function immediately; code after it in the same branch never runs.</li>
+      </ul>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="../index.html">
+        <span class="dir">Back</span>
+        <span class="ttl">← Overview</span>
+      </a>
+      <a class="next" href="02-logic.html">
+        <span class="dir">Next topic</span>
+        <span class="ttl">02 · Logic →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 01 · Computational Thinking</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/topics/01-Computational_Thinking/index.html" target="_blank" rel="noopener">Official topic page ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

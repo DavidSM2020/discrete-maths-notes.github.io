@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Relations and functions notes: Cartesian products, relations, domain and image, into/onto, injective, relation properties, equivalence relations, digraphs, closures, function notation, injective/surjective/bijective, composition, inverses, Caesar cipher, and the library of functions.">
+<meta name="theme-color" content="#0f2727">
+<title>04 · Relations &amp; Functions — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link active" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 04</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 04</span>
+      <h1>Relations &amp; Functions</h1>
+      <p class="lede">A relation is any subset of a Cartesian product — an arbitrary set of allowable input–output pairs. A function is the well-behaved special case: every input has exactly one output. This topic develops the vocabulary of relations, the properties that make them useful, and then the classification, combination and reversal of functions.</p>
+      <div class="meta-row">
+        <span class="pill">5 lectures</span>
+        <span class="pill amber">Relations</span>
+        <span class="pill blue">Functions</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#cartesian">Cartesian products</a></li>
+        <li><a href="#relations">Relations</a></li>
+        <li><a href="#counting-relations">Counting relations</a></li>
+        <li><a href="#terminology">Source, target, domain, image</a></li>
+        <li><a href="#into-onto">Into and onto relations</a></li>
+        <li><a href="#injective-relations">Injective relations</a></li>
+        <li><a href="#relations-on-a-set">Relations on a set</a></li>
+        <li><a href="#reflexive">Reflexive and irreflexive</a></li>
+        <li><a href="#symmetric">Symmetric and antisymmetric</a></li>
+        <li><a href="#transitive">Transitive</a></li>
+        <li><a href="#equivalence">Equivalence relations and classes</a></li>
+        <li><a href="#digraphs">Digraphs</a></li>
+        <li><a href="#closures">Closures</a></li>
+        <li><a href="#powers-relations">Powers of relations</a></li>
+        <li><a href="#functions">Functions as relations</a></li>
+        <li><a href="#notation">Function notation and well-definedness</a></li>
+        <li><a href="#intervals">Interval notation</a></li>
+        <li><a href="#surjective">Surjective functions</a></li>
+        <li><a href="#injective">Injective functions</a></li>
+        <li><a href="#bijective">Bijective functions</a></li>
+        <li><a href="#equality">Function equality and arithmetic</a></li>
+        <li><a href="#composition">Composition</a></li>
+        <li><a href="#inverse">Inverses</a></li>
+        <li><a href="#caesar">The Caesar cipher</a></li>
+        <li><a href="#library">Library of functions</a></li>
+        <li><a href="#graphs">Graphs on the Cartesian plane</a></li>
+        <li><a href="#python">Relations and functions in Python</a></li>
+        <li><a href="#exam">Exam checklist</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="cartesian">Cartesian products</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Cartesian product</span>
+      <p>The <strong>Cartesian product</strong> of sets \(A\) and \(B\) is the set of all ordered pairs with first coordinate from \(A\) and second coordinate from \(B\):</p>
+      <p>\[ A \times B = \{(a,b) \mid a \in A,\ b \in B\}. \]</p>
+    </div>
+
+    <p>Two different orderings are at work here, and they must not be confused:</p>
+    <ul>
+      <li><strong>Within a pair, order matters.</strong> \((a,b) \neq (b,a)\) unless \(a=b\).</li>
+      <li><strong>Between pairs, order does not matter</strong>, because \(A \times B\) is a set: \(\{(a,b),(c,d)\} = \{(c,d),(a,b)\}\).</li>
+    </ul>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · size of a Cartesian product</span>
+      <p>\[ |A \times B| = |A| \cdot |B|. \]</p>
+      <p>Each of the \(|A|\) choices for the first coordinate pairs with each of the \(|B|\) choices for the second.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Let \(A=\{0,1,2,3\}\) and \(B=\{0,1,4\}\). Then</p>
+      <p>\[
+      \begin{aligned}
+      A \times B = \{&amp;(0,0),(0,1),(0,4),\\
+                     &amp;(1,0),(1,1),(1,4),\\
+                     &amp;(2,0),(2,1),(2,4),\\
+                     &amp;(3,0),(3,1),(3,4)\}.
+      \end{aligned}
+      \]</p>
+      <p>There are \(4 \cdot 3 = 12\) pairs.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Why this matters</span>
+      <p>The Cartesian product is the raw material for everything in this topic. A relation is a <em>chosen subset</em> of \(A \times B\); a function is a relation with an extra restriction. The plane \(\mathbb{R}^2 = \mathbb{R} \times \mathbb{R}\) is the Cartesian product you already know from graphing.</p>
+    </div>
+
+    <h2 id="relations">Relations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Relation</span>
+      <p>Given sets \(A\) and \(B\), any subset of \(A \times B\) is called a <strong>relation from \(A\) to \(B\)</strong>. We write \(R \subseteq A \times B\), and \((a,b) \in R\) means “\(a\) is related to \(b\)”.</p>
+      <p>A relation from \(A\) to \(A\) is called a <strong>relation on \(A\)</strong>.</p>
+    </div>
+
+    <p>So a relation has no built-in rule. Any collection of pairs is allowed — including the empty set and the whole Cartesian product.</p>
+
+    <div class="example">
+      <span class="box-label">Example · the divides relation</span>
+      <p>Let \(A=\{2,3,5,6\}\) and define \(R\) on \(A\) by \((a,b) \in R\) iff \(a\) divides evenly into \(b\). Then</p>
+      <p>\[ R = \{(2,2),(3,3),(5,5),(6,6),(2,6),(3,6)\}. \]</p>
+      <p>The pair \((2,6)\) is in because \(2 \mid 6\); the pair \((6,2)\) is not.</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Divides</span>
+      <p>For integers \(a,b\), “\(a\) <strong>divides</strong> \(b\)” is written \(a \mid b\) and means there exists an integer \(k\) with \(ak=b\).</p>
+      <p>Warning: \(a \mid b\) is a <em>statement</em> (true or false), whereas \(a/b\) is a <em>number</em>. The symbol \(\mid\) is also used for “such that” in set-builder notation; the context normally disambiguates, and many authors use a colon in set-builder notation to avoid the clash.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · different relations on the same sets</span>
+      <p>With \(A=\{0,1,2,3\}\) and \(B=\{0,1,4\}\), all of the following are relations from \(A\) to \(B\):</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Relation</th><th>Rule it suggests</th></tr></thead>
+          <tbody>
+            <tr><td>\(\{(0,0),(1,1),(2,4)\}\)</td><td>\(x \mapsto x^2\), restricted to \(x &lt; 3\)</td></tr>
+            <tr><td>\(\{(0,0),(1,1),(2,0),(3,1)\}\)</td><td>\(x \mapsto x \bmod 2\)</td></tr>
+            <tr><td>\(\{(0,0),(1,0),(2,1),(3,1)\}\)</td><td>“\(x\) is prime” indicator</td></tr>
+            <tr><td>\(\{(0,0),(1,4)\}\)</td><td>No obvious rule — that is allowed</td></tr>
+            <tr><td>\(\varnothing\)</td><td>The empty relation — a set, and a subset of everything</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="counting-relations">Counting relations</h2>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · number of relations</span>
+      <p>If \(|A|=m\) and \(|B|=n\), then there are</p>
+      <p>\[ 2^{mn} \]</p>
+      <p>distinct relations from \(A\) to \(B\).</p>
+    </div>
+
+    <p>The reason is a three-step argument worth reproducing in an exam:</p>
+    <ol class="steps">
+      <li>\(A \times B\) has \(mn\) elements.</li>
+      <li>A relation is any subset of \(A \times B\).</li>
+      <li>A set of size \(mn\) has \(2^{mn}\) subsets.</li>
+    </ol>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>For \(A=\{0,1,2,3\}\) and \(B=\{0,1,4\}\), there are \(2^{4 \cdot 3} = 2^{12} = 4096\) relations.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Relation vs power set</span>
+      <p>For a relation \(R\) from \(A\) to \(B\):</p>
+      <p>\[ R \subseteq A \times B \qquad\text{and}\qquad R \in \mathcal{P}(A \times B). \]</p>
+      <p>“Subset” and “element of the power set” say the same thing.</p>
+    </div>
+
+    <h2 id="terminology">Source, target, domain, image</h2>
+
+    <p>Draw the two sets side by side and draw an arrow from \(a\) to \(b\) whenever \((a,b) \in R\). Four pieces of vocabulary describe the picture.</p>
+
+    <div class="definition">
+      <span class="box-label">Definition · Terminology</span>
+      <p>Let \(R\) be a relation from \(S\) to \(T\).</p>
+      <ul>
+        <li>The <strong>source</strong> is \(S\), the set the relation leaves from.</li>
+        <li>The <strong>target</strong> is \(T\), the set the relation points to.</li>
+        <li>The <strong>domain</strong> is the subset of the source with at least one arrow out:
+          \[ \mathrm{Dom}(R) = \{s \in S \mid \exists t \in T,\ (s,t) \in R\} \subseteq S. \]</li>
+        <li>The <strong>image</strong> is the subset of the target with at least one arrow in:
+          \[ \mathrm{Im}(R) = \{t \in T \mid \exists s \in S,\ (s,t) \in R\} \subseteq T. \]</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · “is less than”</span>
+      <p>Let \(A=\{1,3,5\}\), \(B=\{0,2,4,5\}\), and \((a,b) \in R\) iff \(a &lt; b\). Then</p>
+      <p>\[ R = \{(1,2),(1,4),(1,5),(3,4),(3,5)\}. \]</p>
+      <ul>
+        <li>Source \(= A\), target \(= B\).</li>
+        <li>\(\mathrm{Dom}(R) = \{1,3,5\} = A\) — every element of \(A\) has an arrow.</li>
+        <li>\(\mathrm{Im}(R) = \{2,4,5\}\) — the element \(0 \in B\) is never used.</li>
+      </ul>
+    </div>
+
+    <h2 id="into-onto">Into and onto relations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Into and onto</span>
+      <p>Since \(\mathrm{Im}(R) \subseteq T\), there are exactly two possibilities:</p>
+      <ul>
+        <li><strong>Into:</strong> \(\mathrm{Im}(R) \subset T\) — the image is a proper subset of the target; at least one target element is unused.</li>
+        <li><strong>Onto:</strong> \(\mathrm{Im}(R) = T\) — every target element receives at least one arrow.</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>The “is less than” relation above is <strong>into</strong>, because \(0\) is not in the image.</p>
+      <p>The relation from \(A=\{-1,3,5\}\) to \(B=\{1,3,5\}\) defined by \(a &lt; b\) is</p>
+      <p>\[ R=\{(-1,1),(-1,3),(-1,5),(3,5)\}, \]</p>
+      <p>whose image is \(\{1,3,5\}=B\), so it is <strong>onto</strong>.</p>
+    </div>
+
+    <h2 id="injective-relations">Injective relations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Injective relation</span>
+      <p>A relation is <strong>injective</strong> (one-to-one) if there is <em>at most one</em> arrow into every element of the target.</p>
+      <p>Equivalently, no target element is hit twice.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>From \(A=\{-1,1,2\}\) to \(B=\{-1,1,4,8\}\):</p>
+      <ul>
+        <li>The “is square root of” relation contains \((-1,1)\) and \((1,1)\), so target \(1\) has two incoming arrows. <strong>Not injective.</strong></li>
+        <li>The “is cube root of” relation contains \((-1,-1)\), \((1,1)\), \((2,8)\) — each target is hit at most once. <strong>Injective.</strong></li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Three independent questions</span>
+      <p>“Domain”, “onto” and “injective” answer different questions:</p>
+      <ul>
+        <li><strong>Domain:</strong> does every source element have an arrow <em>out</em>?</li>
+        <li><strong>Onto:</strong> does every target element have an arrow <em>in</em>?</li>
+        <li><strong>Injective:</strong> does every target element have <em>at most one</em> arrow in?</li>
+      </ul>
+      <p>A relation can be onto but not injective, injective but not onto, both, or neither.</p>
+    </div>
+
+    <h2 id="relations-on-a-set">Relations on a set</h2>
+
+    <p>When source and target are the same set \(A\), a relation can be applied repeatedly: output of one step becomes input to the next. This is the setting for the five standard properties.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">iteration.txt</span><span class="code-lang">abstract</span></div>
+<pre><code>A --R--&gt; A --R--&gt; A --R--&gt; A --R--&gt; ...</code></pre>
+</div>
+
+    <p>This repeated-application view underlies fixed-point methods, chaining, hashing, and state machines.</p>
+
+    <h2 id="reflexive">Reflexive and irreflexive</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Reflexive</span>
+      <p>A relation \(R\) on \(A\) is <strong>reflexive</strong> iff every element is related to itself:</p>
+      <p>\[ (a,a) \in R \quad \forall a \in A. \]</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Reflexive examples on \(\mathbb{Z}^+\)</h4>
+        <p>“divides”: \(a \mid a\) always.<br>
+        “less than or equal to”: \(a \le a\) always.<br>
+        “has the same surname as”.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Not reflexive</h4>
+        <p>“less than”: \((5,5) \notin R\).<br>
+        “is half of”: \((3,3) \notin R\).<br>
+        “is a parent of”.</p>
+      </div>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Irreflexive</span>
+      <p>\(R\) is <strong>irreflexive</strong> (or irreflective) iff no element is related to itself:</p>
+      <p>\[ (a,a) \notin R \quad \forall a \in A. \]</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Reflexive vs not reflexive</span>
+      <p>“Not reflexive” and “irreflexive” are different. A relation is not reflexive if it misses <em>at least one</em> diagonal pair; it is irreflexive if it misses <em>all</em> of them. A relation can be neither: for example \(R=\{(1,1),(1,2)\}\) on \(\{1,2\}\) has one diagonal pair but not both.</p>
+    </div>
+
+    <h2 id="symmetric">Symmetric and antisymmetric</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Symmetric</span>
+      <p>\(R\) is <strong>symmetric</strong> iff</p>
+      <p>\[ (a_1,a_2) \in R \;\Rightarrow\; (a_2,a_1) \in R \quad \forall a_1,a_2 \in A. \]</p>
+      <p>Every arrow has a matching arrow in the opposite direction.</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Antisymmetric</span>
+      <p>\(R\) is <strong>antisymmetric</strong> iff</p>
+      <p>\[ (a_1,a_2) \in R \ \land\ (a_2,a_1) \in R \;\Rightarrow\; a_1=a_2 \quad \forall a_1,a_2 \in A. \]</p>
+      <p>Two distinct elements cannot point at each other.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">They are not opposites</span>
+      <p>A relation may be symmetric, antisymmetric, both, or neither:</p>
+      <ul>
+        <li>“\(=\)” is both symmetric and antisymmetric.</li>
+        <li>“\(\le\)” is antisymmetric but not symmetric.</li>
+        <li>“has the same surname” is symmetric but not antisymmetric.</li>
+        <li>“divides” on \(\mathbb{Z}^+\) is antisymmetric but not symmetric.</li>
+      </ul>
+      <p>“Not symmetric” does <em>not</em> mean antisymmetric.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Proof strategy for antisymmetry</span>
+      <p>Assume \((a_1,a_2) \in R\) and \((a_2,a_1) \in R\) with \(a_1 \neq a_2\), then derive a contradiction. Alternatively, prove directly that the two conditions force \(a_1=a_2\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the unit circle relation</span>
+      <p>Let \(R=\{(x,y) \in \mathbb{R}^2 \mid x^2+y^2=1\}\).</p>
+      <ul>
+        <li><strong>Reflexive?</strong> No: \((2,2) \notin R\) since \(2^2+2^2=8 \neq 1\).</li>
+        <li><strong>Symmetric?</strong> Yes: \(x^2+y^2 = y^2+x^2\), so \((x,y)\in R \Rightarrow (y,x)\in R\).</li>
+        <li><strong>Antisymmetric?</strong> No: \((0,1)\in R\) and \((1,0)\in R\), but \(0 \neq 1\).</li>
+      </ul>
+    </div>
+
+    <h2 id="transitive">Transitive</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Transitive</span>
+      <p>\(R\) is <strong>transitive</strong> iff</p>
+      <p>\[ (a_1,a_2) \in R \ \land\ (a_2,a_3) \in R \;\Rightarrow\; (a_1,a_3) \in R \quad \forall a_1,a_2,a_3 \in A. \]</p>
+      <p>A two-step path can always be short-circuited into a one-step arrow.</p>
+    </div>
+
+    <p>“Less than”, “greater than”, “equals”, “divides”, “is an ancestor of” and “is a subset of” are all transitive. “Is a parent of” is not: a parent of a parent is a grandparent, not a parent.</p>
+
+    <div class="example">
+      <span class="box-label">Example · a relation that is reflexive and symmetric but not transitive</span>
+      <p>On the set of all people, let \((x,y) \in R\) iff \(x\) and \(y\) have at least one biological parent in common.</p>
+      <ul>
+        <li><strong>Reflexive:</strong> everyone shares a parent with themselves.</li>
+        <li><strong>Symmetric:</strong> sharing is mutual.</li>
+        <li><strong>Not transitive:</strong> Larry and Curly might share a parent, and Curly and Mo might share a (different) parent, while Larry and Mo share none.</li>
+      </ul>
+    </div>
+
+    <h2 id="equivalence">Equivalence relations and classes</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Equivalence relation</span>
+      <p>A relation \(R\) on \(A\) is an <strong>equivalence relation</strong> iff it is</p>
+      <ol>
+        <li><strong>reflexive</strong>,</li>
+        <li><strong>symmetric</strong>,</li>
+        <li><strong>transitive</strong>.</li>
+      </ol>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Equivalence classes</span>
+      <p>An equivalence relation partitions \(A\) into <strong>equivalence classes</strong> \(A_1,A_2,\ldots\), where two elements are in the same class iff they are related. The classes are:</p>
+      <ul>
+        <li><strong>disjoint:</strong> \(A_i \cap A_j = \varnothing\) when \(i \neq j\);</li>
+        <li><strong>exhaustive:</strong> \(A_1 \cup A_2 \cup \cdots = A\).</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · same surname</span>
+      <p>On the set of all people in Ireland, let \((x,y) \in R\) iff \(x\) and \(y\) have the same surname. This is reflexive, symmetric and transitive, hence an equivalence relation. The equivalence classes are the groups of people sharing each surname.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · congruence modulo 2</span>
+      <p>On \(\mathbb{Z}\), let \((a,b) \in R\) iff \(a\) and \(b\) have the same remainder on division by 2. The equivalence classes are the even integers and the odd integers — disjoint and exhaustive.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>Equality</h4>
+        <p>On \(\mathbb{Z}\), \((a,b)\in R\) iff \(a=b\). Classes are singletons.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Same length</h4>
+        <p>On strings, classes are strings of length 0, length 1, length 2, …</p>
+      </div>
+      <div class="mini-card">
+        <h4>Same remainder</h4>
+        <p>Modulo \(n\), there are exactly \(n\) equivalence classes.</p>
+      </div>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Asymmetric</span>
+      <p>\(R\) is <strong>asymmetric</strong> iff</p>
+      <p>\[ (a_1,a_2) \in R \;\Rightarrow\; (a_2,a_1) \notin R \quad \forall a_1,a_2 \in A. \]</p>
+      <p>No pair points both ways, not even an element to itself.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Lemma</span>
+      <p>A relation is asymmetric <strong>iff</strong> it is both irreflexive and antisymmetric.</p>
+    </div>
+
+    <h2 id="digraphs">Digraphs</h2>
+
+    <p>For a relation on a finite set, a <strong>directed graph</strong> (digraph) is the clearest picture. Draw each element of \(A\) as a vertex; draw a directed edge \(a \to b\) whenever \((a,b) \in R\). Layout and edge shape are irrelevant — only which vertices point to which.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Digraph signature</th></tr></thead>
+        <tbody>
+          <tr><td>Reflexive</td><td>A self-loop at every vertex.</td></tr>
+          <tr><td>Irreflexive</td><td>No self-loops.</td></tr>
+          <tr><td>Symmetric</td><td>Every edge has a matching reverse edge (bidirectional pairs).</td></tr>
+          <tr><td>Antisymmetric</td><td>No pair of distinct vertices has edges in both directions (self-loops ignored).</td></tr>
+          <tr><td>Transitive</td><td>For every path \(x \to y \to z\), there is a direct edge \(x \to z\).</td></tr>
+          <tr><td>Asymmetric</td><td>No edge in either direction for any pair of vertices, including no self-loops.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · read the picture</span>
+      <p>On \(A=\{a,b,c,d\}\), let</p>
+      <p>\[ R=\{(a,b),(b,c),(c,b)\}. \]</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property</th><th>Verdict</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>Reflexive</td><td>No</td><td>No self-loops.</td></tr>
+            <tr><td>Irreflexive</td><td>Yes</td><td>Every vertex lacks a self-loop.</td></tr>
+            <tr><td>Symmetric</td><td>No</td><td>\(a \to b\) has no reverse \(b \to a\).</td></tr>
+            <tr><td>Antisymmetric</td><td>No</td><td>\(b \to c\) and \(c \to b\) with \(b \neq c\).</td></tr>
+            <tr><td>Transitive</td><td>No</td><td>\(b \to c\) and \(c \to b\) require \(b \to b\), which is absent.</td></tr>
+            <tr><td>Asymmetric</td><td>No</td><td>\(b \to c\) has a reverse.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="closures">Closures</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Closure</span>
+      <p>For a property \(X\), the <strong>\(X\)-closure</strong> of \(R\) is the smallest superset of \(R\) that has property \(X\). “Smallest” means you add only what is forced.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Closure</th><th>How to build it</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Reflexive closure</strong></td><td>Add \((a,a)\) for every \(a \in A\) that lacks it.</td></tr>
+          <tr><td><strong>Symmetric closure</strong></td><td>For every \((a_1,a_2) \in R\), add \((a_2,a_1)\) if absent.</td></tr>
+          <tr><td><strong>Transitive closure</strong></td><td>Repeatedly add \((a_1,a_3)\) whenever \((a_1,a_2)\) and \((a_2,a_3)\) are present, until no new pairs appear.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Let \(R=\{(1,2),(2,3)\}\) on \(A=\{1,2,3\}\).</p>
+      <ul>
+        <li>Reflexive closure: \(R \cup \{(1,1),(2,2),(3,3)\}\).</li>
+        <li>Symmetric closure: \(R \cup \{(2,1),(3,2)\}\).</li>
+        <li>Transitive closure: add \((1,3)\); the result is \(\{(1,2),(2,3),(1,3)\}\).</li>
+      </ul>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Closure algorithm</span>
+      <p>Repeat the one-step rule until the set stops changing. Because \(A\) is finite, this terminates: each pass either adds a pair or stabilises, and there are at most \(|A|^2\) pairs.</p>
+    </div>
+
+    <h2 id="powers-relations">Powers of relations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Power of a relation</span>
+      <p>For a relation \(R\) on \(A\), define</p>
+      <p>\[ R^0 = I_A = \{(a,a) \mid a \in A\}, \qquad R^n = R^{n-1} \circ R \ \text{ for } n \ge 1. \]</p>
+      <p>Here \(S \circ R\) means “apply \(R\), then apply \(S\)”. So \(R^n\) consists of all pairs connected by a path of exactly \(n\) \(R\)-steps.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Let \(R=\{(1,2),(2,3)\}\) on \(\{1,2,3\}\). Then</p>
+      <p>\[ R^2 = \{(1,3)\}, \qquad R^3 = \varnothing. \]</p>
+      <p>There is a 2-step path \(1 \to 2 \to 3\), but no 3-step path.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Link to transitive closure</span>
+      <p>The transitive closure of \(R\) is</p>
+      <p>\[ R \cup R^2 \cup R^3 \cup \cdots \]</p>
+      <p>— all pairs reachable by a path of length at least one. On a finite set the union stops growing after at most \(|A|\) powers.</p>
+    </div>
+
+    <h2 id="functions">Functions as relations</h2>
+
+    <p>A function is a relation that behaves like a deterministic program: every input produces exactly one output.</p>
+
+    <div class="definition">
+      <span class="box-label">Definition · Function</span>
+      <p>A relation \(R\) from \(A\) to \(B\) is a <strong>function from \(A\) to \(B\)</strong> iff</p>
+      <ol>
+        <li>every element of \(A\) is in the domain — at least one arrow leaves each input;</li>
+        <li>no element of \(A\) has more than one output — if \((a,b) \in R\) and \((a,c) \in R\), then \(b=c\).</li>
+      </ol>
+      <p>In symbols: \(\mathrm{Dom}(R)=A\) and \((a,b),(a,c)\in R \Rightarrow b=c\).</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Why both conditions?</h4>
+        <p>The relation \(a=b^2\) on \(\mathbb{R}\) fails both: \(16\) maps to \(4\) and \(-4\), while \(-1\) maps to nothing. A function must fix both problems.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Programmer's view</h4>
+        <p>One input, one return value. Python can return <code>None</code> or a tuple to fake the other cases, but that is a workaround, not a mathematical function.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · set of ordered pairs</span>
+      <p>Let \(S=\{1,2,3\}\) and \(T=\{a,b,c\}\). Then</p>
+      <p>\[ f=\{(1,a),(2,a),(3,b)\} \]</p>
+      <p>is a function: every element of \(S\) appears exactly once as a first coordinate. The image is \(\{a,b\}\), so \(f\) is into (not onto).</p>
+      <p>By contrast, \(\{(1,a),(1,b),(2,c)\}\) is not a function (\(1\) has two outputs), and \(\{(1,a),(3,c)\}\) is not a function from \(S\) (\(2\) has none).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · lookup table</span>
+      <p>A lookup table is a function written as rows. Memory is sometimes cheaper than computation: prime tables, ASCII and Unicode tables work this way.</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>input</th><th>output</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>a</td></tr>
+            <tr><td>2</td><td>a</td></tr>
+            <tr><td>3</td><td>b</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The domain is the set of inputs \(\{1,2,3\}\); the image is the set of outputs \(\{a,b\}\).</p>
+    </div>
+
+    <h2 id="notation">Function notation and well-definedness</h2>
+
+    <p>The full specification of a function has three parts:</p>
+
+    <div class="formula">\[ \underbrace{f}_{\text{name}} : \underbrace{A}_{\text{source / domain}} \to \underbrace{B}_{\text{target}} : \underbrace{x \mapsto f(x)}_{\text{rule}} \]</div>
+
+    <p>All of the following are used for the same function, with decreasing formality:</p>
+    <div class="formula">\[
+      f = \{(a,b) \mid a \in \mathbb{R},\ b \in \mathbb{R},\ b=3a\}
+    \]</div>
+    <div class="formula">\[
+      f : \mathbb{R} \to \mathbb{R} : x \mapsto 3x
+      \qquad\text{or}\qquad
+      f : \mathbb{R} \to \mathbb{R} : f(x)=3x
+    \]</div>
+    <div class="formula">\[
+      f : x \mapsto 3x
+      \qquad\text{or}\qquad
+      f(x)=3x
+      \qquad\text{or}\qquad
+      f=3x
+    \]</div>
+
+    <div class="warning">
+      <span class="box-label">Well-definedness</span>
+      <p>If only the rule is given, you must choose the largest domain on which it makes sense. For example, assuming \(\mathbb{R} \to \mathbb{R}\):</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Rule</th><th>Correct formal definition</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>\(x^2\)</td><td>\(a : \mathbb{R} \to \mathbb{R} : x \mapsto x^2\)</td><td>No restriction.</td></tr>
+            <tr><td>\(\sqrt{x}\)</td><td>\(b : [0,\infty) \to \mathbb{R} : x \mapsto \sqrt{x}\)</td><td>Cannot square-root a negative real.</td></tr>
+            <tr><td>\(\dfrac{1}{x-2}\)</td><td>\(c : \mathbb{R} \setminus \{2\} \to \mathbb{R} : x \mapsto \dfrac{1}{x-2}\)</td><td>Cannot divide by zero.</td></tr>
+            <tr><td>\(\log x\)</td><td>\(d : (0,\infty) \to \mathbb{R} : x \mapsto \log x\)</td><td>Logarithm needs a positive input.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>On the integers the restrictions differ, because the square root of a non-square integer is not an integer.</p>
+    </div>
+
+    <h2 id="intervals">Interval notation</h2>
+
+    <p>Round brackets exclude an endpoint; square brackets include it. On \(\mathbb{R}\):</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Interval</th><th>Set</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>\([a,b]\)</td><td>\(\{x \in \mathbb{R} : a \le x \le b\}\)</td><td>Closed, finite</td></tr>
+          <tr><td>\((a,b)\)</td><td>\(\{x \in \mathbb{R} : a &lt; x &lt; b\}\)</td><td>Open, finite</td></tr>
+          <tr><td>\([a,b)\)</td><td>\(\{x \in \mathbb{R} : a \le x &lt; b\}\)</td><td>Semi-open, finite</td></tr>
+          <tr><td>\((a,b]\)</td><td>\(\{x \in \mathbb{R} : a &lt; x \le b\}\)</td><td>Semi-open, finite</td></tr>
+          <tr><td>\([a,\infty)\)</td><td>\(\{x \in \mathbb{R} : a \le x &lt; \infty\}\)</td><td>Semi-open, infinite</td></tr>
+          <tr><td>\((a,\infty)\)</td><td>\(\{x \in \mathbb{R} : a &lt; x &lt; \infty\}\)</td><td>Open, infinite</td></tr>
+          <tr><td>\((-\infty,b]\)</td><td>\(\{x \in \mathbb{R} : -\infty &lt; x \le b\}\)</td><td>Semi-open, infinite</td></tr>
+          <tr><td>\((-\infty,b)\)</td><td>\(\{x \in \mathbb{R} : -\infty &lt; x &lt; b\}\)</td><td>Open, infinite</td></tr>
+          <tr><td>\((-\infty,\infty)\)</td><td>\(\mathbb{R}\)</td><td>The real line</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Programming connection</span>
+      <p>Python's <code>range(a, b)</code> is the integer interval \([a,b)\): the start is included, the stop is excluded. This is why <code>range(0, 5)</code> yields \(0,1,2,3,4\) — five values, not six. The same semi-open convention is used in slicing.</p>
+    </div>
+
+    <h2 id="surjective">Surjective functions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Surjective (onto)</span>
+      <p>A function \(f : A \to B\) is <strong>surjective</strong> (onto) iff its image equals its target:</p>
+      <p>\[ \forall b \in B\ \exists a \in A\ [f(a)=b]. \]</p>
+      <p>Every element of \(B\) is hit by at least one arrow. If the image is a proper subset of the target, the function is <strong>into</strong> (not surjective).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · checking surjectivity</span>
+      <ul>
+        <li>\(f : \mathbb{R} \to \mathbb{R},\ f(x)=3x+1\): <strong>surjective.</strong> Given \(b \in \mathbb{R}\), take \(a=(b-1)/3\).</li>
+        <li>\(f : \mathbb{N} \to \mathbb{N},\ f(x)=3x+1\): <strong>not surjective.</strong> The value \(0 \in \mathbb{N}\) is never produced (and neither is \(1\), \(2\), \(4\), …).</li>
+        <li>\(f : \mathbb{N} \to \mathbb{N},\ f(m)=2m\): <strong>not surjective.</strong> Odd numbers are never outputs.</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Why it matters</span>
+      <p>If a function is surjective, every target value can be generated from some input. If it is not, at least one value is unreachable no matter what you feed in — the basis of plausibly deniable encryption.</p>
+    </div>
+
+    <h2 id="injective">Injective functions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Injective (one-to-one)</span>
+      <p>A function \(f : A \to B\) is <strong>injective</strong> iff</p>
+      <p>\[ f(a_1)=f(a_2) \;\Rightarrow\; a_1=a_2 \quad \forall a_1,a_2 \in A. \]</p>
+      <p>Equivalently, by contrapositive:</p>
+      <p>\[ a_1 \neq a_2 \;\Rightarrow\; f(a_1) \neq f(a_2). \]</p>
+      <p>Different inputs give different outputs; each target element receives at most one arrow.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Proof template</span>
+      <p>To prove injective: assume \(f(a_1)=f(a_2)\) and manipulate until \(a_1=a_2\). To disprove: exhibit two distinct inputs with the same output.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · checking injectivity</span>
+      <ul>
+        <li>\(f : \mathbb{R} \to \mathbb{R},\ f(x)=3x+1\): injective, since \(3a_1+1=3a_2+1 \Rightarrow a_1=a_2\).</li>
+        <li>\(f : \mathbb{N} \to \mathbb{N},\ f(m)=2m\): injective, since \(2a_1=2a_2 \Rightarrow a_1=a_2\).</li>
+        <li>\(g : \mathbb{Z} \to \mathbb{Z},\ g(m)=2m^2-7\): not injective, since \(g(1)=g(-1)=-5\) but \(1 \neq -1\).</li>
+        <li>\(f : \mathbb{R} \to \mathbb{R},\ f(x)=x^2\): not injective, since \(f(2)=f(-2)=4\).</li>
+      </ul>
+    </div>
+
+    <h2 id="bijective">Bijective functions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Bijective</span>
+      <p>\(f : A \to B\) is <strong>bijective</strong> (a bijection) iff it is both injective and surjective. In the arrow picture: exactly one arrow leaves every source element, and exactly one arrow enters every target element.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · bijections are reversible</span>
+      <p>A function has an inverse if and only if it is bijective. Bijections pair up the elements of \(A\) and \(B\) one-for-one, so \(|A|=|B|\) for finite sets.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · classification table</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Function</th><th>Injective?</th><th>Surjective?</th><th>Bijective?</th></tr></thead>
+          <tbody>
+            <tr><td>\(f : \mathbb{R} \to \mathbb{R},\ x \mapsto 3x+1\)</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>\(f : \mathbb{N} \to \mathbb{N},\ x \mapsto 3x+1\)</td><td>Yes</td><td>No</td><td>No</td></tr>
+            <tr><td>\(f : \mathbb{Q} \to \mathbb{Q},\ x \mapsto 3x+1\)</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>\(f : \mathbb{N} \to \mathbb{N},\ m \mapsto 2m\)</td><td>Yes</td><td>No</td><td>No</td></tr>
+            <tr><td>\(f : \mathbb{R} \to \mathbb{R},\ m \mapsto 2m\)</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+            <tr><td>\(g : \mathbb{Z} \to \mathbb{Z},\ m \mapsto 2m^2-7\)</td><td>No</td><td>No</td><td>No</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The domain and target are part of the function. The same rule can be bijective over \(\mathbb{R}\) and fail to be surjective over \(\mathbb{N}\).</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Cardinality check</span>
+      <p>For finite sets, if \(|A|=|B|\), then a function is injective iff it is surjective iff it is bijective. If \(|A| \neq |B|\), no bijection can exist. Use this as a fast sanity check before doing algebra.</p>
+    </div>
+
+    <h2 id="equality">Function equality and arithmetic</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Function equality</span>
+      <p>Two functions \(f\) and \(g\) are equal iff they have the same domain <em>and</em> the same value everywhere on it:</p>
+      <p>\[ f=g \iff \mathrm{Dom}(f)=\mathrm{Dom}(g) \ \land\ f(x)=g(x)\ \forall x \in \mathrm{Dom}(f). \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · same rule, different domain</span>
+      <p>\[ f : \mathbb{Z} \to \mathbb{Z} : x \mapsto x^2 \qquad\text{and}\qquad g : \mathbb{R} \to \mathbb{R} : x \mapsto x^2 \]</p>
+      <p>are <strong>not equal</strong>, because their domains differ, even though the formula is identical.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · different rules, same function</span>
+      <p>On \(A=\{-1,0,1,2\}\) with target \(\{0,1,2\}\),</p>
+      <p>\[ h : x \mapsto |x| \qquad\text{and}\qquad k : x \mapsto -\frac{x^3}{3}+x^2+\frac{x}{3} \]</p>
+      <p>are equal. Both give the values \(1,0,1,2\) on \(-1,0,1,2\). A function is determined by its input–output behaviour, not by how the formula is written.</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Pointwise arithmetic</span>
+      <p>Given functions \(f\) and \(g\) with a common domain:</p>
+      <p>\[
+      \begin{aligned}
+      (f+g)(x) &amp;= f(x)+g(x),\\
+      (f-g)(x) &amp;= f(x)-g(x),\\
+      (fg)(x)  &amp;= f(x)g(x),\\
+      (f/g)(x) &amp;= f(x)/g(x), \quad g(x) \neq 0.
+      \end{aligned}
+      \]</p>
+      <p>The domain of the quotient excludes every \(x\) with \(g(x)=0\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Let \(f(x)=x^4-16\) and \(g(x)=|x|-4\). Then</p>
+      <ul>
+        <li>\((f+g)(2)=f(2)+g(2)=0+(-2)=-2\).</li>
+        <li>\((fg)(2)=0 \cdot (-2)=0\).</li>
+        <li>\((f/g)(2)=0/(-2)=0\).</li>
+        <li>\((g/f)(2)=(-2)/0\) is undefined, so \(2 \notin \mathrm{Dom}(g/f)\).</li>
+        <li>\((g/f)(1)=(-3)/(-15)=\tfrac15\).</li>
+      </ul>
+    </div>
+
+    <h2 id="composition">Composition</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Composition</span>
+      <p>Let \(f : A \to B\) and \(g : B \to C\). The composition of \(f\) followed by \(g\) is</p>
+      <p>\[ g \circ f : A \to C, \qquad (g \circ f)(x)=g(f(x)). \]</p>
+      <p>Read “\(g\) after \(f\)”. The output type of \(f\) must match the input type of \(g\), otherwise the composition is undefined.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · pairs</span>
+      <p>With \(f=\{(1,a),(2,a),(3,b)\}\) and \(g=\{(a,B),(b,C),(c,A)\}\):</p>
+      <p>\[ g \circ f = \{(1,B),(2,B),(3,C)\}. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · formulae</span>
+      <p>Let \(f(x)=x^3\) and \(g(x)=3x+1\). Then</p>
+      <p>\[ (g \circ f)(x)=g(x^3)=3x^3+1, \]</p>
+      <p>whereas</p>
+      <p>\[ (f \circ g)(x)=f(3x+1)=(3x+1)^3=27x^3+27x^2+9x+1. \]</p>
+      <p>So \(f \circ g \neq g \circ f\) in general. Composition is <strong>not commutative</strong>.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · composition is associative</span>
+      <p>For \(f : A \to B\), \(g : B \to C\), \(h : C \to D\),</p>
+      <p>\[ h \circ (g \circ f) = (h \circ g) \circ f. \]</p>
+      <p>Grouping does not matter; the value on \(x\) is always \(h(g(f(x)))\).</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Powers of a function</span>
+      <p>For \(f : A \to A\):</p>
+      <p>\[ f^1=f, \qquad f^{n+1}=f \circ f^n \ \text{ for } n \ge 1. \]</p>
+      <p>That is, \(f^{n+1}(a)=f(f^n(a))\). Note carefully: \(f^2(x)\) means \(f(f(x))\), <em>not</em> \((f(x))^2\).</p>
+    </div>
+
+    <h2 id="inverse">Inverses</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Inverse</span>
+      <p>Let \(f : A \to B\). If there exists a function \(g : B \to A\) such that</p>
+      <p>\[ (g \circ f)(x)=x \ \forall x \in A \qquad\text{and}\qquad (f \circ g)(y)=y \ \forall y \in B, \]</p>
+      <p>then \(g\) is <strong>the inverse</strong> of \(f\), written \(f^{-1}\).</p>
+    </div>
+
+    <p>Both directions are required: one composition returning the identity on one side is not enough. If the inverse exists it is unique, and it “undoes” \(f\): if \(f(a)=b\), then \(f^{-1}(b)=a\).</p>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · existence criterion</span>
+      <p>\(f^{-1}\) exists <strong>iff</strong> \(f\) is bijective (injective and surjective).</p>
+      <ul>
+        <li>Injectivity makes the reverse assignment unambiguous.</li>
+        <li>Surjectivity makes it defined on all of \(B\).</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · a non-obvious inverse pair</span>
+      <p>On \(A=\{0,1,2,3,4\}\), let</p>
+      <p>\[ f(x)=-\frac{5}{6}x^4+\frac{20}{3}x^3-\frac{50}{3}x^2+\frac{83}{6}x \qquad\text{and}\qquad g(x)=2x \bmod 5. \]</p>
+      <p>The values are:</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>\(x\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead>
+          <tbody>
+            <tr><td>\(f(x)\)</td><td>0</td><td>3</td><td>1</td><td>4</td><td>2</td></tr>
+            <tr><td>\(g(f(x))\)</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>So \(g \circ f = I_A\) and \(f \circ g = I_A\): the two functions are inverses.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Existence is not efficiency</span>
+      <p>Knowing that \(f^{-1}\) exists says nothing about how hard it is to compute. Public-key cryptography is built on bijections whose inverses are believed to be computationally infeasible without a secret key.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Exercise · find the inverse</span>
+      <p>Let \(f : \mathbb{R} \to \mathbb{R}\), \(f(x)=3x+1\). Solve \(y=3x+1\) for \(x\):</p>
+      <p>\[ x=\frac{y-1}{3}, \qquad\text{so}\qquad f^{-1}(y)=\frac{y-1}{3}. \]</p>
+      <p>Check: \(f^{-1}(f(x)) = \frac{(3x+1)-1}{3}=x\), and \(f(f^{-1}(y))=3\cdot\frac{y-1}{3}+1=y\).</p>
+    </div>
+
+    <h2 id="caesar">The Caesar cipher</h2>
+
+    <p>The Caesar (shift) cipher is the classic application of inverse functions. Identify the letters with the integers \(0,\ldots,25\): \(A \leftrightarrow 0\), \(B \leftrightarrow 1\), …, \(Z \leftrightarrow 25\). For a shift \(n\),</p>
+
+    <div class="formula">\[
+      E_n(x)=(x+n) \bmod 26, \qquad D_n(x)=(x-n) \bmod 26.
+    \]</div>
+
+    <p>These are inverse functions: \(D_n(E_n(x)) = (x+n-n) \bmod 26 = x\). Both are bijections on the set of letters, which is exactly why decryption is always possible.</p>
+
+    <div class="example">
+      <span class="box-label">Example · shift 3</span>
+      <p>Caesar used \(n=3\). Encrypting <code>ATTACK AT DAWN</code>:</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>Plain</th><th>A</th><th>T</th><th>T</th><th>A</th><th>C</th><th>K</th><th>A</th><th>T</th><th>D</th><th>A</th><th>W</th><th>N</th></tr></thead>
+          <tbody>
+            <tr><td>Cipher</td><td>D</td><td>W</td><td>W</td><td>D</td><td>F</td><td>N</td><td>D</td><td>W</td><td>G</td><td>D</td><td>Z</td><td>Q</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>So the ciphertext is <code>DWWDFN DW GDZQ</code>.</p>
+      <p>Decrypting <code>V HQG PRUH IRRG</code> with \(n=3\) gives <code>SEND MORE FOOD</code>.</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">caesar.py</span><span class="code-lang">python</span></div>
+<pre><code>def shift(n, x):
+    return (x + n) % 26
+
+def encrypt(n, message):
+    result = ""
+    for c in message:
+        if 'A' &lt;= c &lt;= 'Z':
+            result += chr(shift(n, ord(c) - ord('A')) + ord('A'))
+        else:
+            result += c
+    return result
+
+def decrypt(n, message):
+    return encrypt(26 - n, message)
+
+plaintext = "ATTACK AT DAWN"
+cyphertext = encrypt(3, plaintext)
+test = decrypt(3, cyphertext)
+
+print("Plaintext =", plaintext)     # ATTACK AT DAWN
+print("Cyphertext =", cyphertext)   # DWWDFN DW GDZQ
+print("test =", test)               # ATTACK AT DAWN</code></pre>
+</div>
+
+    <div class="note">
+      <span class="box-label">ROT13</span>
+      <p>ROT13 is the Caesar cipher with \(n=13\). Since \(13+13=26 \equiv 0 \pmod{26}\), encryption and decryption are the same operation — a self-inverse function.</p>
+    </div>
+
+    <h2 id="library">Library of functions</h2>
+
+    <p>Discrete mathematics focuses on finite and countable domains, but the standard functions over \(\mathbb{R}\) reappear constantly in computing: polynomial running times, logarithmic complexity, exponential growth, and trigonometric transforms in graphics. Here is the short catalogue.</p>
+
+    <h3 id="absolute">Absolute value</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Absolute value</span>
+      <p>\[ |x| = \sqrt{x^2} = \begin{cases} -x, &amp; x &lt; 0,\\ x, &amp; x \ge 0. \end{cases} \]</p>
+      <p>Properties:</p>
+      <ul>
+        <li>\(|x| \ge 0\);</li>
+        <li>\(|x|=0 \iff x=0\);</li>
+        <li>\(|xy|=|x||y|\);</li>
+        <li>\(|x+y| \le |x|+|y|\) (triangle inequality).</li>
+      </ul>
+      <p>It measures distance: \(|x-c|=a\) is the set of points exactly \(a\) units from \(c\).</p>
+    </div>
+
+    <h3 id="signum">Signum</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Signum</span>
+      <p>\[ \operatorname{sgn}(x) = \begin{cases} -1, &amp; x &lt; 0,\\ 0, &amp; x=0,\\ 1, &amp; x &gt; 0. \end{cases} \]</p>
+      <p>Equivalently, \(\operatorname{sgn}(x)=|x|/x\) for \(x \neq 0\), and \(\operatorname{sgn}(0)=0\). Some authors leave \(\operatorname{sgn}(0)\) undefined; both conventions are fine provided everyone knows which is in use.</p>
+    </div>
+
+    <h3 id="heaviside">Heaviside</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Heaviside step</span>
+      <p>\[ H(x) = \begin{cases} 0, &amp; x &lt; 0,\\ 1, &amp; x \ge 0. \end{cases} \]</p>
+      <p>It models a switch that turns on at \(x=0\). This is the right-continuous version; some texts set \(H(0)=\tfrac12\).</p>
+    </div>
+
+    <h3 id="floor-ceiling">Floor and ceiling</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Floor and ceiling</span>
+      <ul>
+        <li>\(\lfloor x \rfloor\) is the greatest integer \(\le x\).</li>
+        <li>\(\lceil x \rceil\) is the least integer \(\ge x\).</li>
+      </ul>
+      <p>Examples: \(\lfloor 2.7 \rfloor = 2\), \(\lceil 2.1 \rceil = 3\), \(\lfloor -1.2 \rfloor = -2\), \(\lceil -1.2 \rceil = -1\).</p>
+    </div>
+
+    <p>The graph of \(y=\lfloor x \rfloor\) is a staircase: constant on every interval \([n,n+1)\), with a jump at each integer. A solid dot marks an included endpoint and an empty dot an excluded one.</p>
+
+    <div class="warning">
+      <span class="box-label">Floor of negatives</span>
+      <p>Floor always moves <em>left</em> on the number line, ceiling always moves <em>right</em>. For negative numbers this is not the same as truncation: \(\lfloor -1.2 \rfloor = -2\), not \(-1\).</p>
+    </div>
+
+    <h3 id="power">Power functions</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Power function</span>
+      <p>A function of the form</p>
+      <p>\[ f : (0,\infty) \to (0,\infty) : x \mapsto x^a, \qquad a \in \mathbb{R}, \]</p>
+      <p>is a <strong>power function</strong>. The domain may extend depending on \(a\):</p>
+      <ul>
+        <li>If \(a \in \mathbb{N} \setminus \{0\}\), the domain is \(\mathbb{R}\) (e.g. \(x, x^2, x^3\)).</li>
+        <li>If \(a\) is a negative integer, the domain is \(\mathbb{R} \setminus \{0\}\).</li>
+        <li>If \(a\) has an odd denominator in lowest terms, negative inputs may be allowed; for even denominators they are not.</li>
+      </ul>
+    </div>
+
+    <h3 id="polynomials">Polynomials</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Polynomial</span>
+      <p>A <strong>polynomial of degree \(n\)</strong> is a function of the form</p>
+      <p>\[ f(x)=a_nx^n+a_{n-1}x^{n-1}+\cdots+a_1x+a_0, \qquad a_k \in \mathbb{R},\ a_n \neq 0. \]</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Properties of polynomials</span>
+      <ol>
+        <li>A degree-\(n\) polynomial has at most \(n\) real roots and at most \(n-1\) local minima/maxima.</li>
+        <li>For large \(|x|\), behaviour is controlled by the leading term \(a_nx^n\).</li>
+        <li>Near zero, behaviour is controlled by the lowest non-zero term.</li>
+      </ol>
+      <p>Polynomials are easy to evaluate, easy to implement, and can approximate any finite smooth curve — hence their importance in computing.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Degree</th><th>Form</th><th>Name and key facts</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>\(f(x)=c\)</td><td>Constant; horizontal line.</td></tr>
+          <tr><td>1</td><td>\(f(x)=mx+c\)</td><td>Affine (linear); slope \(m\), intercept \(c\); one root at \(x=-c/m\).</td></tr>
+          <tr><td>2</td><td>\(f(x)=ax^2+bx+c\)</td><td>Quadratic; parabola; roots \(\dfrac{-b \pm \sqrt{b^2-4ac}}{2a}\).</td></tr>
+          <tr><td>3</td><td>\(f(x)=ax^3+bx^2+cx+d\)</td><td>Cubic; up to three roots and two turning points.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>For a quadratic, the canonical (completed-square) form is</p>
+    <div class="formula">\[
+      f(x)=a\left(x+\frac{b}{2a}\right)^2-\frac{b^2-4ac}{4a},
+    \]</div>
+    <p>which locates the vertex and the range. The discriminant \(b^2-4ac\) decides the number of real roots: negative means none, zero means one repeated root, positive means two.</p>
+
+    <h3 id="others">The rest of the library</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Family</th><th>Examples</th><th>Where it appears</th></tr></thead>
+        <tbody>
+          <tr><td>Rational</td><td>\(p(x)/q(x)\)</td><td>Domain excludes zeros of \(q\); asymptotes where \(q=0\).</td></tr>
+          <tr><td>Trigonometric</td><td>\(\sin,\cos,\tan\), inverses \(\arcsin,\arccos,\arctan\), reciprocals \(\csc,\sec,\cot\)</td><td>3D graphics, waves, rotations.</td></tr>
+          <tr><td>Exponential / logarithmic</td><td>\(\exp(x)=e^x\), \(\ln x\), \(\log_b x\)</td><td>Growth and decay; algorithm complexity (\(\log n\), \(2^n\)).</td></tr>
+          <tr><td>Hyperbolic</td><td>\(\sinh,\cosh,\tanh\)</td><td>Curves, neural-network activations, special relativity.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="graphs">Graphs on the Cartesian plane</h2>
+
+    <p>There are three graphical representations of a relation or function, each suited to a different setting:</p>
+
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>Venn diagram</h4>
+        <p>Two sets with arrows. Best for discrete, finite relations where you care about domain and image.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Digraph</h4>
+        <p>Vertices and directed edges. Only when source = target. Best for reflexivity, symmetry, transitivity.</p>
+      </div>
+      <div class="mini-card">
+        <h4>2D Cartesian graph</h4>
+        <p>Points \((x,f(x))\) in the plane. Best for continuous or infinite sets; essential in calculus.</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · finite set</span>
+      <p>On \(A=\{-1,0,1,2\}\), let \(f(x)=-\frac{x^3}{3}+x^2+\frac{x}{3}\). The values are \(f(-1)=1\), \(f(0)=0\), \(f(1)=1\), \(f(2)=2\). All four representations — lookup table, Venn diagram, digraph, and four plotted points — describe the same function</p>
+      <p>\[ f=\{(-1,1),(0,0),(1,1),(2,2)\}. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · discrete infinite set</span>
+      <p>On \(A=\mathbb{N}\setminus\{0\}\), let \(f(x)\) be the number of factors of \(x\). The values begin \(1,2,2,3,2,4,\ldots\). The Cartesian plot shows a spike exactly at each prime — primes have two factors. Any finite drawing is only a sample of an infinite set.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · continuous set</span>
+      <p>On \(\mathbb{R}\), the floor function \(f(x)=\lfloor x \rfloor\) produces a staircase with jumps of 1 at every integer. The horizontal segments lie at integer heights, and the endpoints alternate open/closed.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Vertical line test</span>
+      <p>A relation on \(\mathbb{R}\) is a function iff every vertical line meets its graph at most once. A failure means one input has two outputs. This is the graphical version of the “at most one arrow leaving each input” condition.</p>
+    </div>
+
+    <h2 id="python">Relations and functions in Python</h2>
+
+    <p>A relation is naturally a set of tuples; a finite function is a dictionary or a set of pairs. The comprehensions below are direct translations of the definitions.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">relations.py</span><span class="code-lang">python</span></div>
+<pre><code>A = {0, 1, 2, 3}
+B = {0, 1, 4}
+
+# Cartesian product
+C = {(a, b) for a in A for b in B}
+print(len(C))               # 12
+
+# A relation: "b is a times something", e.g. b = 4a
+R = {(a, b) for a in A for b in B if b == 4 * a}
+print(R)                    # {(0, 0), (1, 4)}
+
+# Domain and image
+domain = {a for (a, b) in R}
+image  = {b for (a, b) in R}
+print(domain, image)        # {0, 1} {0, 4}
+
+# Is R a function from A to B? Every input exactly once.
+def is_function(R, A):
+    firsts = [a for (a, b) in R]
+    return set(firsts) == set(A) and len(firsts) == len(set(firsts))
+
+print(is_function(R, A))    # False: 2 and 3 have no output</code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">properties.py</span><span class="code-lang">python</span></div>
+<pre><code>def reflexive(R, A):
+    return all((a, a) in R for a in A)
+
+def symmetric(R):
+    return all((b, a) in R for (a, b) in R)
+
+def antisymmetric(R):
+    return all(a == b for (a, b) in R if (b, a) in R)
+
+def transitive(R):
+    return all((a, c) in R for (a, b) in R for (b2, c) in R if b == b2)
+
+def irreflexive(R, A):
+    return all((a, a) not in R for a in A)
+
+A = {1, 2, 3}
+R = {(1, 1), (1, 2), (2, 1), (2, 2), (3, 3)}
+
+print(reflexive(R, A))      # True
+print(symmetric(R))         # True
+print(antisymmetric(R))     # False: (1, 2) and (2, 1) with 1 != 2
+print(transitive(R))        # True
+print(irreflexive(R, A))    # False</code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">functions.py</span><span class="code-lang">python</span></div>
+<pre><code># A finite function as a dictionary
+f = {1: "a", 2: "a", 3: "b"}
+
+print(f[1])                         # a
+print(set(f.keys()))                # domain {1, 2, 3}
+print(set(f.values()))              # image  {'a', 'b'}
+
+# Composition of two finite functions
+g = {"a": 10, "b": 20}
+go_f = {x: g[f[x]] for x in f if f[x] in g}
+print(go_f)                         # {1: 10, 2: 10, 3: 20}
+
+# A function defined by a rule
+def square(x):
+    return x * x
+
+print(square(-3))                   # 9
+print([square(x) for x in range(5)])  # [0, 1, 4, 9, 16]</code></pre>
+</div>
+
+    <div class="warning">
+      <span class="box-label">Dictionary keys</span>
+      <p>Python dictionary keys must be hashable, so a function whose domain contains lists cannot be stored directly as a dict. Use tuples instead: <code>f[(1, 2)] = 3</code>. Also remember that a Python function is not automatically total: calling it outside its intended domain may raise an exception rather than return a value.</p>
+    </div>
+
+    <h2 id="exam">Exam checklist</h2>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Must be able to</h3>
+        <ul class="checklist">
+          <li>Form a Cartesian product and count its elements.</li>
+          <li>State the definition of a relation and give examples as sets of pairs.</li>
+          <li>Compute \(2^{|A||B|}\), the number of relations.</li>
+          <li>Find the domain and image of a relation.</li>
+          <li>Decide into/onto and injective/not injective from a diagram or a set of pairs.</li>
+          <li>Test reflexivity, symmetry, antisymmetry, transitivity, irreflexivity and asymmetry.</li>
+          <li>Recognise an equivalence relation and list its equivalence classes.</li>
+          <li>Read the five properties off a digraph.</li>
+          <li>Construct reflexive, symmetric and transitive closures.</li>
+          <li>Compute powers of a relation and link them to the transitive closure.</li>
+          <li>Decide whether a relation is a function.</li>
+          <li>Determine a correct domain from a rule.</li>
+          <li>Classify functions as injective, surjective, bijective — and justify it.</li>
+          <li>Compute compositions and inverses.</li>
+          <li>Implement and decrypt a Caesar cipher.</li>
+          <li>Sketch the standard library functions and state their key properties.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Common traps</h3>
+        <ul>
+          <li>Confusing “relation” with “function”: every function is a relation, not conversely.</li>
+          <li>Using \(2^{|A|+|B|}\) instead of \(2^{|A||B|}\) for the number of relations.</li>
+          <li>Confusing image with target.</li>
+          <li>Thinking “not symmetric” means antisymmetric.</li>
+          <li>Thinking “not reflexive” means irreflexive.</li>
+          <li>Checking transitivity only on pairs that happen to be listed.</li>
+          <li>Forgetting the identity relation in \(R^0\).</li>
+          <li>Assuming \(f \circ g = g \circ f\).</li>
+          <li>Confusing \(f^{-1}(x)\) with \(1/f(x)\).</li>
+          <li>Writing \(f^2(x)\) for \((f(x))^2\).</li>
+          <li>Claiming a function is invertible without checking both injective and surjective.</li>
+          <li>Ignoring the domain when deciding equality or bijectivity.</li>
+          <li>Applying a rule outside its valid domain (division by zero, square roots of negatives).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Before you submit</span>
+      <p>For every relation question, write down the source and target first. For every function question, write the domain and target explicitly. For every property, write the definition with quantifiers before testing examples — most lost marks come from testing a few pairs and guessing.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="03-collections.html">
+        <span class="dir">Previous topic</span>
+        <span class="ttl">← 03 · Collections</span>
+      </a>
+      <a class="next" href="05-enumeration.html">
+        <span class="dir">Next topic</span>
+        <span class="ttl">05 · Enumeration →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 04 · Relations &amp; Functions</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

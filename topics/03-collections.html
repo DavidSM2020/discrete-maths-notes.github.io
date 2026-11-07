@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Collections notes: sets, number sets, set-builder notation, cardinality, subsets, power sets, set operations, Cartesian products, proof techniques, sequences, AP and GP, lists, tuples and strings.">
+<meta name="theme-color" content="#0f2727">
+<title>03 · Collections — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link active" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 03</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 03</span>
+      <h1>Collections</h1>
+      <p class="lede">A set is the simplest structured collection: unordered, distinct, and well-defined. From that one definition the module builds subsets, power sets, set algebra and Cartesian products — then turns to ordered collections, sequences, arithmetic and geometric progressions, and their Python counterparts.</p>
+      <div class="meta-row">
+        <span class="pill">2 lectures</span>
+        <span class="pill amber">Sets</span>
+        <span class="pill blue">Sequences</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#sets">Sets and notation</a></li>
+        <li><a href="#number-sets">Number sets</a></li>
+        <li><a href="#set-builder">Set-builder notation</a></li>
+        <li><a href="#cardinality">Cardinality</a></li>
+        <li><a href="#venn">Venn diagrams and the universe</a></li>
+        <li><a href="#subsets">Subsets and proper subsets</a></li>
+        <li><a href="#power-set">Power sets</a></li>
+        <li><a href="#operations">Set operations</a></li>
+        <li><a href="#identities">Set identities</a></li>
+        <li><a href="#cartesian">Cartesian product</a></li>
+        <li><a href="#proofs">Proving set identities</a></li>
+        <li><a href="#sequences">Sequences</a></li>
+        <li><a href="#recursive">Closed vs recursive definitions</a></li>
+        <li><a href="#sum-product">Summation and product notation</a></li>
+        <li><a href="#ap">Arithmetic progressions</a></li>
+        <li><a href="#gp">Geometric progressions</a></li>
+        <li><a href="#series">Partial sums and series</a></li>
+        <li><a href="#python-sets">Sets in Python</a></li>
+        <li><a href="#python-sequences">Lists, tuples, strings</a></li>
+        <li><a href="#slicing">Indexing, slicing, comprehensions</a></li>
+        <li><a href="#review">Review exercises</a></li>
+        <li><a href="#exam">Exam checklist</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="sets">Sets and notation</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Set</span>
+      <p>A <strong>set</strong> is an <em>unordered</em> collection of <em>distinct</em>, <em>well-defined</em> objects, called <strong>elements</strong>.</p>
+    </div>
+
+    <p>Every word in that definition matters:</p>
+    <ul>
+      <li><strong>Unordered</strong> — order is irrelevant, so \(\{1,2,3\} = \{3,1,2\}\).</li>
+      <li><strong>Collection</strong> — zero or more items; the empty collection is allowed.</li>
+      <li><strong>Distinct</strong> — elements are unique, so \(\{1,1,1,2\} = \{1,2\}\). Adding an existing element changes nothing.</li>
+      <li><strong>Well-defined</strong> — there is a clear rule deciding membership. “The set of all healthy foods” is <em>not</em> a set because “healthy” is not precise enough.</li>
+    </ul>
+
+    <h3 id="notation">Element notation</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Notation</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td>\(x \in A\)</td><td>\(x\) is an element of \(A\)</td></tr>
+          <tr><td>\(x \notin A\)</td><td>\(x\) is not an element of \(A\)</td></tr>
+          <tr><td>\(\varnothing\) or \(\{\}\)</td><td>The empty (null) set — the set with no elements</td></tr>
+          <tr><td>\(\{x_1, x_2, \ldots\}\)</td><td>A set listed by enumeration (roster method)</td></tr>
+          <tr><td>\(|A|\)</td><td>The cardinality of \(A\) — the number of elements</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The <strong>ellipsis</strong> “\(\ldots\)” is used when the pattern is clear but the full list would be too long:</p>
+    <div class="formula">\[ D = \{0,1,2,\ldots,9\}, \qquad P = \{1,2,3,4,\ldots\}, \qquad L = \{a,b,c,\ldots,z\} \]</div>
+
+    <div class="warning">
+      <span class="box-label">Braces matter</span>
+      <p>\(a\) is an element; \(\{a\}\) is a set containing that element. They are different objects. In particular \(\varnothing \neq \{\varnothing\}\): the first is an empty bag, the second is a bag containing an empty bag — and therefore has one element.</p>
+    </div>
+
+    <h2 id="number-sets">Number sets</h2>
+    <p>These five sets are used throughout the module. They are nested: \(\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R} \subset \mathbb{C}\).</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Symbol</th><th>Name</th><th>Elements</th></tr></thead>
+        <tbody>
+          <tr><td>\(\mathbb{N}\)</td><td>Natural numbers</td><td>\(\{0,1,2,3,4,\ldots\}\) — zero and the positive integers</td></tr>
+          <tr><td>\(\mathbb{Z}\)</td><td>Integers</td><td>\(\{\ldots,-3,-2,-1,0,1,2,3,\ldots\}\)</td></tr>
+          <tr><td>\(\mathbb{Q}\)</td><td>Rational numbers</td><td>Any number expressible as a fraction \(a/b\) with \(a,b \in \mathbb{Z}\), \(b \neq 0\)</td></tr>
+          <tr><td>\(\mathbb{R}\)</td><td>Real numbers</td><td>All rational and irrational numbers — the whole number line</td></tr>
+          <tr><td>\(\mathbb{C}\)</td><td>Complex numbers</td><td>Numbers of the form \(a + bi\), where \(a,b \in \mathbb{R}\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Convention</span>
+      <p>This module includes \(0\) in \(\mathbb{N}\). Some textbooks start \(\mathbb{N}\) at 1 — always check the convention in a question. When a question says “positive integers”, it means \(\{1,2,3,\ldots\}\), excluding zero.</p>
+    </div>
+
+    <h2 id="set-builder">Set-builder notation</h2>
+    <p>Instead of listing elements, describe them by a rule:</p>
+    <div class="formula">\[ \{\, x \mid P(x) \,\} \quad\text{or}\quad \{\, x \in S \mid P(x) \,\} \]</div>
+    <p>Read the vertical bar as “<strong>such that</strong>” or “where”. Some authors use a colon instead. The part before the bar names the typical element and its domain; the part after states the condition.</p>
+
+    <div class="example">
+      <span class="box-label">Example · the rationals</span>
+      <p>\[ \mathbb{Q} = \{\, a/b \mid a,b \in \mathbb{Z},\ b \neq 0 \,\} \]</p>
+      <p>“\(\mathbb{Q}\) is the set of things that can be written as \(a/b\), where \(a\) and \(b\) are integers and \(b \neq 0\).”</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Rule with a domain</h4>
+        <p>\(\{k \in \mathbb{N} \mid k-1 \text{ is a multiple of } 7\}\)<br>
+        \(= \{1, 8, 15, 22, \ldots\}\)</p>
+      </div>
+      <div class="mini-card">
+        <h4>Rule without an explicit domain</h4>
+        <p>\(\{2n \mid n \in \mathbb{Z},\ n &lt; 0\}\)<br>
+        \(= \{\ldots, -8, -6, -4, -2\}\)</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Reading set-builder</span>
+      <p>Read it in three pieces: <strong>typical element</strong> \(\mid\) <strong>where it lives</strong>, <strong>condition</strong>. Test a candidate by substituting it into the condition. For example, is \(15 \in \{k \in \mathbb{N} \mid k-1 \text{ is a multiple of } 7\}\)? Since \(15-1=14=2\cdot 7\), yes.</p>
+    </div>
+
+    <h3 id="builder-examples">Set-builder worked examples</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Set</th><th>Roster form</th></tr></thead>
+        <tbody>
+          <tr><td>\(\{1/n \mid n \in \{3,4,5,6\}\}\)</td><td>\(\{1/3,\,1/4,\,1/5,\,1/6\}\)</td></tr>
+          <tr><td>\(\{\alpha \in \text{alphabet} \mid \alpha \text{ precedes F}\}\)</td><td>\(\{A,B,C,D,E\}\)</td></tr>
+          <tr><td>\(\{-k \mid k \in \mathbb{N}\}\)</td><td>\(\{0,-1,-2,-3,\ldots\}\)</td></tr>
+          <tr><td>\(\{n^2 \mid n=-2,-1,0,1,2\}\)</td><td>\(\{4,1,0\}\) — duplicates collapse to distinct values</td></tr>
+          <tr><td>\(\{n \in \mathbb{P} \mid n \text{ is a factor of } 24\}\)</td><td>\(\{1,2,3,4,6,8,12,24\}\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Going the other way — describing a roster in set-builder form:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Roster</th><th>Set-builder</th></tr></thead>
+        <tbody>
+          <tr><td>\(\{5,7,9,\ldots,77,79\}\)</td><td>\(\{n \in \mathbb{N} \mid n \text{ odd},\ 5 \le n \le 79\}\)</td></tr>
+          <tr><td>Rational numbers strictly between \(-1\) and \(1\)</td><td>\(\{x \in \mathbb{Q} \mid -1 &lt; x &lt; 1\}\)</td></tr>
+          <tr><td>The even integers</td><td>\(\{2k \mid k \in \mathbb{Z}\}\)</td></tr>
+          <tr><td>\(\{-18,-9,0,9,18,27,\ldots\}\)</td><td>\(\{9k \mid k \in \mathbb{Z},\ k \ge -2\}\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="cardinality">Cardinality</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Cardinality</span>
+      <p>For a finite set \(A\), the <strong>cardinality</strong> \(|A|\) is the number of distinct elements in \(A\). If \(|A|\) is finite, \(A\) is a <strong>finite set</strong>; otherwise it is infinite.</p>
+    </div>
+
+    <ul>
+      <li>\(|\varnothing| = 0\).</li>
+      <li>A <strong>singleton</strong> set has exactly one element: \(|\{a\}| = 1\).</li>
+      <li>The empty set is <em>not</em> the same as the set containing the empty set: \(|\{\varnothing\}| = 1\).</li>
+    </ul>
+
+    <div class="example">
+      <span class="box-label">Example · membership and cardinality</span>
+      <p>Let \(A = \{1, \{2\}, \{\{3\}\}\}\). Then:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Statement</th><th>Value</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td>\(1 \in A\)</td><td>True</td><td>Listed directly.</td></tr>
+            <tr><td>\(2 \in A\)</td><td>False</td><td>The element is the set \(\{2\}\), not the number 2.</td></tr>
+            <tr><td>\(\{2\} \in A\)</td><td>True</td><td>Listed directly.</td></tr>
+            <tr><td>\(3 \in A\)</td><td>False</td><td>3 appears only inside nested braces.</td></tr>
+            <tr><td>\(\{3\} \in A\)</td><td>False</td><td>The element is \(\{\{3\}\}\), not \(\{3\}\).</td></tr>
+            <tr><td>\(\{\{3\}\} \in A\)</td><td>True</td><td>Listed directly.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Also \(|A| = 3\): the three elements are the number 1, the set \(\{2\}\), and the set \(\{\{3\}\}\).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Counting a consecutive integer range</span>
+      <p>For integers \(m \le n\),</p>
+      <p>\[ |\{m, m+1, \ldots, n\}| = n - m + 1. \]</p>
+      <p>The “\(+1\)” is essential. Example: \(|\{23,24,\ldots,38\}| = 38 - 23 + 1 = 16\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · primes below 100</span>
+      <p>Let \(C = \{n \mid n &lt; 100,\ n \text{ is prime}\}\). Listing them, \(C = \{2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97\}\), so \(|C| = 25\).</p>
+    </div>
+
+    <h2 id="venn">Venn diagrams and the universe</h2>
+    <p>A <strong>Venn diagram</strong> represents sets as overlapping ovals inside a rectangle. The rectangle is the <strong>universal set</strong> \(U\) — the set of everything under discussion. Each element sits in exactly one region, determined by which sets contain it.</p>
+
+    <ul>
+      <li>One set splits \(U\) into two regions: inside \(A\) and outside \(A\).</li>
+      <li>Two overlapping sets split \(U\) into four regions: only \(A\), only \(B\), both, neither.</li>
+      <li>Three sets split \(U\) into eight regions.</li>
+    </ul>
+
+    <div class="note">
+      <span class="box-label">Why eight?</span>
+      <p>Each of the three sets independently contributes an “in / out” choice, giving \(2^3 = 8\) combinations. This is the same counting rule that gives the size of a power set.</p>
+    </div>
+
+    <h2 id="subsets">Subsets and proper subsets</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Subset</span>
+      <p>\(A\) is a <strong>subset</strong> of \(B\), written \(A \subseteq B\), iff every element of \(A\) is also an element of \(B\):</p>
+      <p>\[ A \subseteq B \iff \forall x\,[x \in A \to x \in B]. \]</p>
+      <p>If in addition \(B\) contains at least one element not in \(A\), then \(A\) is a <strong>proper subset</strong> of \(B\), written \(A \subset B\):</p>
+      <p>\[ A \subset B \iff A \subseteq B \ \land\ A \neq B. \]</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Analogy</span>
+      <p>\(\subset\) and \(\subseteq\) behave like \(&lt;\) and \(\le\): proper subset is the strict version. Note that some authors use \(\subset\) for “subset” and \(\subsetneq\) for “proper subset” — this module uses \(\subseteq\) and \(\subset\) as above.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Two facts to memorise</span>
+      <ul>
+        <li>The empty set is a subset of every set: \(\varnothing \subseteq A\) for all \(A\). (There is no element of \(\varnothing\) that could fail to be in \(A\).)</li>
+        <li>Every set is a subset of itself: \(A \subseteq A\).</li>
+        <li>Consequently \(A = B\) iff \(A \subseteq B\) and \(B \subseteq A\). This is the standard strategy for proving two sets equal.</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · true, false, or meaningless</span>
+      <p>Let \(A=\{1,2,3,4,5,6\}\), \(B=\{2,4,6\}\), \(C=\{1,2,3\}\), \(D=\{7,8,9\}\).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Statement</th><th>Verdict</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>\(A \subset B\)</td><td>False</td><td>\(1 \in A\) but \(1 \notin B\).</td></tr>
+            <tr><td>\(B \subset A\)</td><td>True</td><td>Every element of \(B\) is in \(A\), and \(A\) is larger.</td></tr>
+            <tr><td>\(B \in C\)</td><td>False</td><td>\(B\) is a set, not a number; the elements of \(C\) are 1, 2, 3.</td></tr>
+            <tr><td>\(C \in A\)</td><td>False</td><td>\(C\) is not one of the numbers 1–6.</td></tr>
+            <tr><td>\(\varnothing \in A\)</td><td>False</td><td>\(\varnothing\) is a subset, not an element, of \(A\).</td></tr>
+            <tr><td>\(\varnothing \subset A\)</td><td>True</td><td>The empty set is a proper subset of every non-empty set.</td></tr>
+            <tr><td>\(A &lt; D\)</td><td>Meaningless</td><td>\(&lt;\) orders numbers, not sets.</td></tr>
+            <tr><td>\(3 \in C\)</td><td>True</td><td>Listed directly.</td></tr>
+            <tr><td>\(3 \subset C\)</td><td>Meaningless</td><td>3 is not a set; \(\subset\) relates sets.</td></tr>
+            <tr><td>\(\{3\} \subset C\)</td><td>True</td><td>\(\{3\}\) is a proper subset of \(\{1,2,3\}\).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="power-set">Power sets</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Power set</span>
+      <p>The <strong>power set</strong> \(\mathcal{P}(S)\) is the set of all subsets of \(S\). It is a set whose elements are themselves sets.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · size of the power set</span>
+      <p>If \(|S| = n\), then</p>
+      <p>\[ |\mathcal{P}(S)| = 2^n. \]</p>
+      <p>Reason: each of the \(n\) elements is independently either in or out of a subset — two choices per element, so \(2^n\) subsets.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>For \(A = \{a,b,c\}\):</p>
+      <p>\[ \mathcal{P}(A) = \{\varnothing,\{a\},\{b\},\{c\},\{a,b\},\{a,c\},\{b,c\},\{a,b,c\}\}. \]</p>
+      <p>There are \(2^3 = 8\) subsets. Note that \(\varnothing \in \mathcal{P}(A)\) and \(A \in \mathcal{P}(A)\).</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Element vs subset — again</span>
+      <p>If \(A=\{a,b,c\}\), then \(b \in A\) but \(b \notin \mathcal{P}(A)\). However \(\{b\} \in \mathcal{P}(A)\), because \(\{b\} \subseteq A\). The power set contains <em>sets</em>, not the original elements.</p>
+      <p>Also \(\mathcal{P}(\varnothing) = \{\varnothing\}\), so \(|\mathcal{P}(\varnothing)| = 2^0 = 1\), not 0.</p>
+    </div>
+
+    <h2 id="operations">Set operations</h2>
+
+    <h3 id="intersection">Intersection \(A \cap B\)</h3>
+    <div class="definition">
+      <span class="box-label">Definition</span>
+      <p>\[ A \cap B = \{x \mid x \in A \land x \in B\} \]</p>
+      <p>All elements common to both sets. It behaves like logical AND. Two sets are <strong>disjoint</strong> if \(A \cap B = \varnothing\).</p>
+    </div>
+    <ul>
+      <li>\(A \cap B = B \cap A\) (commutative)</li>
+      <li>\((A \cap B) \cap C = A \cap (B \cap C)\) (associative)</li>
+      <li>\(A \cap B = A \Rightarrow A \subseteq B\)</li>
+      <li>\(A \cap \varnothing = \varnothing\)</li>
+    </ul>
+
+    <h3 id="union">Union \(A \cup B\)</h3>
+    <div class="definition">
+      <span class="box-label">Definition</span>
+      <p>\[ A \cup B = \{x \mid x \in A \lor x \in B\} \]</p>
+      <p>All elements in \(A\), in \(B\), or in both. It behaves like logical OR.</p>
+    </div>
+    <ul>
+      <li>\(A \cup B = B \cup A\) (commutative)</li>
+      <li>\((A \cup B) \cup C = A \cup (B \cup C)\) (associative)</li>
+      <li>\(A \cup B = A \Rightarrow B \subseteq A\)</li>
+      <li>\(A \cup \varnothing = A\)</li>
+      <li>\(|A \cup B| = |A| + |B| - |A \cap B|\) (inclusion–exclusion)</li>
+    </ul>
+
+    <h3 id="difference">Set difference \(A \setminus B\)</h3>
+    <div class="definition">
+      <span class="box-label">Definition</span>
+      <p>\[ A \setminus B = \{x \mid x \in A \land x \notin B\} \]</p>
+      <p>Elements in \(A\) but not in \(B\). Also written \(A - B\).</p>
+    </div>
+    <ul>
+      <li>\(A \setminus B \neq B \setminus A\) — not commutative.</li>
+      <li>\((A \setminus B) \setminus C \neq A \setminus (B \setminus C)\) — not associative.</li>
+      <li>\(A \setminus B = A \Rightarrow A \cap B = \varnothing\).</li>
+      <li>\(A \setminus B = \varnothing \iff A \subseteq B\). (Note: this does <em>not</em> require \(A = B\).)</li>
+    </ul>
+
+    <h3 id="symmetric">Symmetric difference \(A \oplus B\)</h3>
+    <div class="definition">
+      <span class="box-label">Definition</span>
+      <p>\[ A \oplus B = \{x \mid x \in A \cup B \land x \notin A \cap B\} \]</p>
+      <p>Elements in exactly one of the two sets — “in \(A\) or in \(B\), but not both”. This is exclusive or.</p>
+    </div>
+    <ul>
+      <li>\(A \oplus B = B \oplus A\) (commutative)</li>
+      <li>\((A \oplus B) \oplus C = A \oplus (B \oplus C)\) (associative)</li>
+      <li>\(A \oplus B = A \Rightarrow B = \varnothing\)</li>
+      <li>\(A \oplus B = \varnothing \iff A = B\)</li>
+    </ul>
+
+    <h3 id="complement">Complement \(A^{c}\)</h3>
+    <div class="definition">
+      <span class="box-label">Definition</span>
+      <p>Relative to a universal set \(U\), the <strong>complement</strong> of \(A\) is</p>
+      <p>\[ A^{c} = \{x \in U \mid x \notin A\}. \]</p>
+      <p>Also written \(\overline{A}\) or \(A'\).</p>
+    </div>
+    <ul>
+      <li>\(A \cap A^{c} = \varnothing\) and \(A \cup A^{c} = U\).</li>
+      <li>\((A^{c})^{c} = A\).</li>
+      <li>\(A^{c} \cap B = B \setminus A\).</li>
+      <li>De Morgan: \((A \cup B)^{c} = A^{c} \cap B^{c}\) and \((A \cap B)^{c} = A^{c} \cup B^{c}\).</li>
+    </ul>
+
+    <h3 id="operations-example">Worked example</h3>
+    <p>Let \(A=\{1,2,3,4,5,6\}\), \(B=\{2,4,6\}\), \(C=\{1,2,3\}\), \(D=\{7,8,9\}\), and \(U=\{1,2,\ldots,10\}\).</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Expression</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>\(A \cup B\)</td><td>\(\{1,2,3,4,5,6\} = A\)</td></tr>
+          <tr><td>\(A \cap B\)</td><td>\(\{2,4,6\} = B\)</td></tr>
+          <tr><td>\(B \cap C\)</td><td>\(\{2\}\)</td></tr>
+          <tr><td>\(A \cap D\)</td><td>\(\varnothing\) — \(A\) and \(D\) are disjoint</td></tr>
+          <tr><td>\(B \cup C\)</td><td>\(\{1,2,3,4,6\}\)</td></tr>
+          <tr><td>\(A \setminus B\)</td><td>\(\{1,3,5\}\)</td></tr>
+          <tr><td>\((D \cap C) \cup (A \cap B)\)</td><td>\(\varnothing \cup \{2,4,6\} = \{2,4,6\}\)</td></tr>
+          <tr><td>\(\varnothing \cup C\)</td><td>\(C\)</td></tr>
+          <tr><td>\(\varnothing \cap C\)</td><td>\(\varnothing\)</td></tr>
+          <tr><td>\(A^{c}\)</td><td>\(\{7,8,9,10\}\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="identities">Set identities</h2>
+    <p>These mirror the laws of propositional logic, with \(\cap\) playing the role of \(\land\), \(\cup\) of \(\lor\), and complement of negation.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Law</th><th>Identity</th></tr></thead>
+        <tbody>
+          <tr><td>Identity</td><td>\(A \cap U = A\), &nbsp; \(A \cup \varnothing = A\)</td></tr>
+          <tr><td>Domination</td><td>\(A \cup U = U\), &nbsp; \(A \cap \varnothing = \varnothing\)</td></tr>
+          <tr><td>Idempotent</td><td>\(A \cap A = A\), &nbsp; \(A \cup A = A\)</td></tr>
+          <tr><td>Double complement</td><td>\((A^{c})^{c} = A\)</td></tr>
+          <tr><td>Commutative</td><td>\(A \cap B = B \cap A\), &nbsp; \(A \cup B = B \cup A\)</td></tr>
+          <tr><td>Associative</td><td>\((A \cap B) \cap C = A \cap (B \cap C)\), &nbsp; same for \(\cup\)</td></tr>
+          <tr><td>Distributive</td><td>\(A \cap (B \cup C) = (A \cap B) \cup (A \cap C)\)<br>\(A \cup (B \cap C) = (A \cup B) \cap (A \cup C)\)</td></tr>
+          <tr><td>De Morgan</td><td>\((A \cap B)^{c} = A^{c} \cup B^{c}\), &nbsp; \((A \cup B)^{c} = A^{c} \cap B^{c}\)</td></tr>
+          <tr><td>Absorption</td><td>\(A \cup (A \cap B) = A\), &nbsp; \(A \cap (A \cup B) = A\)</td></tr>
+          <tr><td>Complement</td><td>\(A \cap A^{c} = \varnothing\), &nbsp; \(A \cup A^{c} = U\)</td></tr>
+          <tr><td>Difference</td><td>\(A \setminus B = A \cap B^{c}\)</td></tr>
+          <tr><td>Symmetric difference</td><td>\(A \oplus B = (A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A \cap B)\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="cartesian">Cartesian product</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Cartesian product</span>
+      <p>The <strong>Cartesian product</strong> of \(A\) and \(B\) is the set of all <strong>ordered pairs</strong> whose first coordinate comes from \(A\) and second from \(B\):</p>
+      <p>\[ A \times B = \{(a,b) \mid a \in A,\ b \in B\}. \]</p>
+      <p>When \(A = B\), we write \(A^2 = A \times A\).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Cardinality</span>
+      <p>\[ |A \times B| = |A| \cdot |B|. \]</p>
+      <p>Each of the \(|A|\) choices for the first coordinate can be paired with each of the \(|B|\) choices for the second.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Let \(A=\{1,2\}\), \(B=\{3,4,5\}\).</p>
+      <p>\[ A \times B = \{(1,3),(1,4),(1,5),(2,3),(2,4),(2,5)\} \]</p>
+      <p>\[ A \times A = \{(1,1),(1,2),(2,1),(2,2)\} \]</p>
+      <p>\(|B \times B| = 3 \cdot 3 = 9\). And \(A \times B \neq B \times A\), because ordered pairs distinguish first and second coordinates: \((1,3) \neq (3,1)\).</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Geometric picture</span>
+      <p>The 2D plane is \(\mathbb{R}^2 = \mathbb{R} \times \mathbb{R}\): every point is an ordered pair of real numbers. Cartesian products are the raw material for relations and functions in Topic 04.</p>
+    </div>
+
+    <h2 id="proofs">Proving set identities</h2>
+    <p>There are two standard methods. Use the subset argument when the sets are defined by a property; use a membership table when the identity is purely algebraic.</p>
+
+    <h3 id="subset-proof">Method 1 · mutual subset argument</h3>
+    <p>To prove \(A = B\), prove both \(A \subseteq B\) and \(B \subseteq A\). To prove \(A \subseteq B\), take an arbitrary \(x \in A\) and derive \(x \in B\).</p>
+
+    <div class="example">
+      <span class="box-label">Example · \(A \cap B = C\)</span>
+      <p>Let \(A = \{x \mid x \text{ is even}\}\), \(B = \{x \mid x \text{ is a multiple of } 3\}\), and \(C = \{x \mid x \text{ is a multiple of } 6\}\). Prove \(A \cap B = C\).</p>
+      <p><strong>Part 1: \(A \cap B \subseteq C\).</strong> Let \(x \in A \cap B\). Then \(x\) is a multiple of 2 and a multiple of 3. So \(x = 2j\) and \(x = 3k\) for integers \(j,k\). Since 2 and 3 are coprime, \(x\) is a multiple of \(2 \cdot 3 = 6\); explicitly, \(x = 6t\) for some integer \(t\). Hence \(x \in C\).</p>
+      <p><strong>Part 2: \(C \subseteq A \cap B\).</strong> Let \(x \in C\). Then \(x = 6t\) for some integer \(t\), so</p>
+      <p>\[ x = 6t = 2(3t) = 3(2t). \]</p>
+      <p>Hence \(x\) is a multiple of 2 (so \(x \in A\)) and a multiple of 3 (so \(x \in B\)). Therefore \(x \in A \cap B\).</p>
+      <p>Both inclusions hold, so \(A \cap B = C\). \(\blacksquare\)</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Proof template</span>
+      <p>“Let \(x \in\) LHS. … Therefore \(x \in\) RHS.” Then reverse the roles. Never start by assuming the result — start with membership and unwrap the definitions.</p>
+    </div>
+
+    <h3 id="membership-table">Method 2 · membership tables</h3>
+    <p>A membership table lists every possible pattern of membership in the sets. A row has T in column \(A\) if the element is in \(A\), F otherwise. Two expressions are equal iff their output columns match on every row.</p>
+
+    <div class="example">
+      <span class="box-label">Example · De Morgan for three sets</span>
+      <p>Prove \((A \cap B \cap C)^{c} = A^{c} \cup B^{c} \cup C^{c}\).</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>\(A\)</th><th>\(B\)</th><th>\(C\)</th><th>\(A \cap B \cap C\)</th><th>\((A \cap B \cap C)^c\)</th><th>\(A^c\)</th><th>\(B^c\)</th><th>\(C^c\)</th><th>\(A^c \cup B^c \cup C^c\)</th></tr></thead>
+          <tbody>
+            <tr><td>F</td><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td><td>F</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+            <tr><td>T</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td></tr>
+            <tr><td>T</td><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The fifth and ninth columns are identical on all eight rows, so the identity holds. \(\blacksquare\)</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Truth tables vs membership tables</span>
+      <p>They are the same object: T means “in the set”, F means “not in the set”. \(\cap\) is \(\land\), \(\cup\) is \(\lor\), complement is \(\neg\). Any logical equivalence immediately becomes a set identity.</p>
+    </div>
+
+    <h2 id="sequences">Sequences</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Sequence</span>
+      <p>A <strong>sequence</strong> is a function from the natural numbers \(\mathbb{N} = \{0,1,2,\ldots\}\) to some set \(A\). We write the values as</p>
+      <p>\[ a_0, a_1, a_2, a_3, \ldots, a_n, \ldots \]</p>
+      <p>where \(a_n\) is the <strong>\(n\)th term</strong> (the image of \(n\)). The whole sequence is written \((a_n)_{n \in \mathbb{N}}\), \((a_n)_{n \ge 0}\), or just \((a_n)\). The subscripts are called <strong>indices</strong>.</p>
+    </div>
+
+    <p>Because a sequence is a function, <strong>order matters</strong>: \(1,2,3\) and \(3,2,1\) are different sequences, even though they are the same set.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Formula</th><th>Start</th><th>First terms</th></tr></thead>
+        <tbody>
+          <tr><td>\(a_n = n^2\)</td><td>\(n=1\)</td><td>\(1,4,9,16,25,36,49,\ldots\)</td></tr>
+          <tr><td>\(a_n = (-1)^n\)</td><td>\(n=0\)</td><td>\(1,-1,1,-1,1,-1,\ldots\)</td></tr>
+          <tr><td>\(a_n = 2^n\)</td><td>\(n=0\)</td><td>\(1,2,4,8,16,32,64,128,\ldots\)</td></tr>
+          <tr><td>Fibonacci</td><td>\(n=0\)</td><td>\(0,1,1,2,3,5,8,13,21,34,55,89,\ldots\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="fibonacci">The Fibonacci sequence</h3>
+    <p>Fibonacci's rabbits: start with one newborn pair; each mature pair produces a new pair every month; rabbits never die. The number of pairs after \(n\) months follows</p>
+    <div class="formula">\[ a_0 = 0,\quad a_1 = 1,\quad a_n = a_{n-1} + a_{n-2}\ \text{ for } n \ge 2. \]</div>
+    <p>The closed formula (Binet's formula) is</p>
+    <div class="formula">\[ a_n = \frac{1}{\sqrt{5}}\left[\left(\frac{1+\sqrt{5}}{2}\right)^n - \left(\frac{1-\sqrt{5}}{2}\right)^n\right]. \]</div>
+
+    <h2 id="recursive">Closed vs recursive definitions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definitions</span>
+      <ul>
+        <li>A <strong>closed formula</strong> gives \(a_n\) directly using a fixed, finite number of operations on \(n\). Example: \(a_n = n + 3\).</li>
+        <li>A <strong>recursive definition</strong> gives a <strong>recurrence relation</strong> expressing \(a_n\) in terms of earlier terms \(a_{n-1}, a_{n-2}, \ldots\), together with one or more <strong>initial (terminal) conditions</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Closed formula</th><th>Recursive definition</th></tr></thead>
+        <tbody>
+          <tr><td>Fibonacci</td><td>Binet's formula above</td><td>\(a_n = a_{n-1}+a_{n-2}\), \(a_0=0\), \(a_1=1\)</td></tr>
+          <tr><td>General feel</td><td>Hard to obtain, easy to use</td><td>Easy to obtain, hard to use (for large \(n\))</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · evaluate a recurrence</span>
+      <p>Find \(a_6\) for \(a_n = 2a_{n-1} - a_{n-2}\), with \(a_0 = 3\), \(a_1 = 4\). Work upwards:</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>\(n\)</th><th>Computation</th><th>\(a_n\)</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>given</td><td>3</td></tr>
+            <tr><td>1</td><td>given</td><td>4</td></tr>
+            <tr><td>2</td><td>\(2\cdot 4 - 3\)</td><td>5</td></tr>
+            <tr><td>3</td><td>\(2\cdot 5 - 4\)</td><td>6</td></tr>
+            <tr><td>4</td><td>\(2\cdot 6 - 5\)</td><td>7</td></tr>
+            <tr><td>5</td><td>\(2\cdot 7 - 6\)</td><td>8</td></tr>
+            <tr><td>6</td><td>\(2\cdot 8 - 7\)</td><td>9</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>So \(a_6 = 9\). A closed formula also exists: \(a_n = n + 3\).</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">fibonacci.py</span><span class="code-lang">python</span></div>
+<pre><code># Closed formula using Binet
+import math
+
+for n in range(7):
+    phi = (1 + math.sqrt(5)) / 2
+    psi = (1 - math.sqrt(5)) / 2
+    a_n = (phi**n - psi**n) / math.sqrt(5)
+    print(n, round(a_n))
+
+# Recursive formula with a "leapfrog"
+previous_previous = 0
+previous = 1
+
+for n in range(7):
+    if n == 0:
+        current = 0
+    elif n == 1:
+        current = 1
+    else:
+        current = previous + previous_previous
+        previous_previous = previous
+        previous = current
+    print(n, current)</code></pre>
+</div>
+
+    <h2 id="sum-product">Summation and product notation</h2>
+    <p>\(\sum\) denotes repeated addition; \(\prod\) denotes repeated multiplication. Both are loops in disguise.</p>
+    <div class="formula">\[ \sum_{k=1}^{10} k^2 = 1^2 + 2^2 + \cdots + 10^2 = 385 \]</div>
+    <div class="formula">\[ \prod_{k=1}^{10} k^2 = 1^2 \times 2^2 \times \cdots \times 10^2 = 13{,}168{,}189{,}440{,}000 \]</div>
+
+<div class="grid-2">
+  <div class="code-block">
+    <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">summation.py</span><span class="code-lang">python</span></div>
+<pre><code>result = 0          # additive identity
+for k in range(1, 11):
+    result += k * k
+print(result)       # 385</code></pre>
+  </div>
+  <div class="code-block">
+    <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">product.py</span><span class="code-lang">python</span></div>
+<pre><code>result = 1          # multiplicative identity
+for k in range(1, 11):
+    result *= k * k
+print(result)       # 13168189440000</code></pre>
+  </div>
+</div>
+
+    <div class="tip">
+      <span class="box-label">Start values</span>
+      <p>A sum starts at 0 (adding 0 changes nothing). A product starts at 1 (multiplying by 1 changes nothing). Starting a product at 0 would make the whole result 0.</p>
+    </div>
+
+    <h2 id="ap">Arithmetic progressions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Arithmetic progression (AP)</span>
+      <p>A sequence is <strong>arithmetic</strong> if consecutive terms differ by a constant, the <strong>common difference</strong> \(d\). With initial term \(a_0 = a\):</p>
+      <p>\[ a,\ a+d,\ a+2d,\ a+3d,\ \ldots,\ a+nd,\ \ldots \]</p>
+      <p>Recursive: \(a_n = a_{n-1} + d\), with \(a_0 = a\).<br>
+      Closed: \(a_n = a + dn\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <ul>
+        <li>\(2,5,8,11,14,\ldots\): \(a=2\), \(d=3\). Recursive \(a_n=a_{n-1}+3\), \(a_0=2\). Closed \(a_n=2+3n\).</li>
+        <li>\(50,43,36,29,\ldots\): \(a=50\), \(d=-7\). Recursive \(a_n=a_{n-1}-7\), \(a_0=50\). Closed \(a_n=50-7n\).</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Watch the starting index</span>
+      <p>The closed formula depends on where the sequence starts. With \(a_0=a\), \(a_n=a+dn\). If the first term is \(a_1=a\), then \(a_n=a+(n-1)d\). Read the question's indexing carefully.</p>
+    </div>
+
+    <h2 id="gp">Geometric progressions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Geometric progression (GP)</span>
+      <p>A sequence is <strong>geometric</strong> if the ratio between successive terms is a constant, the <strong>common ratio</strong> \(r\). With initial term \(a_0 = a\):</p>
+      <p>\[ a,\ ar,\ ar^2,\ ar^3,\ \ldots,\ ar^n,\ \ldots \]</p>
+      <p>Recursive: \(a_n = r a_{n-1}\), with \(a_0 = a\).<br>
+      Closed: \(a_n = ar^n\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <ul>
+        <li>\(3,6,12,24,48,\ldots\): \(a=3\), \(r=2\). Closed \(a_n=3\cdot 2^n\).</li>
+        <li>\(27,9,3,1,1/3,\ldots\): \(a=27\), \(r=1/3\). Closed \(a_n=27(1/3)^n\).</li>
+      </ul>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">AP vs GP</span>
+      <p>AP: add a constant. GP: multiply by a constant. Test with differences for AP and ratios for GP. A sequence can be neither — the triangular numbers \(1,3,6,10,15,\ldots\) have differences \(2,3,4,5\) (not constant) and ratios \(3,2,1.5,\ldots\) (not constant).</p>
+    </div>
+
+    <h2 id="series">Partial sums and series</h2>
+
+    <h3 id="ap-series">Arithmetic series · reverse and add</h3>
+    <p>For the AP \(a, a+d, a+2d, \ldots, a+nd\), the sum of the first \(n+1\) terms is</p>
+    <div class="formula">\[ S_n = (n+1)a + \frac{dn(n+1)}{2} = \frac{(n+1)(2a + dn)}{2}. \]</div>
+    <p>Equivalently, \(S_n = \frac{\text{number of terms}}{2}\times(\text{first} + \text{last})\).</p>
+
+    <div class="example">
+      <span class="box-label">Worked example</span>
+      <p>Find \(2+5+8+11+\cdots+470\).</p>
+      <p>This is arithmetic with \(a=2\), \(d=3\). The \(n\)th term is \(2+3n\). Solve \(2+3n=470\): \(3n=468\), so \(n=156\). Therefore there are \(157\) terms (indices 0 through 156).</p>
+      <p>Reverse and add:</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th></th><th colspan="6">Terms</th></tr></thead>
+          <tbody>
+            <tr><td>\(S\)</td><td>2</td><td>5</td><td>8</td><td>\(\cdots\)</td><td>467</td><td>470</td></tr>
+            <tr><td>\(S\)</td><td>470</td><td>467</td><td>464</td><td>\(\cdots\)</td><td>5</td><td>2</td></tr>
+            <tr><td>\(2S\)</td><td>472</td><td>472</td><td>472</td><td>\(\cdots\)</td><td>472</td><td>472</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>\[ 2S = 157 \times 472 = 74104 \quad\Rightarrow\quad S = 37052. \]</p>
+    </div>
+
+    <h3 id="gp-series">Geometric series · multiply and subtract</h3>
+    <p>For the GP \(a, ar, ar^2, \ldots, ar^n\), the sum of the first \(n+1\) terms is</p>
+    <div class="formula">\[ S_n = a + ar + ar^2 + \cdots + ar^n = \frac{a(1-r^{n+1})}{1-r}, \quad r \neq 1. \]</div>
+    <p>If \(r=1\), every term equals \(a\), so \(S_n = (n+1)a\).</p>
+
+    <div class="example">
+      <span class="box-label">Worked example</span>
+      <p>Find \(3+6+12+24+\cdots+12288\). Here \(a=3\), \(r=2\), and the last term is \(3\cdot 2^n = 12288\), so \(2^n = 4096 = 2^{12}\) and \(n=12\). Then</p>
+      <p>\[ S = \frac{3(1-2^{13})}{1-2} = 3(2^{13}-1) = 3(8191) = 24573. \]</p>
+      <p>Multiply-and-subtract check: \(2S - S = 2(12288) - 3 = 24576 - 3 = 24573\).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Infinite geometric series</span>
+      <p>If \(|r| &lt; 1\), then \(r^{n+1} \to 0\) as \(n \to \infty\), so the series converges:</p>
+      <p>\[ S_{\infty} = \frac{a}{1-r}. \]</p>
+      <p>If \(|r| \ge 1\), the series diverges (unless \(a=0\)).</p>
+    </div>
+
+    <h2 id="python-sets">Sets in Python</h2>
+    <p>Python sets implement the mathematical set: unordered, distinct, and mutable. An empty set must be created with <code>set()</code>, because <code>{}</code> is an empty dictionary.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">sets.py</span><span class="code-lang">python</span></div>
+<pre><code>A = set()               # empty set
+A.add(3)
+A.add(3)                # no effect: sets are distinct
+A.add(2)
+A.add("Hello")
+
+print(A)                # order is not guaranteed
+
+B = {1, 2, 3, 4, 5}
+C = {2, 4, 6}
+
+print(A.issubset(B))    # A is not a subset of B
+print(B.issuperset({2, 4}))  # True
+
+print(B | C)            # union
+print(B &amp; C)            # intersection
+print(B - C)            # set difference
+print(B ^ C)            # symmetric difference
+
+U = set(range(1, 11))
+print(U - B)            # complement of B relative to U</code></pre>
+</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Operation</th><th>Method</th><th>Operator</th></tr></thead>
+        <tbody>
+          <tr><td>Union</td><td><code>A.union(B)</code></td><td><code>A | B</code></td></tr>
+          <tr><td>Intersection</td><td><code>A.intersection(B)</code></td><td><code>A &amp; B</code></td></tr>
+          <tr><td>Difference</td><td><code>A.difference(B)</code></td><td><code>A - B</code></td></tr>
+          <tr><td>Symmetric difference</td><td><code>A.symmetric_difference(B)</code></td><td><code>A ^ B</code></td></tr>
+          <tr><td>Subset test</td><td><code>A.issubset(B)</code></td><td><code>A &lt;= B</code></td></tr>
+          <tr><td>Proper subset test</td><td>—</td><td><code>A &lt; B</code></td></tr>
+          <tr><td>Superset test</td><td><code>A.issuperset(B)</code></td><td><code>A &gt;= B</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Aliasing</span>
+      <p><code>B = A</code> does not copy a set — both names refer to the same object. Use <code>B = A.copy()</code> or <code>B = set(A)</code> for an independent copy.</p>
+    </div>
+
+    <h2 id="python-sequences">Lists, tuples, strings</h2>
+
+    <h3 id="lists">Lists — ordered, mutable, repeatable</h3>
+    <p>A list is an ordered sequence: positions matter, and duplicates are allowed. It is <strong>mutable</strong> — you can append, remove and replace elements.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">lists.py</span><span class="code-lang">python</span></div>
+<pre><code>L = []                  # empty list
+L.append(3)
+L.append(3)             # duplicates allowed
+L.append("Hello")
+print(L)                # [3, 3, 'Hello']
+
+L[0] = 99               # mutation is allowed
+print(L)                # [99, 3, 'Hello']
+
+print(len(L))           # 3
+print(3 in L)           # True
+print(L + [1, 2])       # concatenation</code></pre>
+</div>
+
+    <h3 id="tuples">Tuples — ordered, immutable</h3>
+    <p>A tuple is an ordered, <strong>immutable</strong> collection: once created, it cannot be changed. Use round brackets. A one-element tuple needs a trailing comma, otherwise the brackets are read as grouping.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">tuples.py</span><span class="code-lang">python</span></div>
+<pre><code>fruits = ("apple", "banana", "cherry")
+print(fruits)           # ('apple', 'banana', 'cherry')
+
+one = ("apple",)        # trailing comma makes a tuple
+not_a_tuple = ("apple") # this is just the string 'apple'
+
+# fruits[0] = "pear"    # TypeError: tuples are immutable
+print(fruits[0])        # indexing works
+print(fruits[::-1])     # slicing works</code></pre>
+</div>
+
+    <h3 id="strings">Strings — sequences of characters</h3>
+    <p>A <code>str</code> is a sequence collection of characters. It supports the same indexing, slicing and iteration as a list, but it is immutable — no item assignment.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">strings.py</span><span class="code-lang">python</span></div>
+<pre><code>s = "discrete"
+print(s[0])         # 'd'
+print(s[-1])        # 'e'
+print(s[2:5])       # 'scr'
+print(s[::-1])      # 'etercsid'
+print(len(s))       # 8
+
+for ch in s:
+    print(ch)       # iterate over characters</code></pre>
+</div>
+
+    <h2 id="slicing">Indexing, slicing, comprehensions</h2>
+
+    <h3 id="indexing">Indexing</h3>
+    <p>Python indices are zero-based. Negative indices count backwards from the end. For</p>
+    <div class="formula">\[ A = [1,2,4,8,16,32,64,128,256,512,1024] \]</div>
+    <p>the indices are:</p>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>Standard index</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr></thead>
+        <tbody>
+          <tr><td>Value</td><td>1</td><td>2</td><td>4</td><td>8</td><td>16</td><td>32</td><td>64</td><td>128</td><td>256</td><td>512</td><td>1024</td></tr>
+          <tr><td>Negative index</td><td>-11</td><td>-10</td><td>-9</td><td>-8</td><td>-7</td><td>-6</td><td>-5</td><td>-4</td><td>-3</td><td>-2</td><td>-1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>So <code>A[9]</code> is <code>512</code> and <code>A[-9]</code> is <code>4</code>.</p>
+
+    <h3 id="slicing-notation">Slicing</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Slice</span>
+      <p>A slice is written <code>[start:end:step]</code>:</p>
+      <ul>
+        <li><strong>start</strong> — inclusive; defaults to 0.</li>
+        <li><strong>end</strong> — exclusive; defaults to the length of the collection.</li>
+        <li><strong>step</strong> — defaults to 1; a negative step traverses in reverse.</li>
+      </ul>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Slice</th><th>Result</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>A[:5]</code></td><td><code>[1, 2, 4, 8, 16]</code></td><td>Indices 0 up to (not including) 5</td></tr>
+          <tr><td><code>A[5:8]</code></td><td><code>[32, 64, 128]</code></td><td>Indices 5, 6, 7</td></tr>
+          <tr><td><code>A[8:]</code></td><td><code>[256, 512, 1024]</code></td><td>Index 8 to the end</td></tr>
+          <tr><td><code>A[0:9:3]</code></td><td><code>[1, 8, 64]</code></td><td>Indices 0, 3, 6 (stop before 9)</td></tr>
+          <tr><td><code>A[:]</code></td><td>copy of <code>A</code></td><td>All elements</td></tr>
+          <tr><td><code>A[::-1]</code></td><td><code>[1024, ..., 1]</code></td><td>Reverse</td></tr>
+          <tr><td><code>A[1:-1]</code></td><td><code>[2, ..., 512]</code></td><td>Drop first and last</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="iteration">Iterating</h3>
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">iteration.py</span><span class="code-lang">python</span></div>
+<pre><code>A = [1, 2, 4, 8, 16, 32]
+
+# loop over values
+for value in A:
+    print(value)
+
+# loop with positions
+for pos, value in enumerate(A):
+    print(pos, value)
+
+# loop over indices (rarely needed in Python)
+for pos in range(len(A)):
+    print(pos, A[pos])</code></pre>
+</div>
+
+    <h3 id="filtering">Filtering and comprehensions</h3>
+    <div class="definition">
+      <span class="box-label">Definition · List comprehension</span>
+      <p>A compact syntax for building a new collection:</p>
+      <p><code>[EXPRESSION for value in COLLECTION if CONDITION]</code></p>
+      <p>Replace the brackets with braces to build a set. The condition is optional.</p>
+    </div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">comprehensions.py</span><span class="code-lang">python</span></div>
+<pre><code>A = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+
+# Filter: values whose remainder on division by 10 is 4
+B = [value for value in A if value % 10 == 4]
+print(B)                    # [4, 64, 1024]
+
+# Map: squares of 0..9
+squares = [k**2 for k in range(10)]
+print(squares)              # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+
+# Filter: even numbers below 10
+evens = [k for k in range(10) if k % 2 == 0]
+print(evens)                # [0, 2, 4, 6, 8]
+
+# Map: lengths of words
+names = ['Alice', 'Bob', 'Charlie']
+lengths = [len(name) for name in names]
+print(lengths)              # [5, 3, 7]
+
+# Set comprehension: unique remainders
+remainders = {value % 10 for value in A}
+print(remainders)</code></pre>
+</div>
+
+    <div class="tip">
+      <span class="box-label">How to read a comprehension</span>
+      <p>Read it right-to-left as a loop: “for each <code>value</code> in <code>COLLECTION</code>, if <code>CONDITION</code>, compute <code>EXPRESSION</code> and collect it.” The traditional equivalent is: start with an empty list, loop, test, append.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">List vs set comprehension</span>
+      <p><code>[k for k in range(5)]</code> gives <code>[0,1,2,3,4]</code> — ordered, duplicates kept. <code>{k for k in range(5)}</code> gives <code>{0,1,2,3,4}</code> — unordered, duplicates removed.</p>
+    </div>
+
+    <h2 id="review">Review exercises</h2>
+
+    <h3 id="review-sets">Set-builder and cardinality</h3>
+    <div class="exercise">
+      <span class="box-label">Exercise</span>
+      <p>List four elements of each set:</p>
+      <ol>
+        <li>\(\{k \in \mathbb{N} \mid k-1 \text{ is a multiple of } 7\}\)</li>
+        <li>\(\{x \in \mathbb{Q} \mid 1/x \in \mathbb{Z}\}\)</li>
+        <li>\(\{2n \mid n \in \mathbb{Z},\ n &lt; 0\}\)</li>
+        <li>\(\{s \mid s = 1+2+\cdots+n,\ n \in \mathbb{N},\ n \ge 1\}\)</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(1,8,15,22\) — \(k=0\) fails because \(-1\) is not a multiple of 7, so 1 is the smallest. (2) \(1,\tfrac12,\tfrac13,-\tfrac14\). (3) \(-2,-4,-6,-8\). (4) \(1,3,6,10\) — the triangular numbers.</p>
+    </div>
+
+    <h3 id="review-sequences">Sequences</h3>
+    <div class="exercise">
+      <span class="box-label">Exercise · expand or rewrite</span>
+      <ol>
+        <li>\(\displaystyle\sum_{k=4}^{7} k\)</li>
+        <li>\(\displaystyle\sum_{k=1}^{5} (k-1)\)</li>
+        <li>\(\displaystyle\sum_{n=1}^{4} 10^n\)</li>
+        <li>\(2+4+6+8+10\) in sigma notation</li>
+        <li>\(1+4+7+10\) in sigma notation</li>
+        <li>\(\tfrac14+\tfrac12+1+2+4\) in sigma notation</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(4+5+6+7=22\). (2) \(0+1+2+3+4=10\). (3) \(10+100+1000+10000=11110\). (4) \(\sum_{k=1}^{5}2k\). (5) \(\sum_{k=0}^{3}(1+3k)\) or \(\sum_{k=1}^{4}(3k-2)\). (6) \(\sum_{k=-2}^{2}2^k\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · recurrences</span>
+      <p>Find a recursive definition for each sequence.</p>
+      <ol>
+        <li>\(2,4,6,10,16,26,42,\ldots\)</li>
+        <li>\(5,6,11,17,28,45,73,\ldots\)</li>
+        <li>\(0,0,0,0,\ldots\)</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(a_n=a_{n-1}+a_{n-2}\), \(a_0=2\), \(a_1=4\). (2) \(a_n=a_{n-1}+a_{n-2}\), \(a_0=5\), \(a_1=6\). (3) \(a_n=a_{n-1}\), \(a_0=0\) (or simply \(a_n=0\)).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · AP</span>
+      <p>Consider \(5,9,13,17,21,\ldots\) with \(a_1=5\).</p>
+      <ol>
+        <li>Give a recursive definition.</li>
+        <li>Give a closed formula for the \(n\)th term.</li>
+        <li>Is 2013 a term? Explain.</li>
+        <li>How many terms are in \(5,9,13,\ldots,533\)?</li>
+        <li>Find the sum \(5+9+13+\cdots+533\).</li>
+        <li>Find \(b_n\) for \(1,6,15,28,45,\ldots\), where \(b_0=1\).</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(a_n=a_{n-1}+4\), \(a_1=5\). (2) \(a_n=4n+1\) (since \(a_n=5+4(n-1)\)). (3) \(4n+1=2013 \Rightarrow n=503\), an integer, so yes. (4) \(4n+1=533 \Rightarrow n=133\) terms. (5) \(\frac{133}{2}(5+533)=133 \times 269 = 35777\). (6) \(b_n=b_{n-1}+(4n+1)\) with \(b_0=1\), giving \(b_n=(n+1)(2n+1)\).</p>
+    </div>
+
+    <h2 id="exam">Exam checklist</h2>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Must be able to</h3>
+        <ul class="checklist">
+          <li>State the definition of a set and use \(\in\), \(\notin\), \(\varnothing\).</li>
+          <li>Convert between roster and set-builder notation.</li>
+          <li>Compute cardinality, including ranges and power sets.</li>
+          <li>Decide whether \(A \subseteq B\), \(A \subset B\), \(A = B\).</li>
+          <li>List a power set and count its elements.</li>
+          <li>Perform \(\cap\), \(\cup\), \(\setminus\), \(\oplus\), complement, and Cartesian product.</li>
+          <li>Prove a set identity by mutual inclusion or a membership table.</li>
+          <li>Distinguish closed and recursive sequence definitions.</li>
+          <li>Find the \(n\)th term and partial sum of an AP or GP.</li>
+          <li>Read and write list and set comprehensions.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Common traps</h3>
+        <ul>
+          <li>Writing \(\{a\} = a\) or \(\varnothing = \{\varnothing\}\).</li>
+          <li>Forgetting the \(+1\) in \(n-m+1\) when counting a range.</li>
+          <li>Thinking \(A \subset B\) allows \(A=B\) — it does not.</li>
+          <li>Using \(2^n\) for \(|\mathcal{P}(S)|\) when \(n\) is not \(|S|\).</li>
+          <li>Assuming \(A \times B = B \times A\).</li>
+          <li>Saying \(A \setminus B = \varnothing\) implies \(A = B\); it only implies \(A \subseteq B\).</li>
+          <li>Starting an AP/GP formula at the wrong index.</li>
+          <li>Using the GP sum formula with \(r=1\).</li>
+          <li>Confusing list indices with values.</li>
+          <li>Expecting a set to preserve insertion order.</li>
+        </ul>
+      </div>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="02-logic.html">
+        <span class="dir">Previous topic</span>
+        <span class="ttl">← 02 · Logic</span>
+      </a>
+      <a class="next" href="04-relations-and-functions.html">
+        <span class="dir">Next topic</span>
+        <span class="ttl">04 · Relations &amp; Functions →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 03 · Collections</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

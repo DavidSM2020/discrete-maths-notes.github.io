@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Complete study notes for the SETU Discrete Mathematics module: computational thinking, logic, collections, relations and functions, and enumeration.">
+<meta name="theme-color" content="#0f2727">
+<title>Discrete Mathematics — Study Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link active" href="index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="topics/01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="topics/02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="topics/03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="topics/04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="topics/05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+
+  <div class="sidebar-foot">
+    Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).
+  </div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Discrete Mathematics</a>
+      <span class="sep">/</span>
+      <span>Overview</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <section class="hero">
+      <span class="kicker">SETU · Autumn 2026/27</span>
+      <h1>Discrete Mathematics, distilled.</h1>
+      <p class="lede">Complete, readable study notes for the whole module — from Python fundamentals and propositional logic to sets, relations, functions and counting. Built from the official lecture handouts, with definitions, worked examples and exam-focused summaries.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="topics/01-computational-thinking.html">Start with Topic 01 <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="cheatsheet.html">Formula cheat sheet</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="num">05</span><span class="lbl">Topics</span></div>
+        <div class="hero-stat"><span class="num">15</span><span class="lbl">Lectures covered</span></div>
+        <div class="hero-stat"><span class="num">40+</span><span class="lbl">Definitions &amp; theorems</span></div>
+        <div class="hero-stat"><span class="num">30+</span><span class="lbl">Python patterns</span></div>
+      </div>
+    </section>
+
+    <div class="section-heading" id="topics">
+      <h2>What's inside</h2>
+      <p>Five topics, in teaching order</p>
+    </div>
+
+    <div class="topic-grid">
+      <a class="topic-card" href="topics/01-computational-thinking.html">
+        <div class="topic-card-top">
+          <span class="topic-index">TOPIC 01</span>
+          <span class="topic-icon" aria-hidden="true">⌨</span>
+        </div>
+        <h3>Computational Thinking</h3>
+        <p>Why we offload computation to machines, Python fundamentals, and the standard code patterns for sets, relations and functions.</p>
+        <div class="topic-card-foot"><span>Data types</span><span>Loops</span><span>Functions</span><span>all / any</span></div>
+      </a>
+
+      <a class="topic-card" href="topics/02-logic.html">
+        <div class="topic-card-top">
+          <span class="topic-index">TOPIC 02</span>
+          <span class="topic-icon" aria-hidden="true">¬</span>
+        </div>
+        <h3>Logic</h3>
+        <p>Propositions, truth tables, conditionals, biconditionals, logical equivalence, quantifiers and negation.</p>
+        <div class="topic-card-foot"><span>∧ ∨ ¬</span><span>Truth tables</span><span>→ ↔</span><span>∀ ∃</span></div>
+      </a>
+
+      <a class="topic-card" href="topics/03-collections.html">
+        <div class="topic-card-top">
+          <span class="topic-index">TOPIC 03</span>
+          <span class="topic-icon" aria-hidden="true">∈</span>
+        </div>
+        <h3>Collections</h3>
+        <p>Sets, subsets, power sets, set operations, sequences, arithmetic and geometric progressions, lists and tuples.</p>
+        <div class="topic-card-foot"><span>Sets</span><span>Venn diagrams</span><span>AP / GP</span><span>Lists</span></div>
+      </a>
+
+      <a class="topic-card" href="topics/04-relations-and-functions.html">
+        <div class="topic-card-top">
+          <span class="topic-index">TOPIC 04</span>
+          <span class="topic-icon" aria-hidden="true">→</span>
+        </div>
+        <h3>Relations &amp; Functions</h3>
+        <p>Cartesian products, relation properties, digraphs, equivalence classes, injections, surjections, inverses and composition.</p>
+        <div class="topic-card-foot"><span>Cartesian product</span><span>Digraphs</span><span>Bijections</span><span>Inverse</span></div>
+      </a>
+
+      <a class="topic-card" href="topics/05-enumeration.html">
+        <div class="topic-card-top">
+          <span class="topic-index">TOPIC 05</span>
+          <span class="topic-icon" aria-hidden="true">∑</span>
+        </div>
+        <h3>Enumeration</h3>
+        <p>Counting without listing: addition, multiplication and subtraction principles, pigeonhole, binomial coefficients, permutations and combinations.</p>
+        <div class="topic-card-foot"><span>Pigeonhole</span><span>Binomial</span><span>Pascal</span><span>nPr / nCr</span></div>
+      </a>
+
+      <a class="topic-card" href="cheatsheet.html">
+        <div class="topic-card-top">
+          <span class="topic-index">REFERENCE</span>
+          <span class="topic-icon" aria-hidden="true">∑</span>
+        </div>
+        <h3>Formula Cheat Sheet</h3>
+        <p>Every formula and rule in one place — perfect for the final day of revision or a quick lookup while doing practice questions.</p>
+        <div class="topic-card-foot"><span>Formula table</span><span>Quick lookup</span><span>Print friendly</span></div>
+      </a>
+    </div>
+
+    <div class="section-heading" id="how-to-use">
+      <h2>How to use these notes</h2>
+      <p>A suggested workflow</p>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Read → recall → code</h3>
+        <ol class="steps">
+          <li><strong>Read the definitions first.</strong> Discrete maths is notation-heavy. If you can state a definition precisely, most exercises become mechanical.</li>
+          <li><strong>Cover the worked example and redo it.</strong> Every example in these notes comes from the lecture handouts — try it on paper before reading the solution.</li>
+          <li><strong>Translate to Python.</strong> The module tests whether you can <em>read and execute</em> code, so trace the code patterns by hand and predict the output.</li>
+          <li><strong>Finish with the cheat sheet.</strong> Use it for spaced repetition, not as a first introduction.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>What the exam rewards</h3>
+        <ul class="checklist">
+          <li>Precise use of symbols: \(\in\), \(\subseteq\), \(\to\), \(\forall\), \(\exists\).</li>
+          <li>Correct truth tables and membership tables, row by row.</li>
+          <li>Knowing the difference between similar ideas: subset vs. proper subset, converse vs. contrapositive, permutation vs. combination.</li>
+          <li>Reading Python and stating what it computes — not writing large programs from scratch.</li>
+          <li>Justifying counting answers, not just quoting a formula.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 id="big-ideas">The five big ideas</h2>
+    <p>Each topic builds on the previous one. The diagram below is the mental map; keep it in mind as you revise.</p>
+
+    <div class="grid-3">
+      <div class="mini-card">
+        <span class="big">01</span>
+        <h4>Compute, don't calculate</h4>
+        <p>Recognise when a task is repetitive and hand it to a machine. Python is the concrete notation for the algorithms.</p>
+      </div>
+      <div class="mini-card">
+        <span class="big">02</span>
+        <h4>Precision beats intuition</h4>
+        <p>Natural language is ambiguous. Logic gives statements an exact truth value and rules for combining them.</p>
+      </div>
+      <div class="mini-card">
+        <span class="big">03</span>
+        <h4>Structure shapes operations</h4>
+        <p>Sets are unordered and unique; lists are ordered; dictionaries map keys to values. The structure determines what you can do.</p>
+      </div>
+      <div class="mini-card">
+        <span class="big">04</span>
+        <h4>Relations are the glue</h4>
+        <p>A relation is a set of ordered pairs. Functions are the well-behaved relations where every input has exactly one output.</p>
+      </div>
+      <div class="mini-card">
+        <span class="big">05</span>
+        <h4>Count the choices</h4>
+        <p>Most counting problems reduce to a sequence of decisions. Identify the decisions, then add or multiply.</p>
+      </div>
+      <div class="mini-card">
+        <span class="big">∑</span>
+        <h4>Connect the topics</h4>
+        <p>Set cardinality feeds counting; Cartesian products feed relations; bijections feed permutations. Nothing stands alone.</p>
+      </div>
+    </div>
+
+    <h2 id="sources">Sources &amp; scope</h2>
+    <p>These notes are a structured rewrite of the official SETU Discrete Mathematics lecture handouts. They cover the same definitions, theorems, examples and Python implementations, with extra summaries and cross-references added for revision. Always check the official course site and your lecturer's announcements for the definitive syllabus, assessment details and any corrections.</p>
+
+    <div class="note">
+      <span class="box-label">Note</span>
+      <p><strong>Scope.</strong> The module introduction, practical notebooks and tutorial sheets are not reproduced here; this site focuses on the five lecture topics: Computational Thinking, Logic, Collections, Relations &amp; Functions, and Enumeration.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="topics/01-computational-thinking.html">
+        <span class="dir">Next topic</span>
+        <span class="ttl">01 · Computational Thinking →</span>
+      </a>
+      <a class="next" href="cheatsheet.html">
+        <span class="dir">Reference</span>
+        <span class="ttl">Formula Cheat Sheet →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Compiled from the SETU Discrete Mathematics handouts · Autumn 2026/27</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>

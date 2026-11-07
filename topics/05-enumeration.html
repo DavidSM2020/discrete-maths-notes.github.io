@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Enumeration notes: addition, multiplication and subtraction principles, pigeonhole principle, factorials, subsets, bit strings, lattice paths, binomial coefficients, Pascal's triangle, permutations and combinations.">
+<meta name="theme-color" content="#0f2727">
+<title>05 · Enumeration — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link active" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 05</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 05</span>
+      <h1>Enumeration</h1>
+      <p class="lede">Enumeration is the art of counting without listing. Three basic principles — addition, multiplication and subtraction — combine into everything else: subsets, bit strings, lattice paths, the binomial theorem, Pascal's triangle, permutations and combinations.</p>
+      <div class="meta-row">
+        <span class="pill">3 lectures</span>
+        <span class="pill amber">Counting</span>
+        <span class="pill blue">n choose k</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#why">Why counting matters</a></li>
+        <li><a href="#addition">Addition principle</a></li>
+        <li><a href="#multiplication">Multiplication principle</a></li>
+        <li><a href="#subtraction">Subtraction principle</a></li>
+        <li><a href="#pigeonhole">Pigeonhole principle</a></li>
+        <li><a href="#factorial">Factorials</a></li>
+        <li><a href="#subsets">Counting subsets</a></li>
+        <li><a href="#bit-strings">Bit strings</a></li>
+        <li><a href="#lattice">Lattice paths</a></li>
+        <li><a href="#binomial">The binomial theorem</a></li>
+        <li><a href="#pascal">Pascal's triangle</a></li>
+        <li><a href="#permutations">Permutations</a></li>
+        <li><a href="#combinations">Combinations</a></li>
+        <li><a href="#choice-map">Which formula do I use?</a></li>
+        <li><a href="#mixed">Mixed worked examples</a></li>
+        <li><a href="#python">Counting in Python</a></li>
+        <li><a href="#exam">Exam checklist</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="why">Why counting matters</h2>
+    <p>Counting is not just arithmetic. It answers questions that show up everywhere in computing:</p>
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>Algorithm complexity</h4>
+        <p>The running time of a loop is the number of times its body executes. Counting paths through code gives big-\(O\) estimates.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Probability</h4>
+        <p>The probability of an event is (favourable outcomes) / (total outcomes). You cannot compute it without counting both.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Networks and security</h4>
+        <p>The number of nodes, edges, routes, or possible passwords measures reliability and the size of an attack surface.</p>
+      </div>
+    </div>
+
+    <p>The topic builds in layers:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Layer</th><th>Technique</th><th>Typical question</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Basic principles</td><td>“A or B”, “A then B”, “not A”, “must two collide?”</td></tr>
+          <tr><td>2</td><td>Binomial coefficients</td><td>Subsets, bit strings, lattice paths, \((x+y)^n\).</td></tr>
+          <tr><td>3</td><td>Permutations and combinations</td><td>Ordered or unordered selections without repetition.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="addition">Addition principle</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Addition principle</span>
+      <p>If event \(A\) can occur in \(m\) ways and event \(B\) can occur in \(n\) ways, and \(A\) and \(B\) are <strong>disjoint</strong> (cannot both happen), then “\(A\) or \(B\)” can occur in</p>
+      <p>\[ m+n \]</p>
+      <p>ways. In set language, if \(A \cap B = \varnothing\), then \(|A \cup B| = |A| + |B|\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · two-letter words</span>
+      <p>How many two-letter words start with either A or B?</p>
+      <p>There are 26 words starting with A (the second letter is free) and 26 starting with B. The two groups cannot overlap, so the total is</p>
+      <p>\[ 26 + 26 = 52. \]</p>
+      <p>The word starts with A <em>exclusive or</em> B — exclusive or maps to addition.</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Non-example · the disjointness condition</span>
+      <p>A standard deck has 26 red cards and 12 face cards, but the number of cards that are red <em>or</em> a face card is not \(26+12=38\). Six cards are both red and face cards, so those are counted twice:</p>
+      <p>\[ 26 + 12 - 6 = 32. \]</p>
+      <p>This is the inclusion–exclusion correction. The addition principle only applies when the sets do not overlap.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Signal words</span>
+      <p>“Or”, “either … or”, “one of” usually signal addition — provided the cases are mutually exclusive. If they can overlap, subtract the overlap or switch to multiplication.</p>
+    </div>
+
+    <h2 id="multiplication">Multiplication principle</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Multiplication principle</span>
+      <p>If event \(A\) can occur in \(m\) ways and, for each of those, event \(B\) can occur in \(n\) ways, then “\(A\) and \(B\)” can occur in</p>
+      <p>\[ m \cdot n \]</p>
+      <p>ways. Events must be <strong>independent</strong>: the number of options for \(B\) must not depend on which option was chosen for \(A\).</p>
+      <p>In set language, \(|A \times B| = |A||B|\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · lunch combinations</span>
+      <p>A snack bar has 5 sandwiches and 3 drinks. A lunch is one sandwich and one drink:</p>
+      <p>\[ 5 \times 3 = 15 \text{ lunches}. \]</p>
+      <p>A tree diagram makes the structure explicit: 5 first-level branches, each splitting into 3.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · counting functions</span>
+      <p>How many functions \(f : \{1,2,3,4,5\} \to \{a,b,c,d\}\) are there?</p>
+      <p>Each of the 5 domain elements independently chooses one of 4 targets:</p>
+      <p>\[ 4 \times 4 \times 4 \times 4 \times 4 = 4^5 = 1024. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · a multiple-choice quiz</span>
+      <p>Four questions with 2 options each and three questions with 5 options each:</p>
+      <p>\[ 2^4 \times 5^3 = 16 \times 125 = 2000 \text{ answer sheets}. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the power set</span>
+      <p>If \(|A|=n\), then \(|\mathcal{P}(A)| = 2^n\). For each of the \(n\) elements there are two independent choices: include it or do not include it. This is the multiplication principle with \(n\) events, each having 2 options.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · wardrobe</span>
+      <p>5 chinos, 3 check shirts, 13 t-shirts. A top is a check shirt or a t-shirt, so there are \(3+13=16\) tops. An outfit is a top <em>and</em> chinos:</p>
+      <p>\[ 5 \times 16 = 80 \text{ outfits}. \]</p>
+      <p>This combines both principles: add within a category, multiply across categories.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · two-digit numbers with distinct nonzero digits</span>
+      <p>A two-digit number \(ab\) has \(a \in \{1,\ldots,9\}\) and \(b \in \{1,\ldots,9\}\), with \(a \neq b\). There are 9 choices for \(a\), then 8 choices for \(b\):</p>
+      <p>\[ 9 \times 8 = 72. \]</p>
+      <p>The options for \(b\) are different for each \(a\), but there are always 8 — that is all the multiplication principle requires.</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">When multiplication fails</span>
+      <p>“How many ways can you pick two cards so the first is red and the second is a face card?” The answer is not \(26 \times 12\). If the first card is a red face card, only 11 face cards remain; otherwise 12 remain. The number of second choices depends on the first choice, so the simple multiplication principle does not apply directly. Split into cases instead.</p>
+    </div>
+
+    <h2 id="subtraction">Subtraction principle</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Subtraction principle</span>
+      <p>For an event \(A\) inside a universal set \(U\),</p>
+      <p>\[ |A| = |U| - |A^{c}|. \]</p>
+      <p>Count the total, then subtract the outcomes you do <em>not</em> want. This is often easier when “bad” outcomes have a simpler description.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · repeated digits, again</span>
+      <p>Count two-digit strings with distinct nonzero digits by subtraction. There are 100 strings \(00,01,\ldots,99\). Remove:</p>
+      <ul>
+        <li>1 with double zero: \(00\);</li>
+        <li>9 with a leading zero: \(01,\ldots,09\);</li>
+        <li>9 with a trailing zero: \(10,20,\ldots,90\);</li>
+        <li>9 with identical nonzero digits: \(11,22,\ldots,99\).</li>
+      </ul>
+      <p>\[ 100 - 1 - 9 - 9 - 9 = 72. \]</p>
+      <p>Same answer as the multiplication method — a good check.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · passwords with a repeated symbol</span>
+      <p>A password is a 6-character string over 26 lowercase letters and 10 digits, so 36 symbols. Total passwords:</p>
+      <p>\[ |U| = 36^6 = 2{,}176{,}782{,}336. \]</p>
+      <p>Passwords with <em>no</em> repeated symbol:</p>
+      <p>\[ 36 \times 35 \times 34 \times 33 \times 32 \times 31 = 1{,}402{,}410{,}240. \]</p>
+      <p>Therefore passwords with at least one repeat:</p>
+      <p>\[ 2{,}176{,}782{,}336 - 1{,}402{,}410{,}240 = 774{,}372{,}096. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · fruit baskets</span>
+      <p>You have 6 identical oranges and 9 identical apples. A basket is determined by how many of each it contains: 7 choices for oranges \((0\)–\(6)\) and 10 for apples \((0\)–\(9)\), so \(7 \times 10 = 70\) baskets including the empty one. The problem forbids the empty basket, so</p>
+      <p>\[ 70 - 1 = 69. \]</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Look for the complement</span>
+      <p>If a question says “at least one”, “not all”, or “contains a repeated …”, try counting the negation. Complements turn complicated unions into a single easy case.</p>
+    </div>
+
+    <h2 id="pigeonhole">Pigeonhole principle</h2>
+
+    <div class="theorem">
+      <span class="box-label">Pigeonhole principle</span>
+      <p>If more than \(n\) pigeons fly into \(n\) pigeonholes, then at least one hole contains at least two pigeons.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Corollary · injection needs room</span>
+      <p>If \(f : A \to B\) is a function between finite sets and \(|A| &gt; |B|\), then \(f\) cannot be injective.</p>
+      <p><strong>Proof.</strong> There are \(|A|\) arrows leaving \(A\) but only \(|B|\) target elements. By the pigeonhole principle, some target receives at least two arrows, so \(f\) is not injective. \(\blacksquare\)</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · remainders modulo 11</span>
+      <p>Pick any 12 positive integers. Then two of them differ by a multiple of 11.</p>
+      <p><strong>Proof.</strong> Dividing by 11 leaves one of 11 possible remainders \(0,1,\ldots,10\). With 12 numbers and 11 remainders, two numbers share a remainder. Their difference is divisible by 11. \(\blacksquare\)</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Reading the principle correctly</span>
+      <p>Pigeonhole gives a <em>guarantee of a collision</em>, not a way to find it. It is the standard tool for proving that two objects must share a property, and it is the theoretical reason hashing cannot be injective when the input space is larger than the output space.</p>
+    </div>
+
+    <h2 id="factorial">Factorials</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Factorial</span>
+      <p>For \(n \in \mathbb{N}\),</p>
+      <p>\[
+      n! = \begin{cases}
+        1, &amp; n=0,\\
+        1 \times 2 \times \cdots \times n, &amp; n &gt; 0.
+      \end{cases}
+      \]</p>
+      <p>Equivalently, \(n! = n \times (n-1)!\) for \(n \ge 1\), with \(0!=1\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Values</span>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>\(n\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr></thead>
+          <tbody>
+            <tr><td>\(n!\)</td><td>1</td><td>1</td><td>2</td><td>6</td><td>24</td><td>120</td><td>720</td><td>5040</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Factorials grow extremely fast: \(10! = 3{,}628{,}800\), \(20! \approx 2.43 \times 10^{18}\), and \(52!\) is larger than \(8 \times 10^{67}\).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Useful factorial identity</span>
+      <p>If \(r \le n\), then</p>
+      <p>\[ \frac{n!}{r!} = n(n-1)(n-2)\cdots(r+1). \]</p>
+      <p>All the factors from \(r\) down to 1 cancel. This is why \(P(n,k)\) simplifies so neatly.</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Factorial is not additive</span>
+      <p>\((m+n)! \neq m! + n!\) and \((mn)! \neq m!\,n!\). Factorial interacts with multiplication through \((n+1)! = (n+1)n!\), and with binomial coefficients through the definitions below. Do not invent rules.</p>
+    </div>
+
+    <h2 id="subsets">Counting subsets</h2>
+
+    <p>For a set \(A\) with \(n\) elements, every subset is determined by \(n\) independent yes/no decisions, so there are \(2^n\) subsets. But what if we fix the <em>size</em>?</p>
+
+    <div class="example">
+      <span class="box-label">Example · subsets of a 5-element set</span>
+      <p>Let \(A=\{1,2,3,4,5\}\). How many subsets of size 3?</p>
+      <p>First count ordered lists of 3 distinct elements: \(5 \times 4 \times 3 = 60\). But a set ignores order, and each 3-element set was counted once for each of its \(3! = 6\) orderings. Therefore</p>
+      <p>\[ \frac{5 \times 4 \times 3}{3 \times 2 \times 1} = \frac{60}{6} = 10. \]</p>
+      <p>The full row of subset counts is</p>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>Size \(k\)</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>Total</th></tr></thead>
+          <tbody>
+            <tr><td>Subsets</td><td>1</td><td>5</td><td>10</td><td>10</td><td>5</td><td>1</td><td>32</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Binomial coefficient</span>
+      <p>For integers \(n \ge 0\) and \(0 \le k \le n\), the number of \(k\)-element subsets of an \(n\)-element set is</p>
+      <p>\[
+      \binom{n}{k} = \frac{n!}{k!(n-k)!}
+      = \frac{n(n-1)\cdots(n-k+1)}{k!},
+      \]</p>
+      <p>read “\(n\) choose \(k\)”.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">The division by \(k!\)</span>
+      <p>The numerator counts ordered lists of length \(k\). Each unordered subset appears \(k!\) times in that count — once per ordering of its elements. Dividing by \(k!\) converts lists into sets.</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Boundary values</h4>
+        <p>\(\binom{n}{0}=1\) (only the empty set) and \(\binom{n}{n}=1\) (only the whole set). Also \(\binom{n}{k}=0\) for \(k&lt;0\) or \(k&gt;n\) if you extend the definition.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Symmetry</h4>
+        <p>\(\binom{n}{k}=\binom{n}{n-k}\): choosing the \(k\) elements to include is the same as choosing the \(n-k\) to exclude.</p>
+      </div>
+    </div>
+
+    <h2 id="bit-strings">Bit strings</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Bit string</span>
+      <p>A <strong>bit string</strong> is a string of 0s and 1s. Its <strong>length</strong> is the number of bits; its <strong>weight</strong> is the number of 1s.</p>
+      <p>\(B_n\) denotes the set of all \(n\)-bit strings; \(B_n^k\) denotes those of weight \(k\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>\(1001\) has length 4 and weight 2. \(0\) has length 1 and weight 0. \(1111\) has length 4 and weight 4.</p>
+      <p>\(B_5\) has \(2^5=32\) strings. \(B_5^3\) has \(\binom{5}{3}=10\) strings, because choosing a weight-3 string is exactly choosing which 3 of the 5 positions hold a 1.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Recurrence for bit strings</span>
+      <p>\[ |B_n^k| = |B_{n-1}^{k-1}| + |B_{n-1}^{k}|, \]</p>
+      <p>with terminal conditions \(|B_n^n|=1\) and \(|B_n^0|=1\).</p>
+      <p><strong>Reason.</strong> An \(n\)-bit string of weight \(k\) either starts with 1 (then the remaining \(n-1\) bits need weight \(k-1\)) or starts with 0 (then the remaining bits need weight \(k\)).</p>
+    </div>
+
+    <p>This is the combinatorial proof of Pascal's identity, which appears again below.</p>
+
+    <h2 id="lattice">Lattice paths</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Lattice path</span>
+      <p>A <strong>lattice</strong> is a grid of points \((x,y)\) with integer coordinates. A <strong>lattice path</strong> is a shortest path between two lattice points moving only right (R) and up (U).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Counting lattice paths</span>
+      <p>The number of shortest paths from \(A=(a_x,a_y)\) to \(B=(b_x,b_y)\) is</p>
+      <p>\[ \binom{n}{k}, \qquad n=|b_x-a_x|+|b_y-a_y|, \quad k=|b_x-a_x|. \]</p>
+      <p>Here \(n\) is the total number of steps and \(k\) is the number of rightward steps. Equivalently, use the number of upward steps \(n-k\); the binomial coefficient is symmetric.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · \((0,0)\) to \((3,2)\)</span>
+      <p>Every shortest path has 3 right steps and 2 up steps, so length \(n=5\). A path is determined by which 3 of the 5 positions are R:</p>
+      <p>\[ \binom{5}{3} = 10. \]</p>
+      <p>For instance <code>RRUUR</code>, <code>UURRR</code> and <code>RURRU</code> are three of the ten.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · recursive decomposition</span>
+      <p>The last step into \((3,2)\) comes either from \((2,2)\) or from \((3,1)\). Therefore</p>
+      <p>\[ \binom{5}{3} = \binom{4}{2} + \binom{4}{3} = 6 + 4 = 10. \]</p>
+      <p>This is the same recurrence as Pascal's triangle, viewed geometrically.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Three views of one number</span>
+      <p>For \(n=5\) and \(k=3\), the number \(\binom{5}{3}=10\) counts simultaneously:</p>
+      <ul>
+        <li>3-element subsets of a 5-element set;</li>
+        <li>5-bit strings of weight 3;</li>
+        <li>shortest lattice paths with 5 steps, 3 of them right.</li>
+      </ul>
+      <p>Recognising which view a problem matches is most of the work.</p>
+    </div>
+
+    <h2 id="binomial">The binomial theorem</h2>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Binomial expansion</span>
+      <p>For \(n \ge 0\),</p>
+      <p>\[
+      (x+y)^n = \sum_{k=0}^{n} \binom{n}{k} x^{n-k} y^{k}.
+      \]</p>
+      <p>Equivalently, the coefficient of \(x^{n-k}y^k\) is \(\binom{n}{k}\).</p>
+    </div>
+
+    <p>Why? Expanding \((x+y)^n\) means choosing one of \(x\) or \(y\) from each of the \(n\) factors. A term \(x^{n-k}y^k\) arises exactly when \(y\) is chosen from \(k\) of the factors, and there are \(\binom{n}{k}\) ways to choose those factors.</p>
+
+    <div class="example">
+      <span class="box-label">Example · small expansions</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>\(n\)</th><th>Expansion</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>\(1\)</td></tr>
+            <tr><td>1</td><td>\(x+y\)</td></tr>
+            <tr><td>2</td><td>\(x^2+2xy+y^2\)</td></tr>
+            <tr><td>3</td><td>\(x^3+3x^2y+3xy^2+y^3\)</td></tr>
+            <tr><td>4</td><td>\(x^4+4x^3y+6x^2y^2+4xy^3+y^4\)</td></tr>
+            <tr><td>5</td><td>\(x^5+5x^4y+10x^3y^2+10x^2y^3+5xy^4+y^5\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · a coefficient with a constant</span>
+      <p>Find the coefficient of \(x^{12}\) in \((x+2)^{15}\).</p>
+      <p>Using the theorem with \(n=15\), the term containing \(x^{12}\) has \(k=3\):</p>
+      <p>\[ \binom{15}{3} x^{12} 2^{3} = 455 \cdot 8 \cdot x^{12} = 3640\,x^{12}. \]</p>
+      <p>So the coefficient is \(3640\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the row sum</span>
+      <p>Set \(x=y=1\):</p>
+      <p>\[ \sum_{k=0}^{n}\binom{n}{k} = (1+1)^n = 2^n, \]</p>
+      <p>which recovers the fact that an \(n\)-element set has \(2^n\) subsets. Setting \(x=1, y=-1\) gives the alternating sum \(\sum_k (-1)^k\binom{n}{k}=0\) for \(n \ge 1\).</p>
+    </div>
+
+    <h2 id="pascal">Pascal's triangle</h2>
+
+    <p>Arrange the binomial coefficients in rows indexed by \(n\). Each entry is the sum of the two entries above it:</p>
+
+    <div class="formula">\[
+      \binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}.
+    \]</div>
+
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(n\)</th><th colspan="11">Row \(\binom{n}{0}\ \cdots\ \binom{n}{n}\)</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td>1</td><td>2</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td>1</td><td>3</td><td>3</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td>1</td><td>4</td><td>6</td><td>4</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td>1</td><td>5</td><td>10</td><td>10</td><td>5</td><td>1</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td>1</td><td>6</td><td>15</td><td>20</td><td>15</td><td>6</td><td>1</td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>7</td><td>1</td><td>7</td><td>21</td><td>35</td><td>35</td><td>21</td><td>7</td><td>1</td><td></td><td></td><td></td></tr>
+          <tr><td>8</td><td>1</td><td>8</td><td>28</td><td>56</td><td>70</td><td>56</td><td>28</td><td>8</td><td>1</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Reading Pascal's triangle</span>
+      <ul>
+        <li>The outer entries are always 1: \(\binom{n}{0}=\binom{n}{n}=1\).</li>
+        <li>Each row is symmetric: \(\binom{n}{k}=\binom{n}{n-k}\).</li>
+        <li>Row \(n\) sums to \(2^n\).</li>
+        <li>Row \(n\) has \(n+1\) entries, for \(k=0,\ldots,n\).</li>
+      </ul>
+    </div>
+
+    <h2 id="permutations">Permutations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Permutation</span>
+      <p>A <strong>permutation</strong> is a rearrangement of objects. Equivalently, it is a bijective function on a finite set.</p>
+      <p>The number of permutations of \(n\) distinct elements is</p>
+      <p>\[ n! = n(n-1)(n-2)\cdots 2 \cdot 1. \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · three letters</span>
+      <p>The permutations of \(a,b,c\) are</p>
+      <p>\[ abc,\ acb,\ bac,\ bca,\ cab,\ cba, \]</p>
+      <p>and there are \(3!=6\) of them: 3 choices for the first letter, 2 for the second, 1 for the third.</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · \(k\)-permutations</span>
+      <p>The number of ordered selections of \(k\) distinct objects from \(n\) distinct objects is</p>
+      <p>\[
+      P(n,k) = n(n-1)\cdots(n-k+1) = \frac{n!}{(n-k)!}.
+      \]</p>
+      <p>Also written \({}_nP_k\). Note \(P(n,n)=n!\), and \(P(n,0)=1\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · counting bijections</span>
+      <p>How many bijections \(f : \{1,\ldots,8\} \to \{1,\ldots,8\}\) are there?</p>
+      <p>Map 1 to any of 8 targets, 2 to any of the remaining 7, and so on:</p>
+      <p>\[ 8 \times 7 \times \cdots \times 1 = 8! = 40{,}320 = P(8,8). \]</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · counting injections</span>
+      <p>How many injective functions \(f : \{1,2,3\} \to \{1,\ldots,8\}\) are there?</p>
+      <p>Injective means no target is reused, so</p>
+      <p>\[ 8 \times 7 \times 6 = \frac{8!}{5!} = P(8,3) = 336. \]</p>
+      <p>A bijection is impossible here because the target is larger than the source.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · dinner party</span>
+      <p>Choose 6 guests from 14 and seat them along a long table. Inviting is unordered, seating is ordered. The number of seating arrangements is</p>
+      <p>\[ P(14,6) = 14 \times 13 \times 12 \times 11 \times 10 \times 9 = 2{,}162{,}160. \]</p>
+      <p>If you only cared <em>which</em> 6 guests, the answer would be \(\binom{14}{6}=3003\).</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Order matters</span>
+      <p>“Arrange”, “seat”, “rank”, “first/second/third”, “password”, “PIN” all signal that order matters — use permutations. “Choose”, “select”, “committee”, “subset”, “hand of cards” signal that order does not matter — use combinations.</p>
+    </div>
+
+    <h2 id="combinations">Combinations</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Combination</span>
+      <p>The number of unordered selections of \(k\) distinct objects from \(n\) distinct objects is</p>
+      <p>\[
+      C(n,k) = \binom{n}{k} = \frac{P(n,k)}{k!} = \frac{n!}{k!(n-k)!}.
+      \]</p>
+      <p>Also written \({}_nC_k\) or \(\binom{n}{k}\).</p>
+    </div>
+
+    <p>The \(k!\) in the denominator corrects for over-counting: each unordered selection was counted \(k!\) times, once for each ordering of its elements.</p>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Permutation</h4>
+        <p>Ordered selection without repetition.</p>
+        <p>\[ P(n,k)=\frac{n!}{(n-k)!} \]</p>
+        <p>“Pick a president, vice-president and treasurer.”</p>
+      </div>
+      <div class="mini-card">
+        <h4>Combination</h4>
+        <p>Unordered selection without repetition.</p>
+        <p>\[ C(n,k)=\frac{n!}{k!(n-k)!} \]</p>
+        <p>“Pick a 3-person committee.”</p>
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · pizza menu</span>
+      <p>A parlour offers 10 toppings, no doubles.</p>
+      <ol>
+        <li><strong>3-topping pizzas:</strong> choose 3 of 10, order irrelevant:
+          \[ \binom{10}{3}=120. \]</li>
+        <li><strong>All possible pizzas</strong> with 0 to 10 toppings:
+          \[ \sum_{k=0}^{10}\binom{10}{k}=2^{10}=1024. \]</li>
+        <li><strong>Arrange 5 toppings in the left column</strong> of a two-column menu: choose and order 5 of 10:
+          \[ P(10,5)=10\cdot9\cdot8\cdot7\cdot6=30{,}240. \]</li>
+      </ol>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · digits 2 through 8</span>
+      <p>How many 5-digit numbers can be formed from \(\{2,3,4,5,6,7,8\}\)?</p>
+      <ol>
+        <li><strong>Repetition allowed, order matters:</strong> \(7^5=16{,}807\).</li>
+        <li><strong>No repetition, order matters:</strong> \(P(7,5)=7\cdot6\cdot5\cdot4\cdot3=2520\).</li>
+        <li><strong>No repetition, written in increasing order:</strong> the order is forced once the digits are chosen, so \(C(7,5)=\binom{7}{5}=21\).</li>
+      </ol>
+      <p>(c) is a combination because choosing the set of digits uniquely determines the increasing arrangement; (a) and (b) are permutations/sequences because different orders give different numbers.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · full house of formula checks</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>\(\binom{5}{0}=\binom{5}{5}\)</td><td>\(1\)</td></tr>
+            <tr><td>\(\binom{5}{1}=\binom{5}{4}\)</td><td>\(5\)</td></tr>
+            <tr><td>\(\binom{5}{2}=\binom{5}{3}\)</td><td>\(10\)</td></tr>
+            <tr><td>\(\binom{10}{3}\)</td><td>\(120\)</td></tr>
+            <tr><td>\(\binom{14}{6}\)</td><td>\(3003\)</td></tr>
+            <tr><td>\(P(14,6)\)</td><td>\(2{,}162{,}160\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="choice-map">Which formula do I use?</h2>
+
+    <p>Two questions decide almost every counting problem: <strong>does order matter?</strong> and <strong>is repetition allowed?</strong></p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th></th><th>Repetition allowed</th><th>No repetition</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Order matters</strong></td><td>\(n^k\)</td><td>\(P(n,k)=\dfrac{n!}{(n-k)!}\)</td></tr>
+          <tr><td><strong>Order irrelevant</strong></td><td>Stars and bars (later topic)</td><td>\(C(n,k)=\dbinom{n}{k}\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ol class="steps">
+      <li><strong>Read the question</strong> and decide whether two outcomes that differ only in order are considered different.</li>
+      <li><strong>Decide whether items may be reused.</strong> Passwords reuse; committees do not.</li>
+      <li><strong>Check for hidden structure</strong>: “at least one” suggests subtraction; “or” with overlap suggests inclusion–exclusion; a grid suggests lattice paths.</li>
+      <li><strong>Sanity-check the size</strong>: a count of subsets of a 5-element set cannot exceed 32; a probability numerator cannot exceed its denominator.</li>
+    </ol>
+
+    <h2 id="mixed">Mixed worked examples</h2>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · wardrobe</span>
+      <p>A wardrobe has 5 shirts, 3 pairs of pants and 17 bow ties. How many outfits (one of each) are possible?</p>
+      <p><strong>Answer.</strong> \(5 \times 3 \times 17 = 255\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · neckwear</span>
+      <p>You own 3 regular ties and 5 bow ties.</p>
+      <ol>
+        <li>How many choices of neckwear?</li>
+        <li>How many if you wear one of each?</li>
+        <li>With 5 shirts, 4 skirts, 3 pants and 7 dresses, how many outfits consisting of (shirt with skirt or pants) or a dress?</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(3+5=8\). (2) \(3\times5=15\). (3) Shirt-and-bottom: \(5 \times (4+3)=35\). Dresses: 7. Total: \(35+7=42\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · sets</span>
+      <p>If \(|A|=8\) and \(|B|=5\), what is \(|A \cup B| + |A \cap B|\)?</p>
+      <p><strong>Answer.</strong> By inclusion–exclusion, \(|A \cup B| = |A|+|B|-|A \cap B|\), so \(|A \cup B|+|A \cap B| = 8+5 = 13\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · five-letter words</span>
+      <p>Consider all 5-letter words over the letters \(a\) through \(h\) (8 letters).</p>
+      <ol>
+        <li>How many words in total?</li>
+        <li>How many have no repeated letters?</li>
+        <li>How many start with <code>aha</code>?</li>
+        <li>How many start with <code>aha</code> or end with <code>bah</code> or both?</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(8^5=32{,}768\). (2) \(P(8,5)=6720\). (3) The first three positions are fixed; the last two are free: \(8^2=64\). (4) Start with <code>aha</code>: 64. End with <code>bah</code>: 64. Both: the word must be <code>ahabah</code>, 1 word. Inclusion–exclusion gives \(64+64-1=127\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · bit strings of length 9</span>
+      <p>How many 9-bit strings:</p>
+      <ol>
+        <li>start with <code>101</code>?</li>
+        <li>have weight 5 and start with <code>101</code>?</li>
+        <li>start with <code>101</code> or end with <code>11</code> (or both)?</li>
+        <li>have weight 5, start with <code>101</code> and end with <code>11</code>?</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(2^6=64\). (2) Three 1s are used by <code>101</code>; two more 1s are needed among the remaining 6 positions: \(\binom{6}{2}=15\). (3) Start <code>101</code>: 64. End <code>11</code>: \(2^7=128\). Both: first 3 fixed and last 2 fixed, middle 4 free: \(2^4=16\). Total \(64+128-16=176\). (4) First 3 and last 2 fixed use four 1s; one more 1 among the middle 4 positions: \(\binom{4}{1}=4\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · lattice paths</span>
+      <p>How many shortest lattice paths start at \((3,3)\) and:</p>
+      <ol>
+        <li>end at \((10,10)\)?</li>
+        <li>end at \((10,10)\) and pass through \((5,7)\)?</li>
+        <li>end at \((10,10)\) and avoid \((5,7)\)?</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(\Delta x=7\), \(\Delta y=7\), so \(n=14\), \(k=7\): \(\binom{14}{7}=3432\). (2) First leg \((3,3)\to(5,7)\): \(\Delta x=2\), \(\Delta y=4\), count \(\binom{6}{2}=15\). Second leg \((5,7)\to(10,10)\): \(\Delta x=5\), \(\Delta y=3\), count \(\binom{8}{5}=56\). Product: \(15 \times 56 = 840\). (3) Subtract: \(3432-840=2592\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · binomial coefficient</span>
+      <p>What is the coefficient of \(x^{12}\) in \((x+2)^{15}\)?</p>
+      <p><strong>Answer.</strong> \(\binom{15}{3}2^3=455 \times 8 = 3640\).</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · subsets of \(\{1,\ldots,9\}\)</span>
+      <ol>
+        <li>How many subsets in total?</li>
+        <li>How many contain exactly 5 elements?</li>
+        <li>How many contain only even numbers?</li>
+        <li>How many contain an even number of elements?</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) \(2^9=512\). (2) \(\binom{9}{5}=126\). (3) There are 4 even numbers, so \(2^4=16\) subsets. (4) Exactly half of all subsets have even size: \(2^8=256\). (Pair each subset with its symmetric difference with \(\{1\}\).)</p>
+    </div>
+
+    <h2 id="python">Counting in Python</h2>
+
+    <p>Python's <code>math</code> module and <code>itertools</code> provide the standard counting tools. For learning, implement them yourself first; for exams, know what the built-ins compute.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">factorial.py</span><span class="code-lang">python</span></div>
+<pre><code># Iterative
+def factorial_iterative(n):
+    result = 1
+    for k in range(1, n + 1):
+        result *= k
+    return result
+
+# Recursive
+def factorial_recursive(n):
+    if n == 0:
+        return 1
+    return n * factorial_recursive(n - 1)
+
+for k in [0, 1, 5]:
+    print(k, "! =", factorial_iterative(k))
+
+# Built-in
+import math
+print(math.factorial(5))    # 120</code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">choose.py</span><span class="code-lang">python</span></div>
+<pre><code>import math
+
+def permutations(n, k):
+    return math.factorial(n) // math.factorial(n - k)
+
+def combinations(n, k):
+    return math.factorial(n) // (math.factorial(k) * math.factorial(n - k))
+
+print(permutations(14, 6))  # 2162160
+print(combinations(14, 6))  # 3003
+
+# Python 3.8+
+print(math.perm(14, 6))     # 2162160
+print(math.comb(14, 6))     # 3003</code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">enumerate_items.py</span><span class="code-lang">python</span></div>
+<pre><code>from itertools import permutations, combinations
+
+letters = "abc"
+
+print(list(permutations(letters)))
+# [('a','b','c'), ('a','c','b'), ('b','a','c'),
+#  ('b','c','a'), ('c','a','b'), ('c','b','a')]
+
+print(list(combinations(letters, 2)))
+# [('a','b'), ('a','c'), ('b','c')]
+
+# Count bit strings of length n with weight k
+def count_weight(n, k):
+    return len([s for s in range(2**n) if bin(s).count("1") == k])
+
+print(count_weight(5, 3))   # 10</code></pre>
+</div>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">lattice.py</span><span class="code-lang">python</span></div>
+<pre><code>from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def paths(x, y):
+    """Shortest lattice paths from (0, 0) to (x, y)."""
+    if x == 0 or y == 0:
+        return 1
+    return paths(x - 1, y) + paths(x, y - 1)
+
+print(paths(3, 2))   # 10
+print(paths(7, 7))   # 3432</code></pre>
+</div>
+
+    <div class="warning">
+      <span class="box-label">Floating point danger</span>
+      <p>Do not compute binomial coefficients with floating-point factorials for large \(n\): <code>math.factorial(100) / ...</code> loses precision. Use integer division <code>//</code>, <code>math.comb</code>, or a multiplicative formula that keeps integers exact.</p>
+    </div>
+
+    <h2 id="exam">Exam checklist</h2>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Must be able to</h3>
+        <ul class="checklist">
+          <li>State and apply the addition, multiplication and subtraction principles.</li>
+          <li>Recognise when events are disjoint or independent.</li>
+          <li>Apply the pigeonhole principle and state its injective-function corollary.</li>
+          <li>Compute factorials and simplify factorial ratios.</li>
+          <li>Count subsets of a given size with \(\binom{n}{k}\).</li>
+          <li>Count bit strings of a given length and weight.</li>
+          <li>Count shortest lattice paths, including paths through or avoiding a point.</li>
+          <li>Expand \((x+y)^n\) and extract a specific coefficient.</li>
+          <li>Use Pascal's identity and the symmetry \(\binom{n}{k}=\binom{n}{n-k}\).</li>
+          <li>Distinguish permutations from combinations and compute both.</li>
+          <li>Count injective and bijective functions between finite sets.</li>
+          <li>Combine principles in a multi-stage problem.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Common traps</h3>
+        <ul>
+          <li>Adding when the events overlap (red or face cards).</li>
+          <li>Multiplying when the number of second choices depends on the first choice.</li>
+          <li>Using \(n!\) when only \(k\) objects are being arranged — use \(P(n,k)\).</li>
+          <li>Using permutations when order is irrelevant — use \(C(n,k)\).</li>
+          <li>Forgetting to divide by \(k!\) when converting lists to sets.</li>
+          <li>Treating identical objects as distinct (or vice versa).</li>
+          <li>Counting the empty basket when the problem forbids it.</li>
+          <li>Using \(\binom{n}{k}\) with \(k&gt;n\) or negative \(k\).</li>
+          <li>Forgetting that lattice paths must move only right and up.</li>
+          <li>Mixing up the total steps \(n\) and the right-step count \(k\).</li>
+          <li>Assuming \(\binom{n}{k}\) is the coefficient of \(x^k y^{n-k}\) rather than \(x^{n-k}y^k\) — read the exponent carefully.</li>
+          <li>Reporting a count larger than the total number of objects in the universe.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Before you submit</span>
+      <p>Write one sentence explaining <em>why</em> you multiplied, added or subtracted. Most marking schemes award method marks for the principle, not just the final number. Check small cases by hand: for \(n=3\) or \(n=4\), list the objects and compare with your formula.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="04-relations-and-functions.html">
+        <span class="dir">Previous topic</span>
+        <span class="ttl">← 04 · Relations &amp; Functions</span>
+      </a>
+      <a class="next" href="../cheatsheet.html">
+        <span class="dir">Reference</span>
+        <span class="ttl">Formula Cheat Sheet →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 05 · Enumeration</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>

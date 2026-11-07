@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Logic notes: propositions, connectives, truth tables, tautologies, logical equivalence, conditionals, biconditionals, contrapositives, quantifiers and negation.">
+<meta name="theme-color" content="#0f2727">
+<title>02 · Logic — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link active" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 02</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 02</span>
+      <h1>Logic</h1>
+      <p class="lede">Logic is the science of reasoning: it gives statements an exact truth value and precise rules for combining them. This topic builds from the three basic connectives to truth tables, logical equivalence, conditionals, and finally quantifiers — the language every later proof is written in.</p>
+      <div class="meta-row">
+        <span class="pill">3 lectures</span>
+        <span class="pill amber">Truth tables</span>
+        <span class="pill blue">∀ ∃</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#propositions">Propositions and truth values</a></li>
+        <li><a href="#connectives">And, or, not</a></li>
+        <li><a href="#truth-tables">Constructing truth tables</a></li>
+        <li><a href="#tautologies">Tautologies and contradictions</a></li>
+        <li><a href="#equivalence">Logical equivalence</a></li>
+        <li><a href="#inference">Rules of inference</a></li>
+        <li><a href="#conditionals">Conditionals: if … then</a></li>
+        <li><a href="#biconditionals">Biconditionals: iff</a></li>
+        <li><a href="#converse">Converse, contrapositive, inverse</a></li>
+        <li><a href="#necessary">Necessary and sufficient</a></li>
+        <li><a href="#quantifiers">Quantifiers</a></li>
+        <li><a href="#domain">Domain of discourse</a></li>
+        <li><a href="#negation">Negating quantified statements</a></li>
+        <li><a href="#trolls">Worked puzzle: the three trolls</a></li>
+        <li><a href="#python">Logic in Python</a></li>
+        <li><a href="#exam">Exam checklist</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="propositions">Propositions and truth values</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Proposition</span>
+      <p>A <strong>proposition</strong> (or statement) is a sentence that is either <strong>true</strong> or <strong>false</strong> — never both, and never neither.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Sentence</th><th>Proposition?</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td>“Java is a programming language.”</td><td>Yes — true</td><td>It makes a factual claim.</td></tr>
+          <tr><td>“Cork is the capital of Ireland.”</td><td>Yes — false</td><td>False claims are still propositions.</td></tr>
+          <tr><td>“\(1+2=3\).”</td><td>Yes — true</td><td>A mathematical statement.</td></tr>
+          <tr><td>“Today is Tuesday.”</td><td>Yes — depends on the day</td><td>Its truth value is fixed once “today” is fixed.</td></tr>
+          <tr><td>“How are you?”</td><td>No</td><td>A question has no truth value.</td></tr>
+          <tr><td>“Stop sleeping in class!”</td><td>No</td><td>An order has no truth value.</td></tr>
+          <tr><td>“Correct horse battery staple.”</td><td>No</td><td>Not a sentence — no verb, no claim.</td></tr>
+          <tr><td>“This sentence is false.”</td><td>No</td><td>Pathological: assuming either value gives a contradiction.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The <strong>truth value</strong> of a proposition is written \(T\) / \(F\), or \(\mathsf{True}\) / \(\mathsf{False}\), or \(1\) / \(0\). Variables that stand for propositions are called <strong>propositional variables</strong> and are written with lower-case letters: \(p, q, r, s, p_1, p_2, \ldots\)</p>
+
+    <h3 id="atomic-compound">Atomic vs compound</h3>
+    <p>An <strong>atomic proposition</strong> cannot be broken into smaller propositions. A <strong>compound proposition</strong> is built from atomic propositions using <strong>logical connectives</strong> (also called Boolean connectives or logical operators).</p>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>“Today is wet <strong>and</strong> I am hungry” is compound: it joins the atomic propositions “Today is wet” and “I am hungry” with the connective <em>and</em>.</p>
+    </div>
+
+    <div class="exercise">
+      <span class="box-label">Exercise · classify</span>
+      <p>Classify each sentence as atomic, compound, or not a statement.</p>
+      <ol>
+        <li>The sum of the first 100 odd positive integers.</li>
+        <li>Everybody needs somebody sometime.</li>
+        <li>Waterford will win the All-Ireland or I'll eat my hat.</li>
+        <li>Go to your room!</li>
+        <li>Every natural number greater than 1 is either prime or composite.</li>
+        <li>This sentence is false.</li>
+      </ol>
+      <p><strong>Answers.</strong> (1) Not a statement — it is a noun phrase, not a claim. (2) Atomic. (3) Compound — an <em>or</em>. (4) Not a statement — an order. (5) Atomic (the “either … or” is inside a quantified claim; it is one statement about all natural numbers). (6) Not a statement — the liar paradox.</p>
+    </div>
+
+    <h2 id="connectives">And, or, not</h2>
+    <p>These three connectives are enough to express every truth function. The truth value of a compound proposition is determined <em>only</em> by the truth values of its parts — this is the <strong>truth-functional</strong> nature of propositional logic.</p>
+
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>Conjunction \(p \land q\)</h4>
+        <p>“\(p\) <strong>and</strong> \(q\)”. True only when <em>both</em> are true. Python: <code>and</code>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Disjunction \(p \lor q\)</h4>
+        <p>“\(p\) <strong>or</strong> \(q\)”. True when <em>at least one</em> is true — this is inclusive or. Python: <code>or</code>.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Negation \(\neg p\)</h4>
+        <p>“<strong>not</strong> \(p\)”. Flips the truth value. Python: <code>not</code>.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \land q\)</th><th>\(p \lor q\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>F</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>T</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(\neg p\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>Double negation:</strong> \(\neg\neg p \equiv p\). In English: “It is not the case that it is not raining” means “it is raining”.</p>
+
+    <div class="note">
+      <span class="box-label">Inclusive or</span>
+      <p>Mathematical “or” is <strong>inclusive</strong>: \(p \lor q\) is true when both are true. The exclusive or (“one or the other, but not both”) is a different connective and is not one of the three basics.</p>
+    </div>
+
+    <h3 id="precedence">Operator precedence</h3>
+    <p>When brackets are omitted, bind in this order: \(\neg\) first, then \(\land\), then \(\lor\), then \(\to\), then \(\leftrightarrow\). In practice, <strong>always use brackets</strong> in your answers — it removes all ambiguity and makes your reasoning easy to mark.</p>
+
+    <h2 id="truth-tables">Constructing truth tables</h2>
+    <p>A <strong>propositional formula</strong> is a logical expression built from propositional variables and connectives. A <strong>truth table</strong> shows the value of the formula for every possible assignment of values to its variables.</p>
+
+    <div class="theorem">
+      <span class="box-label">Counting rows</span>
+      <p>A formula with \(n\) distinct atomic propositions has \(2^n\) rows in a complete truth table. With 2 variables: 4 rows; with 3 variables: 8 rows.</p>
+    </div>
+
+    <h3 id="tt-method">The four-step method</h3>
+    <ol class="steps">
+      <li>Identify the constituent <strong>atomic propositions</strong>.</li>
+      <li>List the <strong>compound sub-expressions</strong> in increasing order of complexity, ending with the whole formula.</li>
+      <li>Enumerate <strong>every combination</strong> of truth values for the atomic propositions.</li>
+      <li>Fill in each compound column row by row.</li>
+    </ol>
+
+    <div class="tip">
+      <span class="box-label">Reading tip</span>
+      <p>Build the table <em>left to right</em>. Never try to write the final column directly — compute the small pieces first, then combine them. This is exactly how you should lay out an exam answer.</p>
+    </div>
+
+    <h3 id="tt-example-1">Example 1: \((p \lor q) \land \neg p\)</h3>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \lor q\)</th><th>\(\neg p\)</th><th>\((p \lor q) \land \neg p\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>F</td><td>T</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The formula is true only when \(p\) is false and \(q\) is true. In words: “\(q\), but not \(p\)”.</p>
+
+    <h3 id="tt-example-2">Example 2: \((p \land q) \lor (\neg p \land \neg q)\)</h3>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \land q\)</th><th>\(\neg p\)</th><th>\(\neg q\)</th><th>\(\neg p \land \neg q\)</th><th>\((p \land q) \lor (\neg p \land \neg q)\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td><td>F</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>This is true exactly when \(p\) and \(q\) have the <em>same</em> truth value — so this formula is equivalent to the biconditional \(p \leftrightarrow q\).</p>
+
+    <h3 id="tt-example-3">Example 3: \((p \lor q \lor \neg r) \land r\)</h3>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(r\)</th><th>\(\neg r\)</th><th>\(p \lor q \lor \neg r\)</th><th>\((p \lor q \lor \neg r) \land r\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+          <tr><td>F</td><td>F</td><td>T</td><td>F</td><td>F</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+          <tr><td>T</td><td>F</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Because of the final \(\land r\), the formula is false on every row where \(r\) is false. It is true exactly when \(r\) is true and at least one of \(p\), \(q\) is true.</p>
+
+    <h2 id="tautologies">Tautologies and contradictions</h2>
+
+    <div class="definition">
+      <span class="box-label">Definitions</span>
+      <ul>
+        <li><strong>Satisfiable:</strong> true for <em>at least one</em> assignment of its variables.</li>
+        <li><strong>Tautology:</strong> true for <em>every</em> assignment. (Also written \(\models A\).)</li>
+        <li><strong>Contradiction:</strong> false for <em>every</em> assignment.</li>
+        <li><strong>Contingent:</strong> true for some assignments and false for others.</li>
+      </ul>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>Tautology examples</h4>
+        <p>\(p \lor \neg p\) &nbsp; (“tomorrow I will be dead or I will be alive”)<br>
+        \((p \land q) \lor (p \land \neg q) \lor \neg p\)<br>
+        \(p \to (p \lor q)\)</p>
+      </div>
+      <div class="mini-card">
+        <h4>Contradiction examples</h4>
+        <p>\(p \land \neg p\) &nbsp; (“I will win the lottery and not win the lottery”)<br>
+        \((p \lor q) \land \neg p \land \neg q\)</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Relationships</span>
+      <p>Every tautology is satisfiable. A contradiction is <em>not</em> satisfiable. A formula is a tautology iff its negation is a contradiction. “Satisfiable” asks whether the formula can be true <em>somewhere</em>; “tautology” asks whether it is true <em>everywhere</em>.</p>
+    </div>
+
+    <h3 id="testing">Testing a claim</h3>
+    <ul>
+      <li>To show a formula is a <strong>tautology</strong>, its final column must be all T.</li>
+      <li>To show it is a <strong>contradiction</strong>, its final column must be all F.</li>
+      <li>To show it is <strong>satisfiable</strong>, exhibit one row with T.</li>
+      <li>To show it is <strong>not a tautology</strong>, exhibit one row with F — a single counterexample is enough.</li>
+    </ul>
+
+    <h2 id="equivalence">Logical equivalence</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Logical equivalence</span>
+      <p>Two formulas are <strong>logically equivalent</strong>, written \(A \equiv B\), if they have the same truth value on every assignment of their variables. Equivalently, \(A \leftrightarrow B\) is a tautology.</p>
+    </div>
+
+    <p>There are two ways to prove an equivalence:</p>
+    <ol>
+      <li><strong>Truth tables</strong> — construct both tables and compare the output columns. Easy, but long and error-prone.</li>
+      <li><strong>Algebraic laws</strong> — transform one formula into the other using known equivalences. Shorter, but you must know the laws.</li>
+    </ol>
+
+    <h3 id="demorgan">De Morgan's laws</h3>
+    <div class="theorem">
+      <span class="box-label">Theorem · De Morgan</span>
+      <p>\[
+        \neg(p \lor q) \equiv \neg p \land \neg q
+      \]
+      \[
+        \neg(p \land q) \equiv \neg p \lor \neg q
+      \]</p>
+      <p>In words: “not (p or q)” means “neither p nor q”; “not (p and q)” means “at least one of p, q fails”.</p>
+    </div>
+
+    <h3 id="equivalence-example">Worked proof: \(\neg(p \lor q) \equiv \neg p \land \neg q\)</h3>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \lor q\)</th><th>\(\neg(p \lor q)\)</th><th>\(\neg p\)</th><th>\(\neg q\)</th><th>\(\neg p \land \neg q\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>F</td><td>T</td><td>F</td><td>F</td><td>T</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The fourth and seventh columns are identical, so the formulas are equivalent. \(\blacksquare\)</p>
+
+    <h3 id="laws">The laws of propositional logic</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Law</th><th>Form</th></tr></thead>
+        <tbody>
+          <tr><td>Identity</td><td>\(p \land T \equiv p\), &nbsp; \(p \lor F \equiv p\)</td></tr>
+          <tr><td>Domination</td><td>\(p \lor T \equiv T\), &nbsp; \(p \land F \equiv F\)</td></tr>
+          <tr><td>Idempotent</td><td>\(p \land p \equiv p\), &nbsp; \(p \lor p \equiv p\)</td></tr>
+          <tr><td>Double negation</td><td>\(\neg\neg p \equiv p\)</td></tr>
+          <tr><td>Commutative</td><td>\(p \land q \equiv q \land p\), &nbsp; \(p \lor q \equiv q \lor p\)</td></tr>
+          <tr><td>Associative</td><td>\((p \land q) \land r \equiv p \land (q \land r)\), &nbsp; same for \(\lor\)</td></tr>
+          <tr><td>Distributive</td><td>\(p \land (q \lor r) \equiv (p \land q) \lor (p \land r)\)<br>\(p \lor (q \land r) \equiv (p \lor q) \land (p \lor r)\)</td></tr>
+          <tr><td>De Morgan</td><td>\(\neg(p \land q) \equiv \neg p \lor \neg q\), &nbsp; \(\neg(p \lor q) \equiv \neg p \land \neg q\)</td></tr>
+          <tr><td>Absorption</td><td>\(p \lor (p \land q) \equiv p\), &nbsp; \(p \land (p \lor q) \equiv p\)</td></tr>
+          <tr><td>Implication</td><td>\(p \to q \equiv \neg p \lor q\)</td></tr>
+          <tr><td>Biconditional</td><td>\(p \leftrightarrow q \equiv (p \to q) \land (q \to p)\)</td></tr>
+          <tr><td>Contrapositive</td><td>\(p \to q \equiv \neg q \to \neg p\)</td></tr>
+          <tr><td>Negated implication</td><td>\(\neg(p \to q) \equiv p \land \neg q\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Exam strategy</span>
+      <p>If an equivalence question is worth few marks, use a truth table — it is mechanical and hard to get wrong if you are careful. If it asks you to “simplify” or gives many variables, use the laws.</p>
+    </div>
+
+    <h2 id="inference">Rules of inference</h2>
+
+    <p>Equivalence laws let you rewrite a statement; <strong>rules of inference</strong> let you derive a new statement from premises. Write \(\Rightarrow\) for “therefore”. The official formula sheet attached to the exam lists these, so learn the names.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Rule</th><th>Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Modus ponens (detachment)</td><td>\((p \to q) \land p \;\Rightarrow\; q\)</td><td>If it rains, the ground is wet. It rains. Therefore the ground is wet.</td></tr>
+          <tr><td>Modus tollens (indirect reasoning)</td><td>\((p \to q) \land \neg q \;\Rightarrow\; \neg p\)</td><td>If it rains, the ground is wet. The ground is not wet. Therefore it did not rain.</td></tr>
+          <tr><td>Disjunctive addition</td><td>\(p \;\Rightarrow\; (p \lor q)\)</td><td>It is Monday. Therefore it is Monday or Friday.</td></tr>
+          <tr><td>Conjunctive simplification</td><td>\((p \land q) \;\Rightarrow\; p\) &nbsp;and&nbsp; \((p \land q) \;\Rightarrow\; q\)</td><td>It is Monday and raining. Therefore it is Monday.</td></tr>
+          <tr><td>Disjunctive simplification</td><td>\((p \lor q) \land \neg p \;\Rightarrow\; q\) &nbsp;and&nbsp; \((p \lor q) \land \neg q \;\Rightarrow\; p\)</td><td>It is Monday or Friday. It is not Monday. Therefore it is Friday.</td></tr>
+          <tr><td>Hypothetical syllogism (chain rule)</td><td>\((p \to q) \land (q \to r) \;\Rightarrow\; (p \to r)\)</td><td>If it rains the ground is wet; if the ground is wet the match is cancelled. Therefore rain cancels the match.</td></tr>
+          <tr><td>Resolution</td><td>\((\neg p \lor r) \land (p \lor q) \;\Rightarrow\; (q \lor r)\)</td><td>Used by automated theorem provers; combines two clauses, cancelling \(p\) against \(\neg p\).</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Common fallacies</span>
+      <p>These look like rules but are <strong>invalid</strong>:</p>
+      <ul>
+        <li><strong>Affirming the consequent:</strong> \((p \to q) \land q \;\not\Rightarrow\; p\). Wet ground does not prove rain.</li>
+        <li><strong>Denying the antecedent:</strong> \((p \to q) \land \neg p \;\not\Rightarrow\; \neg q\). No rain does not prove the ground is dry.</li>
+      </ul>
+    </div>
+
+    <h2 id="conditionals">Conditionals: if … then</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Conditional</span>
+      <p>The <strong>conditional</strong> (implication, if-then) is written \(p \to q\), where \(p\) is the <strong>hypothesis</strong> (antecedent) and \(q\) is the <strong>conclusion</strong> (consequent).</p>
+      <p>\[
+        p \to q \text{ is } F \text{ only when } p \text{ is } T \text{ and } q \text{ is } F; \text{ otherwise } T.
+      \]</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \to q\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The motivating example from the lectures: “If Sandra gets at least 80% in the exam, then Sandra will pass the module.” This claim is only broken when Sandra gets at least 80% <em>and still fails</em>. If she gets less than 80%, the promise says nothing about her result — she might still pass, but the implication is not falsified.</p>
+
+    <div class="warning">
+      <span class="box-label">Vacuous truth</span>
+      <p>An implication is <strong>true whenever its hypothesis is false</strong>. This surprises people. “If fish have hair, then chickens have lips” is a true implication, because the hypothesis is false. The two clauses need not be causally or thematically related — the conditional is a truth function, not a claim about cause and effect.</p>
+    </div>
+
+    <h3 id="conditional-examples">Worked examples</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Statement</th><th>Truth value</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>“\(0=1 \to 1=1\)”</td><td>True</td><td>Hypothesis false — vacuously true.</td></tr>
+          <tr><td>“\(1=1 \to\) most horses have 4 legs”</td><td>True</td><td>Hypothesis true, conclusion true.</td></tr>
+          <tr><td>“If 8 is prime, then the 7624th digit of \(\pi\) is 8.”</td><td>True</td><td>8 is not prime — hypothesis false.</td></tr>
+          <tr><td>“If the 7624th digit of \(\pi\) is 8, then \(2+2=4\).”</td><td>True</td><td>Conclusion true — the implication holds regardless of the digit.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="implication-as-or">Expressing \(\to\) with \(\lor\)</h3>
+    <div class="theorem">
+      <span class="box-label">Theorem</span>
+      <p>\[ p \to q \equiv \neg p \lor q \]</p>
+    </div>
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \to q\)</th><th>\(\neg p\)</th><th>\(\neg p \lor q\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>T</td><td>T</td><td>T</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td><td>F</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>This equivalence is the workhorse for simplifying formulas and for negating implications: \(\neg(p \to q) \equiv p \land \neg q\).</p>
+
+    <h3 id="english-forms">English forms that hide an implication</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>English</th><th>Symbolic form</th></tr></thead>
+        <tbody>
+          <tr><td>If \(p\), then \(q\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(p\) implies \(q\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>If \(p\), \(q\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(q\) if \(p\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(p\) only if \(q\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(q\) whenever \(p\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(p\) is sufficient for \(q\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(q\) is necessary for \(p\)</td><td>\(p \to q\)</td></tr>
+          <tr><td>\(p\) unless \(q\)</td><td>\(\neg q \to p\) &nbsp;(equivalently \(p \lor q\))</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">“Only if” is not “if”</span>
+      <p>“\(p\) only if \(q\)” means \(p \to q\). “\(p\) if \(q\)” means \(q \to p\). They are converses, not the same statement. Read “only if” as “\(p\) can happen only when \(q\) happens”.</p>
+    </div>
+
+    <h2 id="biconditionals">Biconditionals: iff</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Biconditional</span>
+      <p>The <strong>biconditional</strong> (if and only if, iff) is written \(p \leftrightarrow q\) and is true exactly when \(p\) and \(q\) have the <strong>same truth value</strong>.</p>
+      <p>\[
+        p \leftrightarrow q \equiv (p \to q) \land (q \to p)
+      \]</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="truth-table">
+        <thead><tr><th>\(p\)</th><th>\(q\)</th><th>\(p \leftrightarrow q\)</th></tr></thead>
+        <tbody>
+          <tr><td>F</td><td>F</td><td>T</td></tr>
+          <tr><td>F</td><td>T</td><td>F</td></tr>
+          <tr><td>T</td><td>F</td><td>F</td></tr>
+          <tr><td>T</td><td>T</td><td>T</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Two formulas \(A\) and \(B\) are logically equivalent exactly when \(A \leftrightarrow B\) is a tautology. To prove an “iff” statement in mathematics you must prove <strong>both directions</strong>: \(A \to B\) and \(B \to A\).</p>
+
+    <div class="note">
+      <span class="box-label">Wording</span>
+      <p>“\(p\) if and only if \(q\)” is often abbreviated “\(p\) iff \(q\)”. Other phrasings: “\(p\) is necessary and sufficient for \(q\)”, “\(p\) exactly when \(q\)”.</p>
+    </div>
+
+    <h2 id="converse">Converse, contrapositive, inverse</h2>
+    <p>Given the implication \(p \to q\), there are three related implications. Only one of them is equivalent to the original.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Form</th><th>Equivalent to \(p \to q\)?</th></tr></thead>
+        <tbody>
+          <tr><td>Original</td><td>\(p \to q\)</td><td>—</td></tr>
+          <tr><td><strong>Converse</strong></td><td>\(q \to p\)</td><td><strong>No</strong></td></tr>
+          <tr><td><strong>Contrapositive</strong></td><td>\(\neg q \to \neg p\)</td><td><strong>Yes</strong> — always</td></tr>
+          <tr><td><strong>Inverse</strong></td><td>\(\neg p \to \neg q\)</td><td><strong>No</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Key facts</span>
+      <ul>
+        <li>An implication and its contrapositive are logically equivalent.</li>
+        <li>The converse is <em>not</em> equivalent to the original. The converse of the contrapositive is the inverse, and vice versa.</li>
+        <li>The original and the converse are both true exactly when the biconditional \(p \leftrightarrow q\) holds.</li>
+      </ul>
+    </div>
+
+    <h3 id="converse-example">Worked example</h3>
+    <p>Let \(p\) = “\(x\) is a healthy horse” and \(q\) = “\(x\) has four legs”. The original is</p>
+    <p>\[ p \to q: \quad \text{“If } x \text{ is a healthy horse, then } x \text{ has four legs.”} \]</p>
+    <ul>
+      <li><strong>Converse</strong> \(q \to p\): “If \(x\) has four legs, then \(x\) is a healthy horse.” False for a four-legged aardvark.</li>
+      <li><strong>Contrapositive</strong> \(\neg q \to \neg p\): “If \(x\) does not have four legs, then \(x\) is not a healthy horse.” Same truth value as the original.</li>
+      <li><strong>Inverse</strong> \(\neg p \to \neg q\): “If \(x\) is not a healthy horse, then \(x\) does not have four legs.” Not equivalent to the original.</li>
+    </ul>
+
+    <h3 id="bob">The Bob example</h3>
+    <p>Suppose I tell Bob: “If you get 93% in the exam, then you will get an A in the module.” Assume this is true.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>What you learn</th><th>Conclusion</th></tr></thead>
+        <tbody>
+          <tr><td>Bob gets 93%.</td><td>Bob gets an A. (Modus ponens: from \(p\) and \(p \to q\), infer \(q\).)</td></tr>
+          <tr><td>Bob gets an A.</td><td><strong>Nothing</strong> about his mark. He might have got an A another way.</td></tr>
+          <tr><td>Bob does not get 93%.</td><td><strong>Nothing</strong> about his grade. The promise is silent.</td></tr>
+          <tr><td>Bob does not get an A.</td><td>Bob did not get 93%. (Modus tollens: from \(\neg q\) and \(p \to q\), infer \(\neg p\).)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Mnemonic</span>
+      <p>From \(p \to q\): affirm the hypothesis to get the conclusion; deny the conclusion to get the denial of the hypothesis. Affirming the conclusion or denying the hypothesis proves nothing — those are the classic fallacies.</p>
+    </div>
+
+    <h2 id="necessary">Necessary and sufficient</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Necessary and sufficient</span>
+      <ul>
+        <li>“\(p\) is <strong>necessary</strong> for \(q\)” means \(q \to p\). Without \(p\), \(q\) cannot happen.</li>
+        <li>“\(p\) is <strong>sufficient</strong> for \(q\)” means \(p \to q\). \(p\) is enough to guarantee \(q\).</li>
+        <li>“\(p\) is <strong>necessary and sufficient</strong> for \(q\)” means \(p \leftrightarrow q\).</li>
+      </ul>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Statement</th><th>Translation</th><th>Everyday reading</th></tr></thead>
+        <tbody>
+          <tr><td>Being 18 is necessary for voting</td><td>\(\text{vote} \to 18^+\)</td><td>You cannot vote unless you are 18.</td></tr>
+          <tr><td>Scoring 50% is sufficient to pass</td><td>\(50\% \to \text{pass}\)</td><td>50% guarantees a pass.</td></tr>
+          <tr><td>Scoring 40% is necessary and sufficient</td><td>\(40\% \leftrightarrow \text{pass}\)</td><td>You pass exactly when you score 40%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Common error</span>
+      <p>“Necessary” and “sufficient” are not interchangeable, and the direction is easy to reverse. Write the arrow immediately: <em>necessary for</em> \(q\) means the arrow points <strong>into</strong> \(p\) (\(q \to p\)); <em>sufficient for</em> \(q\) means the arrow points <strong>into</strong> \(q\) (\(p \to q\)).</p>
+    </div>
+
+    <h2 id="quantifiers">Quantifiers</h2>
+    <p>Quantifiers turn a <strong>predicate</strong> — a statement depending on a variable, such as “\(x > 0\)” — into a proposition. There are two in mathematics.</p>
+
+    <div class="definition">
+      <span class="box-label">Definition · Quantifiers</span>
+      <ul>
+        <li><strong>Universal quantifier</strong> \(\forall\), read “for all” or “every”: \(\forall x\,[P(x)]\) asserts \(P(x)\) is true for every \(x\) in the domain.</li>
+        <li><strong>Existential quantifier</strong> \(\exists\), read “there exists” or “there is”: \(\exists x\,[P(x)]\) asserts \(P(x)\) is true for at least one \(x\) in the domain.</li>
+      </ul>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini-card">
+        <h4>To prove \(\forall x\,P(x)\)</h4>
+        <p>You must show \(P\) holds for <em>every</em> element. One counterexample is enough to <em>disprove</em> it.</p>
+      </div>
+      <div class="mini-card">
+        <h4>To prove \(\exists x\,P(x)\)</h4>
+        <p>You only need to find <em>one</em> witness. To <em>disprove</em> it, you must show \(P\) fails for every element.</p>
+      </div>
+    </div>
+
+    <h3 id="notation">The standard notation</h3>
+    <p>Always write predicates in the form</p>
+    <div class="formula">\[ \underbrace{\forall x}_{\text{quantifier + variable}} \underbrace{[\, x > 0 \,]}_{\text{statement}} \qquad\text{or}\qquad \forall x \in \mathbb{R}\,[\, x > 0 \,] \]</div>
+    <p>where the optional \(x \in \mathbb{R}\) is the <strong>domain</strong> — the set the variable is drawn from. The square brackets are not mathematically required, but they make the scope of the quantifier unambiguous.</p>
+
+    <h3 id="translation">Translating English to predicates</h3>
+
+    <div class="example">
+      <span class="box-label">Example 1</span>
+      <p>“Every number is positive.”</p>
+      <p>Reword: “For any number \(x\), \(x\) is positive.” Symbolically:</p>
+      <p>\[ \forall x\,[x > 0] \]</p>
+      <p>This is <strong>false</strong> over the integers or reals, because \(x = -1\) is a counterexample.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example 2</span>
+      <p>“Every positive number is positive.”</p>
+      <p>Reword: “For any number, <em>if</em> the number is positive, <em>then</em> it is positive.” The hidden conditional is essential:</p>
+      <p>\[ \forall x\,[(x > 0) \to (x > 0)] \]</p>
+      <p>This is a tautology (true for every \(x\)), because the hypothesis and conclusion are identical. The lesson: “every \(A\) is \(B\)” becomes \(\forall x\,[A(x) \to B(x)]\), not \(\forall x\,[A(x) \land B(x)]\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example 3</span>
+      <p>“Some numbers are positive.”</p>
+      <p>Reword: “There exists at least one number such that it is positive.”</p>
+      <p>\[ \exists x\,[x > 0] \]</p>
+      <p>True over the integers: \(x = 1\) is a witness.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example 4</span>
+      <p>“The average of two positive numbers is positive.”</p>
+      <p>Reword: “For all two numbers, if they are both positive, then their average is positive.”</p>
+      <p>\[ \forall x\,\forall y\,\big[((x > 0) \land (y > 0)) \to \tfrac{x+y}{2} > 0\big] \]</p>
+      <p>True over the reals.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">The two translation patterns</span>
+      <p><strong>“All \(A\)s are \(B\)”</strong> \(\;\longrightarrow\;\) \(\forall x\,[A(x) \to B(x)]\).<br>
+      <strong>“Some \(A\) is \(B\)”</strong> \(\;\longrightarrow\;\) \(\exists x\,[A(x) \land B(x)]\).<br>
+      Mixing these up (using \(\land\) with \(\forall\), or \(\to\) with \(\exists\)) is the single most common translation error.</p>
+    </div>
+
+    <h2 id="domain">Domain of discourse</h2>
+    <p>The <strong>domain of discourse</strong> is the collection the variable ranges over. A quantified statement has no truth value until the domain is fixed.</p>
+
+    <div class="example">
+      <span class="box-label">Example · quantifier order matters</span>
+      <p>Consider \(\forall x\,\exists y\,[y &lt; x]\).</p>
+      <ul>
+        <li>Over the <strong>natural numbers</strong> \(\mathbb{N} = \{0,1,2,\ldots\}\) this is <strong>false</strong>: take \(x = 0\); there is no natural number \(y &lt; 0\).</li>
+        <li>Over the <strong>integers</strong> \(\mathbb{Z}\) it is <strong>true</strong>: given \(x\), choose \(y = x - 1\).</li>
+      </ul>
+      <p>Its negation is \(\exists x\,\forall y\,[y \ge x]\) — “there is a smallest number”. True over \(\mathbb{N}\), false over \(\mathbb{Z}\).</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · \(\forall\) and \(\exists\) do not commute</span>
+      <p>In general,</p>
+      <p>\[ \forall x\,\exists y\,P(x,y) \;\not\equiv\; \exists y\,\forall x\,P(x,y). \]</p>
+      <p>The second statement is <em>stronger</em>: it demands a single \(y\) that works for every \(x\). The first allows \(y\) to depend on \(x\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example</span>
+      <p>Over the real numbers:</p>
+      <ul>
+        <li>\(\forall x\,\exists y\,[y > x]\) is <strong>true</strong>: given \(x\), take \(y = x + 1\).</li>
+        <li>\(\exists x\,\forall y\,[y > x]\) is <strong>false</strong>: no real \(x\) is less than every real \(y\) (take \(y = x - 1\)).</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the domain changes everything</span>
+      <ul>
+        <li>\(\forall x\,\forall y\,[x^2 + y^2 \ge 0]\) is true over \(\mathbb{R}\), but false over \(\mathbb{C}\) (take \(x = i\), \(y = 0\): \(i^2 + 0 = -1 &lt; 0\)).</li>
+        <li>\(\exists x\,\exists y\,[x + 2y = 7]\) is true over \(\mathbb{R}\) — for example \(x = 3\), \(y = 2\).</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Course convention</span>
+      <p>In this module, an unqualified “number” usually means a <strong>natural number</strong> \(\mathbb{N} = \{0,1,2,\ldots\}\), unless the question says integers, reals, or similar. State your domain explicitly in exam answers.</p>
+    </div>
+
+    <h2 id="negation">Negating quantified statements</h2>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · quantifier negation</span>
+      <p>\[
+        \neg\forall x\,P(x) \;\equiv\; \exists x\,\neg P(x)
+      \]
+      \[
+        \neg\exists x\,P(x) \;\equiv\; \forall x\,\neg P(x)
+      \]</p>
+      <p>Negating a quantifier <strong>swaps</strong> it: \(\forall \leftrightarrow \exists\).</p>
+    </div>
+
+    <p>The intuition: “not everything has property \(P\)” means “something fails to have \(P\)”; “there is nothing with property \(P\)” means “everything fails to have \(P\)”.</p>
+
+    <h3 id="negation-examples">Worked negations</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Statement</th><th>Negation</th><th>Simplified</th></tr></thead>
+        <tbody>
+          <tr><td>\(\forall x\,[x > 0]\)</td><td>\(\exists x\,\neg[x > 0]\)</td><td>\(\exists x\,[x \le 0]\)</td></tr>
+          <tr><td>\(\exists x\,[x &lt; 0]\)</td><td>\(\forall x\,\neg[x &lt; 0]\)</td><td>\(\forall x\,[x \ge 0]\)</td></tr>
+          <tr><td>\(\forall x\,[x \text{ is even}]\)</td><td>\(\exists x\,[x \text{ is not even}]\)</td><td>\(\exists x\,[x \text{ is odd}]\) (over \(\mathbb{Z}\))</td></tr>
+          <tr><td>\(\forall x\,[P(x) \to Q(x)]\)</td><td>\(\exists x\,\neg[P(x) \to Q(x)]\)</td><td>\(\exists x\,[P(x) \land \neg Q(x)]\)</td></tr>
+          <tr><td>\(\exists x\,[P(x) \land Q(x)]\)</td><td>\(\forall x\,\neg[P(x) \land Q(x)]\)</td><td>\(\forall x\,[\neg P(x) \lor \neg Q(x)]\)</td></tr>
+          <tr><td>\(\forall x\,\exists y\,[y &lt; x]\)</td><td>\(\exists x\,\neg\exists y\,[y &lt; x]\)</td><td>\(\exists x\,\forall y\,[y \ge x]\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Negating “all A are B”</span>
+      <p>The negation of “all \(A\)s are \(B\)” is <strong>“some \(A\) is not \(B\)”</strong> — a single counterexample. It is <em>not</em> “no \(A\)s are \(B\)”. Formally, \(\neg\forall x\,[A(x) \to B(x)] \equiv \exists x\,[A(x) \land \neg B(x)]\).</p>
+    </div>
+
+    <h3 id="exercise-translation">Exercise set from the lecture</h3>
+    <p>Using \(E(x)\) for “\(x\) is even” and \(O(x)\) for “\(x\) is odd”:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>English</th><th>Symbolic form</th></tr></thead>
+        <tbody>
+          <tr><td>No number is both even and odd.</td><td>\(\forall x\,\neg(E(x) \land O(x))\)</td></tr>
+          <tr><td>One more than any even number is an odd number.</td><td>\(\forall x\,[E(x) \to O(x+1)]\)</td></tr>
+          <tr><td>There is a prime number that is even.</td><td>\(\exists x\,[\mathrm{Prime}(x) \land E(x)]\)</td></tr>
+          <tr><td>Between any two numbers there is a third number.</td><td>\(\forall x\,\forall y\,[x &lt; y \to \exists z\,[x &lt; z \land z &lt; y]]\)</td></tr>
+          <tr><td>There is no number between a number and one more than that number.</td><td>\(\forall x\,\neg\exists z\,[x &lt; z \land z &lt; x+1]\)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Translate the other way — from symbols to English:</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Formula</th><th>English</th><th>Truth over \(\mathbb{R}\)</th></tr></thead>
+        <tbody>
+          <tr><td>\(\forall x\,[E(x) \to E(x+2)]\)</td><td>Adding 2 to any even number gives an even number.</td><td>True</td></tr>
+          <tr><td>\(\forall x\,\exists y\,[\sin(x) = y]\)</td><td>Every real \(x\) has a sine value.</td><td>True</td></tr>
+          <tr><td>\(\forall y\,\exists x\,[\sin(x) = y]\)</td><td>Every real number is the sine of something.</td><td>False (take \(y = 2\))</td></tr>
+          <tr><td>\(\forall x\,\forall y\,[x^3 = y^3 \to x = y]\)</td><td>Equal cubes imply equal numbers; cubing is injective.</td><td>True</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="trolls">Worked puzzle: the three trolls</h2>
+    <p>Three identical trolls guard a bridge. Each is either a <strong>knight</strong> (always tells the truth) or a <strong>knave</strong> (always lies). Number them left to right. Their statements are:</p>
+    <ul>
+      <li><strong>Troll 1:</strong> “If I am a knave, then there are exactly two knights here.”</li>
+      <li><strong>Troll 2:</strong> “Troll 1 is lying.”</li>
+      <li><strong>Troll 3:</strong> “Either we are all knaves or at least one of us is a knight.”</li>
+    </ul>
+
+    <h3 id="troll-solution">Solution</h3>
+    <ol class="steps">
+      <li><strong>Troll 3 must be a knight.</strong> The statement “either we are all knaves or at least one of us is a knight” is a tautology: if it is not the case that all are knaves, then at least one is a knight. A knave would have to utter a falsehood, but the statement cannot be false. So Troll 3 is a knight.</li>
+      <li><strong>Suppose Troll 1 is a knave.</strong> Then Troll 1's implication must be false. Its hypothesis “I am a knave” is true, so its conclusion must be false: there are <em>not</em> exactly two knights. But Troll 3 is already a knight, so the only way to avoid exactly two knights is for Troll 2 to be a knave. Then Troll 2's claim “Troll 1 is lying” would be <em>true</em> (Troll 1 is a knave), which contradicts Troll 2 being a knave. So Troll 1 cannot be a knave.</li>
+      <li><strong>Therefore Troll 1 is a knight.</strong> Its hypothesis “I am a knave” is false, so the implication is vacuously true — consistent with Troll 1 telling the truth.</li>
+      <li><strong>Troll 2 is a knave.</strong> Troll 2 says Troll 1 is lying, which is false because Troll 1 is a knight. A false statement is exactly what a knave says.</li>
+    </ol>
+
+    <div class="definition">
+      <span class="box-label">Answer</span>
+      <p><strong>Troll 1: knight. Troll 2: knave. Troll 3: knight.</strong></p>
+      <p>Check: Troll 1's conditional has a false hypothesis, so it is true; Troll 2's claim is false; Troll 3's disjunction is true. Every troll behaves according to its type.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Puzzle strategy</span>
+      <p>For knight/knave puzzles: (1) look for statements that are tautologies or contradictions — they force a type; (2) case-split on one character and propagate; (3) remember a knave's statement is <em>false</em>, so the negation of what they said is true.</p>
+    </div>
+
+    <h2 id="python">Logic in Python</h2>
+    <p>Python's Boolean operators are the connectives under different names, and they <strong>short-circuit</strong>: <code>and</code> stops at the first false operand, <code>or</code> stops at the first true one.</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">logic.py</span><span class="code-lang">python</span></div>
+<pre><code>p = True
+q = False
+
+print(p and q)      # False
+print(p or q)       # True
+print(not p)        # False
+print(not (p and q))  # True  — De Morgan: (not p) or (not q)
+
+# Short-circuit: the right-hand side may never run
+def boom():
+    raise RuntimeError("never called")
+
+print(False and boom())   # False, boom() is skipped
+print(True or boom())     # True,  boom() is skipped</code></pre>
+</div>
+
+    <p>A conditional is often written as an <code>if</code> statement, but it can also be written as a Boolean expression using the equivalence \(p \to q \equiv \neg p \lor q\):</p>
+
+<div class="code-block">
+  <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">implies.py</span><span class="code-lang">python</span></div>
+<pre><code>def implies(p, q):
+    return (not p) or q
+
+print(implies(False, False))   # True  — vacuous truth
+print(implies(True, False))    # False — the only failing case</code></pre>
+</div>
+
+    <div class="note">
+      <span class="box-label">Truthiness warning</span>
+      <p>Python's <code>and</code> / <code>or</code> return an <em>operand</em>, not necessarily a Boolean. For example <code>0 or "yes"</code> evaluates to <code>"yes"</code>, and <code>"a" and "b"</code> evaluates to <code>"b"</code>. Wrap the expression in <code>bool(...)</code> if you need a strict <code>True</code>/<code>False</code>.</p>
+    </div>
+
+    <h2 id="exam">Exam checklist</h2>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Must be able to</h3>
+        <ul class="checklist">
+          <li>Decide whether a sentence is a proposition.</li>
+          <li>Write a full truth table for a formula with up to 3 variables.</li>
+          <li>Classify a formula as tautology, contradiction, or contingent.</li>
+          <li>Prove or disprove a logical equivalence.</li>
+          <li>Apply De Morgan's laws in both directions.</li>
+          <li>Name and apply the standard rules of inference.</li>
+          <li>Spot the fallacies of affirming the consequent and denying the antecedent.</li>
+          <li>State the truth table and equivalent form of \(p \to q\).</li>
+          <li>Write the converse, contrapositive, and inverse.</li>
+          <li>Translate “necessary” and “sufficient” into arrows.</li>
+          <li>Translate English sentences into predicates and back.</li>
+          <li>Negate a quantified statement correctly.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Common traps</h3>
+        <ul>
+          <li>Thinking a false hypothesis makes an implication false — it makes it <em>true</em>.</li>
+          <li>Confusing the converse with the contrapositive.</li>
+          <li>Writing “all \(A\) are \(B\)” as \(\forall x\,[A(x) \land B(x)]\).</li>
+          <li>Forgetting to swap \(\forall\) and \(\exists\) when negating.</li>
+          <li>Negating “all \(A\) are \(B\)” as “no \(A\) are \(B\)”.</li>
+          <li>Assuming \(\forall x\exists y\) and \(\exists y\forall x\) mean the same thing.</li>
+          <li>Using inclusive “or” when the English intends exclusive “or”.</li>
+          <li>Leaving out brackets and relying on precedence.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Before you submit</span>
+      <p>Check every truth table has \(2^n\) rows, every row has a value in every column, and the final column is what the question actually asked for. For quantified answers, state the domain.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="01-computational-thinking.html">
+        <span class="dir">Previous topic</span>
+        <span class="ttl">← 01 · Computational Thinking</span>
+      </a>
+      <a class="next" href="03-collections.html">
+        <span class="dir">Next topic</span>
+        <span class="ttl">03 · Collections →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 02 · Logic</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
