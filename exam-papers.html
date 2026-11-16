@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="SETU Discrete Mathematics exam guide: format, topic frequency, question-by-question breakdown of the 2022/23–2024/25 papers, recurring question recipes with worked answers, and links to the official past papers and solutions.">
+<meta name="theme-color" content="#0f2727">
+<title>Exam Papers Guide — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="topics/01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="topics/02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="topics/03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="topics/04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="topics/05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+    <li><a class="nav-link" href="topics/06-graphs-and-networks.html"><span class="nav-num">06</span> Graphs &amp; Networks</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link active" href="exam-papers.html"><span class="nav-num">✎</span> Exam Papers Guide</a></li>
+    <li><a class="nav-link" href="cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Discrete Mathematics</a><span class="sep">/</span><span>Exam Papers Guide</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Reference · Past Papers</span>
+      <h1>Exam Papers Guide</h1>
+      <p class="lede">The exam is remarkably predictable. Five questions, twenty marks each, and the same dozen skills recycled with different stories. This page maps every recent paper, names the recurring question types, and gives the method and a model answer for each one.</p>
+      <div class="meta-row">
+        <span class="pill">2 hours</span>
+        <span class="pill amber">100 marks</span>
+        <span class="pill blue">5 × 20</span>
+        <span class="pill">Answer all</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this guide</p>
+      <ol>
+        <li><a href="#format">Exam format</a></li>
+        <li><a href="#frequency">Topic frequency</a></li>
+        <li><a href="#maps">Question maps by year</a></li>
+        <li><a href="#recipes">Recurring question recipes</a></li>
+        <li><a href="#logic">Logic &amp; truth tables</a></li>
+        <li><a href="#circuits">Circuits &amp; well-formed formulas</a></li>
+        <li><a href="#sets">Sets &amp; membership tables</a></li>
+        <li><a href="#relations">Relations &amp; functions</a></li>
+        <li><a href="#sequences">AP, GP &amp; sequences</a></li>
+        <li><a href="#counting">Counting &amp; probability</a></li>
+        <li><a href="#python">Python tracing</a></li>
+        <li><a href="#sigma">Σ and Π notation</a></li>
+        <li><a href="#graphs">Graphs</a></li>
+        <li><a href="#proof">Proof by cases</a></li>
+        <li><a href="#papers">Official papers &amp; solutions</a></li>
+        <li><a href="#plan">Revision plan</a></li>
+        <li><a href="#room">In the exam room</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="format">Exam format</h2>
+    <p>The recent papers (2022/23 onwards) all follow the same template:</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Item</th><th>Detail</th></tr></thead>
+        <tbody>
+          <tr><td>Duration</td><td>2 hours</td></tr>
+          <tr><td>Total marks</td><td>100</td></tr>
+          <tr><td>Structure</td><td>Five questions, 20 marks each. <strong>Answer all questions</strong> — there is no choice.</td></tr>
+          <tr><td>Marks per part</td><td>Mostly 1–4 marks per sub-part; one larger part (6–10 marks) per question.</td></tr>
+          <tr><td>Supplied materials</td><td>Formula sheet (laws of logic, set identities, counting formulas) and a Python cheat sheet, plus New Mathematics Tables and graph paper.</td></tr>
+          <tr><td>Calculator</td><td>Standard scientific calculator; the numbers are chosen to be doable by hand.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Timing</span>
+      <p>That is 24 minutes per question, or roughly <strong>1.2 minutes per mark</strong>. A 2-mark part should take about 2–3 minutes. Do not spend 15 minutes on a 3-mark AP question while a 9-mark lattice-path part sits untouched. If you are stuck, write the definition or formula — method marks are awarded generously.</p>
+    </div>
+
+    <p>The five questions are not topic-pure. They are deliberately mixed so that every question touches several topics. In 2024/25, for example, Question 1 contained logic, relations, counting and truth tables. This means <strong>you cannot revise one topic and skip another</strong>: every question will contain something from at least two areas.</p>
+
+    <h2 id="frequency">Topic frequency</h2>
+    <p>How often each skill appeared in the three most recent final papers, with the usual mark range. “✓” means at least one sub-part tested it.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Skill</th><th>2022/23</th><th>2023/24</th><th>2024/25</th><th>Typical marks</th></tr></thead>
+        <tbody>
+          <tr><td>English → propositional logic</td><td>✓</td><td>✓</td><td>✓</td><td>2–8</td></tr>
+          <tr><td>Truth table + classify (tautology / contradiction / satisfiable)</td><td>✓</td><td>✓</td><td>✓</td><td>5–7</td></tr>
+          <tr><td>Logic circuits (diagram → expression, expression → circuit)</td><td>✓</td><td>✓</td><td>✓</td><td>4–10</td></tr>
+          <tr><td>Well-formed formulas</td><td></td><td>✓</td><td>✓</td><td>4</td></tr>
+          <tr><td>Quantifiers and predicate tables</td><td>✓</td><td>✓</td><td></td><td>6–16</td></tr>
+          <tr><td>Sets, set operations, cardinality</td><td>✓</td><td>✓</td><td>✓</td><td>4–8</td></tr>
+          <tr><td>Membership table / set identity</td><td>✓</td><td></td><td></td><td>5</td></tr>
+          <tr><td>Relations: properties, digraph, equivalence classes</td><td>✓</td><td>✓</td><td>✓</td><td>4–14</td></tr>
+          <tr><td>Functions: injective, surjective, inverse, composition</td><td>✓</td><td>✓</td><td>✓</td><td>4–7</td></tr>
+          <tr><td>Python function behaviour</td><td>✓</td><td>✓</td><td>✓</td><td>4–5</td></tr>
+          <tr><td>Python output tracing (loops, sets, strings)</td><td></td><td>✓</td><td>✓</td><td>4–16</td></tr>
+          <tr><td>AP / GP: nth term, is-it-a-term, count, sum</td><td>✓</td><td>✓</td><td>✓</td><td>3–10</td></tr>
+          <tr><td>Recursive and closed definitions</td><td></td><td>✓</td><td>✓</td><td>4–10</td></tr>
+          <tr><td>Σ / Π notation evaluation</td><td></td><td>✓</td><td>✓</td><td>5–9</td></tr>
+          <tr><td>Subset counting (with constraints)</td><td>✓</td><td>✓</td><td>✓</td><td>4–8</td></tr>
+          <tr><td>Bit strings with inclusion–exclusion</td><td>✓</td><td>✓</td><td>✓</td><td>6–8</td></tr>
+          <tr><td>Lattice paths (through / avoiding a point)</td><td>✓</td><td>✓</td><td>✓</td><td>6–9</td></tr>
+          <tr><td>Probability by counting</td><td>✓</td><td></td><td></td><td>4</td></tr>
+          <tr><td>Graphs: degree sequence, girth, adjacency matrix</td><td>✓</td><td></td><td>✓</td><td>4–8</td></tr>
+          <tr><td>Proof by cases</td><td>✓</td><td></td><td></td><td>7</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">How to read this</span>
+      <p>Rows with three ticks are <strong>guaranteed</strong>. Treat them as non-negotiable. Rows with one or two ticks are still worth learning — the 2022/23 graph and proof questions returned in 2024/25, and the 2023 distance between graph appearances shows how quickly a “rare” topic can come back.</p>
+    </div>
+
+    <h2 id="maps">Question maps by year</h2>
+    <p>What was actually asked, question by question. Use these as a checklist: if you can answer every line, you are ready.</p>
+
+    <h3 id="map-2425">2024/25 final</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Question</th><th>Parts</th><th>Skills</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Q1</strong></td><td>(a) translate an English sentence; (b) relation properties on \(A=\{1,2,3\}\); (c) four 12-bit string counts; (d) truth table classification</td><td>Logic translation, relation properties, inclusion–exclusion, truth tables</td></tr>
+          <tr><td><strong>Q2</strong></td><td>(a) four firewall rules → formulas; (b) lattice paths to \((7,4)\), through a point, through either of two points; (c) GP \(10,5,2.5,\ldots\), is \(0.5\) a term?</td><td>Logic translation, lattice paths, inclusion–exclusion, GP</td></tr>
+          <tr><td><strong>Q3</strong></td><td>(a) inverse of \(3x-5\); (b) image resolution GP; (c) nested Python loop → Σ/Π; (d) AP 10th term</td><td>Inverses, GP, Σ/Π, AP</td></tr>
+          <tr><td><strong>Q4</strong></td><td>(a) six set operations; (b) subsets of a 7-element set; (c) design a circuit; (d) what does a Python subset function compute?</td><td>Sets, counting, logic circuits, Python</td></tr>
+          <tr><td><strong>Q5</strong></td><td>(a) degree sequence \((3,3,5,5,5,5)\); (b) injective/surjective employee→department; (c) evaluate six function values; (d) girth of \(K_9,K_{5,7},C_8,W_8\)</td><td>Graphs, functions, Python, girth</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="map-2324">2023/24 final</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Question</th><th>Parts</th><th>Skills</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Q1</strong></td><td>(a) circuit → expression → truth table → simplify to fewer gates; (b) trace a set-membership loop; (c) subsets of \(\{1,2,4,8,16,32\}\)</td><td>Logic circuits, Python, counting</td></tr>
+          <tr><td><strong>Q2</strong></td><td>(a) which strings are well-formed formulas?; (b) string predicate table and four quantifiers</td><td>WFFs, predicates, quantifiers, Python strings</td></tr>
+          <tr><td><strong>Q3</strong></td><td>(a) truth table classification; (b) trace a sum loop; (c) sequence \(7,12,17,\ldots\): recursive, closed, is 2023 a term, how many terms to 437, sum</td><td>Truth tables, Python, AP</td></tr>
+          <tr><td><strong>Q4</strong></td><td>(a) what does a relation function check?; (b) six set-membership statements; (c) evaluate three Σ/Π expressions</td><td>Relations, sets, Σ/Π</td></tr>
+          <tr><td><strong>Q5</strong></td><td>(a) four 6-bit string counts; (b) relation \(a-b\) multiple of 3: digraph, properties, classes; (c) evaluate function values</td><td>Counting, equivalence relations, functions</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="map-2223">2022/23 final</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Question</th><th>Parts</th><th>Skills</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Q1</strong></td><td>(a) construct \(A,B\) from \(A\setminus B\), \(B\setminus A\), \(A\cap B\); (b) truth table + classify; (c) adjacency matrix: simple? degrees? edges?; (d) what does a subset function compute?</td><td>Sets, logic, graphs, Python</td></tr>
+          <tr><td><strong>Q2</strong></td><td>(a) two-output circuit; (b) email relation and quantifiers; (c) eight dwarves, same dress colour</td><td>Circuits, quantifiers, probability</td></tr>
+          <tr><td><strong>Q3</strong></td><td>(a) cardinality of nested sets; (b) relation “same word length”, digraph + classes; (c) girth of four graphs</td><td>Sets, relations, graphs</td></tr>
+          <tr><td><strong>Q4</strong></td><td>(a) degree sequence; (b) disjointness function; (c) subsets of \(\{a,b,c,d,e,u\}\) with vowel constraints; (d) multiples of 12 vs multiples of 2 and 6</td><td>Graphs, Python, counting, sets</td></tr>
+          <tr><td><strong>Q5</strong></td><td>(a) nine 9-bit string counts; (b) prove \(n(n^2+5)\) divisible by 3; (c) membership table \((A\setminus B)\setminus(B\setminus C)=A\setminus B\)</td><td>Counting, proof by cases, sets</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>The repeats follow the same pattern with different numbers: 2024/25 repeat swaps in a graph degree-sequence question, a router-rules translation, a GP from its 3rd and 6th terms, and a 12-bit string count; 2023/24 repeat leads with an AP sequence and a prime-testing function. Use the repeat papers as extra practice once you have done the finals.</p>
+
+    <h2 id="recipes">Recurring question recipes</h2>
+    <p>Each subsection below gives the standard wording, the method that earns marks, and a model answer. The links go to the full theory in the topic pages.</p>
+
+    <h2 id="logic">Logic &amp; truth tables</h2>
+    <h3 id="recipe-translate">Recipe · English → propositional logic</h3>
+    <p><strong>Typical wording.</strong> “Convert the sentence into a propositional logic expression with atomic propositions.” (2–8 marks)</p>
+    <ol class="steps">
+      <li>List the atomic propositions explicitly. Use one letter per simple claim: \(I\) = “internet is stable”, \(S\) = “server is running”, \(W\) = “website is accessible”.</li>
+      <li>Identify the connective words: <em>and</em> → \(\land\), <em>or</em> → \(\lor\), <em>not</em> → \(\neg\), <em>if … then</em> → \(\to\), <em>iff</em> → \(\leftrightarrow\).</li>
+      <li>Bracket the antecedent and consequent separately. “If A and B, then C” is \((A\land B)\to C\), not \(A\land(B\to C)\).</li>
+      <li>Write the final formula and, if marks allow, one sentence translating it back.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q1(a)</span>
+      <p><strong>Sentence.</strong> “If the internet connection is stable and the server is running, then the website will be accessible.”</p>
+      <p>Let \(I\) = “the internet connection is stable”, \(S\) = “the server is running”, \(W\) = “the website will be accessible”. Then</p>
+      <div class="formula">\[ (I \land S) \to W. \]</div>
+      <p>The marking scheme gives partial marks for failing to make the propositions atomic, so always define the letters.</p>
+    </div>
+
+    <h3 id="recipe-truth">Recipe · Truth table and classification</h3>
+    <p><strong>Typical wording.</strong> “Use a truth table to determine whether the proposition is a contradiction, satisfiable, or a tautology.” (5–7 marks)</p>
+    <ol class="steps">
+      <li>Count the variables \(n\); make \(2^n\) rows. Order the rows consistently: FFF, FFT, FTF, FTT, TFF, TFT, TTF, TTT.</li>
+      <li>Add one column per sub-expression, innermost first: negations, then \(\land/\lor\), then \(\to\), then the whole formula.</li>
+      <li>Read the final column:
+        <ul>
+          <li>all T → <strong>tautology</strong>;</li>
+          <li>all F → <strong>contradiction</strong>;</li>
+          <li>at least one T → <strong>satisfiable</strong>.</li>
+        </ul>
+      </li>
+      <li>State the conclusion in words and, if there is a mix, give one satisfying assignment.</li>
+    </ol>
+    <div class="note">
+      <span class="box-label">Definitions matter</span>
+      <p>Every tautology is satisfiable; a contradiction is not. The three labels are not mutually exclusive in the way students expect. The safe sentence is: “The final column contains both T and F, so the formula is satisfiable but neither a tautology nor a contradiction.”</p>
+    </div>
+
+    <h3 id="recipe-laws">Recipe · Simplify with the laws of logic</h3>
+    <p>Use the supplied formula sheet. The highest-yield identities are:</p>
+    <div class="formula">\[
+      p\to q \equiv \neg p\lor q,\qquad
+      \neg(p\land q)\equiv \neg p\lor\neg q,\qquad
+      p\land(q\lor r)\equiv(p\land q)\lor(p\land r).
+    \]</div>
+    <p>Work from the outside in, and quote the law you used on each line. A 4-mark simplification usually needs three or four named steps.</p>
+
+    <h2 id="circuits">Circuits &amp; well-formed formulas</h2>
+
+    <h3 id="recipe-circuit">Recipe · Circuit diagram → expression</h3>
+    <ol class="steps">
+      <li>Label every gate output with a temporary name (\(X_1, X_2,\ldots\)).</li>
+      <li>Write the gate’s operation: AND → \(\land\), OR → \(\lor\), NOT → \(\neg\).</li>
+      <li>Substitute until the output depends only on the inputs.</li>
+      <li>Simplify using the laws if asked, then draw the simplified circuit left-to-right with the same gate symbols.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · 2022/23 Q2(a)</span>
+      <p>The circuit has an AND gate producing \(X=A\land B\), and an XOR-style output \(Y=(\neg A\land B)\lor(A\land\neg B)=A\oplus B\). Then:</p>
+      <ul>
+        <li><strong>Both false?</strong> Yes — take \(A=F\), \(B=F\). Then \(X=F\) and \(Y=F\).</li>
+        <li><strong>Both true?</strong> No — \(X\) is true only when both inputs are true, while \(Y\) is true only when the inputs differ. They cannot both hold.</li>
+      </ul>
+    </div>
+
+    <h3 id="recipe-wff">Recipe · Well-formed formulas</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Well-formed formula (WFF)</span>
+      <p>A WFF is built by these rules:</p>
+      <ol>
+        <li>Every propositional variable (\(p,q,r,\ldots\)) is a WFF.</li>
+        <li>If \(\phi\) is a WFF, then \(\neg\phi\) is a WFF.</li>
+        <li>If \(\phi\) and \(\psi\) are WFFs, then \((\phi\land\psi)\), \((\phi\lor\psi)\), \((\phi\to\psi)\), \((\phi\leftrightarrow\psi)\) are WFFs.</li>
+        <li>Nothing else is a WFF.</li>
+      </ol>
+    </div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2023/24 Q2(a)</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>String</th><th>WFF?</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>\(\lor pq\)</td><td>No</td><td>A connective cannot start a formula; it needs a left operand.</td></tr>
+            <tr><td>\(p\neg\neg r\)</td><td>No</td><td>Two variables are juxtaposed with no connective between them.</td></tr>
+            <tr><td>\(p\neg\to(q\land q)\)</td><td>No</td><td>\(\neg\) must be followed by a formula, not by \(\to\).</td></tr>
+            <tr><td>\((p\land\neg q)\lor(q\neg\to q)\)</td><td>No</td><td>The sub-formula \(q\neg\to q\) has the same fault: \(\neg\) is not applied to a formula.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The exam reuses this question with different strings. Check three things: every connective has the right number of operands, negation is immediately followed by a formula, and binary connectives sit between two formulas (brackets help).</p>
+    </div>
+
+    <h3 id="recipe-design">Recipe · Expression → circuit</h3>
+    <ol class="steps">
+      <li>Identify the outermost connective. That is the last gate.</li>
+      <li>Work inward: each \(\land\) is an AND gate, each \(\lor\) an OR gate, each \(\neg\) a NOT gate.</li>
+      <li>Draw inputs on the left, output on the right. Use dots for junctions; do not draw a wire crossing as a connection without a dot.</li>
+      <li>For \((A\land(B\lor C))\lor(\neg B\land\neg C)\), the last gate is OR; its left input is an AND of \(A\) with \((B\lor C)\); its right input is an AND of the two negations.</li>
+    </ol>
+
+    <h2 id="sets">Sets &amp; membership tables</h2>
+
+    <h3 id="recipe-setops">Recipe · Set operations</h3>
+    <p>For \(A\cup B\): everything in either. For \(A\cap B\): only the overlap. For \(A\setminus B\): in \(A\) but not \(B\). For \(A\oplus B\): in exactly one. For \(\bar A\): everything in \(U\) outside \(A\).</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q4(a)</span>
+      <p>\(A=\{0,1,2,3,4\}\), \(B=\{3,4,5,6\}\), \(C=\{1,4,5,6,7\}\), \(U=\{0,\ldots,9\}\).</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Expression</th><th>Answer</th></tr></thead>
+          <tbody>
+            <tr><td>\(A\cup B\)</td><td>\(\{0,1,2,3,4,5,6\}\)</td></tr>
+            <tr><td>\(A\setminus B\)</td><td>\(\{0,1,2\}\)</td></tr>
+            <tr><td>\(B\cap A\)</td><td>\(\{3,4\}\)</td></tr>
+            <tr><td>\(A\oplus B\)</td><td>\(\{0,1,2,5,6\}\)</td></tr>
+            <tr><td>\((A\cup B)\cap C\)</td><td>\(\{1,4,5,6\}\)</td></tr>
+            <tr><td>\(\bar A\)</td><td>\(\{5,6,7,8,9\}\)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h3 id="recipe-membership">Recipe · Membership table</h3>
+    <p><strong>Typical wording.</strong> “Use a membership table to determine whether \((A\setminus B)\setminus(B\setminus C)=A\setminus B\).” (5 marks)</p>
+    <ol class="steps">
+      <li>Three sets → \(2^3=8\) rows, in binary order 000 to 111.</li>
+      <li>One column per side and per intermediate expression: \(A\setminus B\), \(B\setminus C\), \((A\setminus B)\setminus(B\setminus C)\), \(A\setminus B\).</li>
+      <li>Compute each column using 1 = in the set, 0 = not in the set.</li>
+      <li>Compare the two final columns. Identical → the identity is true.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · 2022/23 Q5(c)</span>
+      <div class="table-wrap">
+        <table class="truth-table">
+          <thead><tr><th>\(A\)</th><th>\(B\)</th><th>\(C\)</th><th>\(A\setminus B\)</th><th>\(B\setminus C\)</th><th>\((A\setminus B)\setminus(B\setminus C)\)</th><th>\(A\setminus B\)</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+            <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The last two columns are identical in every row, so the identity is <strong>true</strong>. Notice the simplification: \(B\setminus C\subseteq B\), and \(A\setminus B\) is disjoint from \(B\), so the second subtraction removes nothing.</p>
+    </div>
+
+    <h3 id="recipe-construct">Recipe · Construct sets from differences</h3>
+    <p><strong>Typical wording.</strong> “Construct \(A\) and \(B\) with \(A\setminus B=\{4,9\}\), \(B\setminus A=\{8\}\), \(A\cap B=\{1\}\).” (2 marks)</p>
+    <p>The three regions are disjoint: only-\(A\), only-\(B\), and both. Union them:</p>
+    <div class="formula">\[ A = (A\setminus B)\cup(A\cap B) = \{4,9\}\cup\{1\}=\{1,4,9\}, \]</div>
+    <div class="formula">\[ B = (B\setminus A)\cup(A\cap B) = \{8\}\cup\{1\}=\{1,8\}. \]</div>
+    <p>Check: \(A\setminus B=\{4,9\}\), \(B\setminus A=\{8\}\), \(A\cap B=\{1\}\). Always substitute back — it takes ten seconds and catches slips.</p>
+
+    <h2 id="relations">Relations &amp; functions</h2>
+
+    <h3 id="recipe-relprops">Recipe · Test the relation properties</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Property</th><th>Test</th><th>How to refute</th></tr></thead>
+        <tbody>
+          <tr><td>Reflexive</td><td>\((a,a)\in R\) for every \(a\in A\)</td><td>One missing diagonal pair.</td></tr>
+          <tr><td>Irreflexive</td><td>No \((a,a)\in R\)</td><td>One diagonal pair present.</td></tr>
+          <tr><td>Symmetric</td><td>\((a,b)\in R\Rightarrow(b,a)\in R\)</td><td>One pair without its reverse.</td></tr>
+          <tr><td>Antisymmetric</td><td>\((a,b),(b,a)\in R\Rightarrow a=b\)</td><td>Two distinct elements with both directions.</td></tr>
+          <tr><td>Asymmetric</td><td>Antisymmetric and irreflexive</td><td>A diagonal pair, or a two-way pair.</td></tr>
+          <tr><td>Transitive</td><td>\((a,b),(b,c)\in R\Rightarrow(a,c)\in R\)</td><td>One chain whose shortcut is missing.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q1(b)</span>
+      <p>\(A=\{1,2,3\}\), \(R=\{(1,1),(2,2),(3,3),(1,2)\}\).</p>
+      <ul>
+        <li><strong>Reflexive:</strong> yes — all three diagonal pairs are present.</li>
+        <li><strong>Symmetric:</strong> no — \((1,2)\in R\) but \((2,1)\notin R\).</li>
+        <li><strong>Transitive:</strong> yes — the only chains are \((1,1)\) then \((1,2)\), and \((1,2)\) is present; the diagonal pairs add nothing new.</li>
+        <li><strong>Equivalence relation:</strong> no — it is not symmetric.</li>
+        <li><strong>Antisymmetric:</strong> yes — the only two-way pairs are \((1,1),(2,2),(3,3)\), whose endpoints are equal.</li>
+      </ul>
+      <p>The marking scheme explicitly wants a witness for each “no” and a reason for each “yes”.</p>
+    </div>
+
+    <h3 id="recipe-classes">Recipe · Equivalence classes</h3>
+    <p>For a relation like “\(a-b\) is a multiple of \(3\)” on \(\{0,\ldots,9\}\), the classes are the congruence classes:</p>
+    <div class="formula">\[ [0]=\{0,3,6,9\},\quad [1]=\{1,4,7\},\quad [2]=\{2,5,8\}. \]</div>
+    <p>For “same number of letters when written in English”, group the numbers by word length: \(\{1,2,6\}\) (one, two, six — all 3 letters), \(\{4,5,9\}\) (four, five, nine — 4 letters), \(\{3,7,8\}\) (three, seven, eight — 5 letters). List the classes explicitly; the digraph is optional if the question says “if yes”.</p>
+
+    <h3 id="recipe-functions">Recipe · Injective, surjective, inverse</h3>
+    <div class="grid-2">
+      <div class="panel">
+        <h3>Injective (one-to-one)</h3>
+        <p>Each output is hit at most once. Refute by finding two different inputs with the same output. For \(f(x)=3x-5\) on \(\mathbb{R}\), \(3a-5=3b-5\Rightarrow a=b\), so it is injective.</p>
+      </div>
+      <div class="panel">
+        <h3>Surjective (onto)</h3>
+        <p>Every target value is hit. For \(f:\mathbb{R}\to\mathbb{R}\), solve \(y=3x-5\) for \(x\), getting \(x=(y+5)/3\), which is real for every \(y\). So it is surjective.</p>
+      </div>
+    </div>
+    <p>An inverse exists exactly when the function is both injective and surjective (bijective). To find it, set \(y=f(x)\) and solve for \(x\), then swap the names:</p>
+    <div class="formula">\[ y=3x-5 \;\Longrightarrow\; x=\frac{y+5}{3} \;\Longrightarrow\; f^{-1}(x)=\frac{x+5}{3}. \]</div>
+    <p>Verify both directions: \(f^{-1}(f(x))=(3x-5+5)/3=x\) and \(f(f^{-1}(x))=3(x+5)/3-5=x\).</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q5(b)</span>
+      <p>\(f(\text{employee})=\text{department}\).</p>
+      <ul>
+        <li><strong>Injective?</strong> Not necessarily: if two employees work in the same department, they map to the same output.</li>
+        <li><strong>Surjective?</strong> Only if every department has at least one employee. An empty department is a target with no preimage.</li>
+      </ul>
+    </div>
+
+    <h2 id="sequences">AP, GP &amp; sequences</h2>
+
+    <h3 id="recipe-ap">Recipe · Arithmetic progression</h3>
+    <div class="formula">\[ a_n=a+(n-1)d,\qquad S_n=\frac{n}{2}\bigl(2a+(n-1)d\bigr)=\frac{n}{2}(a+\ell). \]</div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q3(d)</span>
+      <p>\(a=2\), \(d=4\). The 10th term is</p>
+      <div class="formula">\[ a_{10}=2+(10-1)\cdot4=2+36=38. \]</div>
+      <p>Watch the indexing: if the question calls the first term \(a_0\), the formula is \(a+nd\). The exam usually means “10th term” = \(n=10\) with \(a_1\) first.</p>
+    </div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2023/24 Q3(c)</span>
+      <p>Sequence \(7,12,17,22,27,\ldots\) with \(a=7\), \(d=5\).</p>
+      <ul>
+        <li><strong>Recursive:</strong> \(a_1=7\), \(a_n=a_{n-1}+5\) for \(n\ge2\).</li>
+        <li><strong>Closed:</strong> \(a_n=7+5(n-1)=5n+2\).</li>
+        <li><strong>Is 2023 a term?</strong> Solve \(5n+2=2023\Rightarrow5n=2021\Rightarrow n=404.2\notin\mathbb{N}\). No.</li>
+        <li><strong>How many terms up to 437?</strong> \(5n+2=437\Rightarrow n=87\). There are 87 terms.</li>
+        <li><strong>Sum:</strong> \(S_{87}=\frac{87}{2}(7+437)=\frac{87}{2}\cdot444=87\cdot222=19314\).</li>
+      </ul>
+    </div>
+
+    <h3 id="recipe-gp">Recipe · Geometric progression</h3>
+    <div class="formula">\[ a_n=ar^{n-1},\qquad S_n=a\frac{1-r^n}{1-r}\ (r\neq1). \]</div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q2(c)</span>
+      <p>\(a=10\), \(r=0.5\). Is \(0.5\) a term?</p>
+      <div class="formula">\[ 10(0.5)^{n-1}=0.5 \;\Longrightarrow\; (0.5)^{n-1}=0.05 \;\Longrightarrow\; n-1=\log_{0.5}(0.05)\approx4.32. \]</div>
+      <p>So \(n\approx5.32\notin\mathbb{N}\): \(0.5\) is <strong>not</strong> a term. The terms are \(10,5,2.5,1.25,0.625,0.3125,\ldots\), which confirms it skips \(0.5\).</p>
+    </div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q3(b)</span>
+      <p>A \(1024\times768\) image halves in both dimensions each step, so the pixel count multiplies by \(\tfrac12\cdot\tfrac12=\tfrac14\):</p>
+      <div class="formula">\[ a_0=786432,\qquad a_n=786432\left(\frac14\right)^n. \]</div>
+      <p>After three reductions: \(a_3=786432/64=12288\). For \(a_n&lt;1000\): \((1/4)^n&lt;1000/786432\approx0.00127\), so \(n&gt;\log_4(786432/1000)\approx4.8\), giving \(n=5\).</p>
+    </div>
+
+    <h2 id="counting">Counting &amp; probability</h2>
+
+    <h3 id="recipe-subsets">Recipe · Subsets with constraints</h3>
+    <p>“How many subsets of \(S\) have cardinality \(k\) and property \(P\)?” Split the set into categories, choose from each, and multiply. Add the cases if the property is “at least” or “either”.</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2022/23 Q4(c)</span>
+      <p>\(S=\{a,b,c,d,e,u\}\), so 3 vowels \(\{a,e,u\}\) and 3 consonants \(\{b,c,d\}\). Subsets of size 4:</p>
+      <ul>
+        <li><strong>All:</strong> \(\binom64=15\).</li>
+        <li><strong>Containing \(\{a,b,c\}\):</strong> choose 1 more from the other 3 → \(\binom31=3\).</li>
+        <li><strong>At least one vowel:</strong> all 15 — a 4-element subset of a 6-element set cannot avoid all 3 vowels and still have 4 elements from only 3 consonants.</li>
+        <li><strong>Exactly one vowel:</strong> choose 1 vowel from 3 and all 3 consonants → \(\binom31\binom33=3\).</li>
+      </ul>
+    </div>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q4(b)</span>
+      <p>\(S=\{2,3,5,7,11,13,17\}\), seven elements.</p>
+      <ul>
+        <li>Size 3: \(\binom73=35\).</li>
+        <li>All subsets: \(2^7=128\).</li>
+        <li>Sum 15: only \(\{2,13\}\) and \(\{3,5,7\}\). Note the empty set does not have sum 15, and \(\{2,13\}\) is a subset of size 2 — the question does not require size 3.</li>
+      </ul>
+    </div>
+
+    <h3 id="recipe-bitstrings">Recipe · Bit strings with inclusion–exclusion</h3>
+    <p>Fix the forced substring first, then count free positions. For “either A or B”, use \(|A|+|B|-|A\cap B|\). For “weight \(w\)”, choose where the remaining 1s go.</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q1(c)</span>
+      <p>12-bit strings.</p>
+      <ul>
+        <li><strong>Start 1101:</strong> 4 bits fixed, 8 free → \(2^8=256\).</li>
+        <li><strong>Weight 6 and start 1101:</strong> the prefix already has three 1s, so choose 3 of the remaining 8 → \(\binom83=56\).</li>
+        <li><strong>Start 1101 or end 1010:</strong> \(256+256-2^4=496\). The overlap fixes both ends and leaves 4 free bits.</li>
+        <li><strong>Weight 6, start 1101, end 1010:</strong> prefix has 3 ones, suffix has 2, so the middle 4 bits need exactly one 1 → \(\binom41=4\).</li>
+      </ul>
+      <p>The common error is forgetting that the prefix/suffix may already consume some of the required weight.</p>
+    </div>
+
+    <h3 id="recipe-lattice">Recipe · Lattice paths</h3>
+    <p>A shortest path from \((0,0)\) to \((a,b)\) uses \(a\) right steps and \(b\) up steps, so there are \(\binom{a+b}{a}\) paths. Through a point \(P\): multiply the count to \(P\) by the count from \(P\) to the end. To <strong>avoid</strong> \(P\): total minus through-\(P\).</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q2(b)</span>
+      <p>To \((7,4)\): \(\binom{11}{4}=330\).</p>
+      <ul>
+        <li>Through \((4,2)\): \(\binom62\binom52=15\cdot10=150\).</li>
+        <li>Through \((3,1)\): \(\binom41\binom73=4\cdot35=140\).</li>
+        <li>Through \((5,3)\): \(\binom83\binom31=56\cdot3=168\).</li>
+        <li>Through both: \(\binom41\binom42\binom31=4\cdot6\cdot3=72\).</li>
+        <li>Through either: \(140+168-72=236\).</li>
+      </ul>
+      <p>The printed marking scheme writes \(\binom83=56\) for the paths through \((5,3)\) and concludes \(124\): it counts only the journey to \((5,3)\) and omits the final leg to \((7,4)\). Show both factors so your method is unambiguous. For “avoid \((6,5)\)” on the way from \((4,2)\) to \((9,8)\), subtract: \(\binom{11}{5}-\binom52\binom63=462-200=262\).</p>
+    </div>
+
+    <h3 id="recipe-prob">Recipe · Probability by counting</h3>
+    <p>Probability = favourable equally-likely outcomes / total outcomes. Count both with the multiplication principle; do not guess.</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2022/23 Q2(c)</span>
+      <p>Eight people each choose one of two colours independently. Total outcomes: \(2^8\). Favourable: all red or all blue = 2. Probability \(=2/2^8=1/128\approx0.0078\). The marking scheme writes \(1/2^8\), treating “all the same” as one specified colour; either reading gives the same method, but check the wording — “all wearing the same colour” includes both all-red and all-blue.</p>
+    </div>
+
+    <h2 id="python">Python tracing</h2>
+    <h3 id="recipe-trace">Recipe · What does this code do?</h3>
+    <ol class="steps">
+      <li>Identify the inputs and the loop bounds. For <code>range(a, b)</code>, the last value is \(b-1\).</li>
+      <li>Make a table of iterations: loop variable, key variable, output.</li>
+      <li>Look for an early <code>return</code> or <code>break</code> — it changes the whole answer.</li>
+      <li>Translate the effect into one sentence: “returns True iff A is a subset of B”, “prints the sum of the integers from \(-5\) to \(4\)”.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · subset / disjoint / equality functions</span>
+      <p>The exam reuses one function with a one-word change:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Condition inside the loop</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>if a not in B: return False</code></td><td>Every element of \(A\) is in \(B\) → \(A\subseteq B\).</td></tr>
+            <tr><td><code>if a in B: return False</code></td><td>No element of \(A\) is in \(B\) → \(A\cap B=\varnothing\) (disjoint).</td></tr>
+            <tr><td>Loop ends, then <code>return len(A)==len(B)</code></td><td>\(A\subseteq B\) and the sizes match → \(A=B\).</td></tr>
+            <tr><td>Loop ends, then <code>return {b for _,b in R}==B</code></td><td>\(R\) is a relation from \(A\) to \(B\) and every element of \(B\) appears → \(R\) is onto/surjective.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>State the quantification: “returns True iff for every \(a\in A\), \(a\in B\).” That sentence is worth the marks.</p>
+    </div>
+
+    <h2 id="sigma">Σ and Π notation</h2>
+    <p>A loop that accumulates with <code>+=</code> is a \(\Sigma\); one that multiplies with <code>*=</code> is a \(\Pi\). Nested loops become nested symbols, with the <strong>outer loop on the left</strong>.</p>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q3(c)</span>
+      <div class="code-block">
+        <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">nested.py</span><span class="code-lang">python</span></div>
+        <pre><code>var_a = 0
+for k in range(1, 3):
+    var_b = 1
+    for j in range(k):
+        var_b *= (j + k) ** 2
+    var_a += var_b
+print(f"{var_a = }")</code></pre>
+      </div>
+      <p>The outer sum is over \(k=1,2\). The inner product runs \(j=0,\ldots,k-1\):</p>
+      <div class="formula">\[ \sum_{k=1}^{2}\ \prod_{j=0}^{k-1}(j+k)^2. \]</div>
+      <p>Evaluate: for \(k=1\), \(\prod_{j=0}^{0}(j+1)^2=1\). For \(k=2\), \(\prod_{j=0}^{1}(j+2)^2=2^2\cdot3^2=36\). Total \(1+36=37\).</p>
+    </div>
+    <div class="tip">
+      <span class="box-label">Range → limits</span>
+      <p><code>range(1, 3)</code> is \(k=1,2\) (upper limit 2). <code>range(k)</code> is \(j=0,\ldots,k-1\). If the code uses <code>range(0, n+1)</code>, the sum runs to \(n\), not \(n+1\). Write the limits first, then the summand.</p>
+    </div>
+
+    <h2 id="graphs">Graphs</h2>
+    <p>The full theory is on the <a href="topics/06-graphs-and-networks.html">Graphs &amp; Networks page</a>. The exam asks four things:</p>
+
+    <h3 id="recipe-degree">Recipe · Degree sequence / simple graph?</h3>
+    <ol class="steps">
+      <li>Sort descending.</li>
+      <li>Check the sum is even and each degree \(\le n-1\).</li>
+      <li>Apply Havel–Hakimi: remove the largest degree \(d\), subtract 1 from the next \(d\) entries, repeat.</li>
+      <li>A negative entry ⇒ no simple graph. All zeros ⇒ draw it.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · 2024/25 Q5(a)</span>
+      <p>\((3,3,5,5,5,5)\to(5,5,5,5,3,3)\to(4,4,4,2,2)\to(3,3,1,1)\to(2,0,0)\to(-1,-1)\). No simple graph exists.</p>
+      <p>Contrast the 2024/25 repeat: the drawn graph has degree sequence \((3,3,4,4,4,4)\), which is simple (no loops or parallel edges) and has girth 3 (a triangle such as \(A\!-\!C\!-\!D\!-\!A\)).</p>
+    </div>
+
+    <h3 id="recipe-girth">Recipe · Girth of a named graph</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Graph</th><th>Girth</th><th>Reason to write</th></tr></thead>
+        <tbody>
+          <tr><td>\(K_n\), \(n\ge3\)</td><td>3</td><td>Any three vertices form a triangle.</td></tr>
+          <tr><td>\(K_{r,s}\), \(r,s\ge2\)</td><td>4</td><td>Bipartite ⇒ no odd cycle; two vertices from each side form a 4-cycle.</td></tr>
+          <tr><td>\(C_n\)</td><td>\(n\)</td><td>The only cycle is the whole graph.</td></tr>
+          <tr><td>\(W_n\), \(n\ge4\)</td><td>3</td><td>Hub plus two adjacent rim vertices.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 id="recipe-matrix">Recipe · Adjacency matrix</h3>
+    <p><strong>Simple?</strong> All entries 0 or 1, diagonal all 0. A 2 means parallel edges; a diagonal 1 means a loop. <strong>Degree sequence?</strong> Row sums, sorted. <strong>Edges?</strong> Sum of degrees ÷ 2.</p>
+
+    <h2 id="proof">Proof by cases</h2>
+    <p><strong>Typical wording.</strong> “Prove that \(n(n^2+5)\) is divisible by 3 for every positive integer \(n\). (Hint: proof by cases.)” (7 marks)</p>
+    <ol class="steps">
+      <li>Every integer has remainder 0, 1, or 2 modulo 3, so write \(n=3k\), \(3k+1\), or \(3k+2\).</li>
+      <li>Substitute each case and factor out a 3.</li>
+      <li>Conclude that the expression is \(3\times\) (an integer) in every case, hence divisible by 3.</li>
+    </ol>
+    <div class="example">
+      <span class="box-label">Worked answer · 2022/23 Q5(b)</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Case</th><th>\(n^2+5\)</th><th>\(n(n^2+5)\)</th></tr></thead>
+          <tbody>
+            <tr><td>\(n=3k\)</td><td>\(9k^2+5\)</td><td>\(3k(9k^2+5)\) — multiple of 3</td></tr>
+            <tr><td>\(n=3k+1\)</td><td>\(9k^2+6k+6=3(3k^2+2k+2)\)</td><td>\(3(3k+1)(3k^2+2k+2)\) — multiple of 3</td></tr>
+            <tr><td>\(n=3k+2\)</td><td>\(9k^2+12k+9=3(3k^2+4k+3)\)</td><td>\(3(3k+2)(3k^2+4k+3)\) — multiple of 3</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>All three cases are exhausted, so the statement holds for every positive integer \(n\). The marks are for the case split, the algebra in each case, and the concluding sentence.</p>
+    </div>
+
+    <h2 id="papers">Official papers &amp; solutions</h2>
+    <p>Download the originals from the official course site. Doing them under timed conditions is the single highest-value revision activity.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Year</th><th>Paper</th><th>Solutions</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>2024/25</td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202425_Final_Exam.pdf" target="_blank" rel="noopener">Final exam ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202425_Repeat_Exam.pdf" target="_blank" rel="noopener">Repeat exam ↗</a></td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202425_Solutions.pdf" target="_blank" rel="noopener">Final solutions ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202425_Repeat_Solutions.pdf" target="_blank" rel="noopener">Repeat solutions ↗</a></td>
+          </tr>
+          <tr>
+            <td>2023/24</td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202324_Final_Exam.pdf" target="_blank" rel="noopener">Final exam ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202324_Repeat_Exam.pdf" target="_blank" rel="noopener">Repeat exam ↗</a></td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202324_Solutions.pdf" target="_blank" rel="noopener">Final solutions ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202324_Repeat_Solutions.pdf" target="_blank" rel="noopener">Repeat solutions ↗</a></td>
+          </tr>
+          <tr>
+            <td>2022/23</td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202223_Final_Exam.pdf" target="_blank" rel="noopener">Final exam ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202223_Repeat_Exam.pdf" target="_blank" rel="noopener">Repeat exam ↗</a></td>
+            <td><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202223_Solutions.pdf" target="_blank" rel="noopener">Final solutions ↗</a><br>
+                <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/previous_exam_papers/Discrete_Maths_202223_Repeat_Solutions.pdf" target="_blank" rel="noopener">Repeat solutions ↗</a></td>
+          </tr>
+          <tr>
+            <td>2021 and earlier</td>
+            <td colspan="2"><a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/" target="_blank" rel="noopener">Full archive on the official site ↗</a> — older papers use a different structure (choice of questions, recurrence relations, generating functions, travelling salesman) but are useful for graph and logic practice.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Also supplied in the exam: the <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/Formula_Sheet.pdf" target="_blank" rel="noopener">formula sheet ↗</a> and the <a href="https://setu-discretemathematics.github.io/live/topics/00-Module_Introduction/51-Formula_Sheet_and_Exam_Papers/files/Python_Cheat_Sheet.pdf" target="_blank" rel="noopener">Python cheat sheet ↗</a>. Print both and annotate them during revision.</p>
+
+    <div class="warning">
+      <span class="box-label">Check for typos in model answers</span>
+      <p>The official solutions occasionally contain arithmetic slips or inconsistent numbers (for example, the 2024/25 image-resolution answer says “below 10,000” in one line while the paper says 1,000). Trust the method, redo the arithmetic yourself, and if your answer disagrees, show enough working that the examiner can see where you differ.</p>
+    </div>
+
+    <h2 id="plan">Revision plan</h2>
+    <p>A four-pass plan for the final two weeks. Each pass is about 2–3 hours.</p>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Pass 1 · Learn the recipes</h3>
+        <ol class="steps">
+          <li>Read the logic, sets and relations sections of this guide.</li>
+          <li>Cover each worked answer and redo it on paper.</li>
+          <li>Make a one-page “method card” for each of the twelve recipes.</li>
+          <li>Memorise the formula sheet — especially the AP/GP and counting formulas.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>Pass 2 · Topic drills</h3>
+        <ol class="steps">
+          <li>Do the tutorial-sheet questions for graphs and enumeration.</li>
+          <li>Redo every truth table from 2022/23–2024/25 without looking.</li>
+          <li>Time yourself: 10 minutes for a 6-mark truth table.</li>
+          <li>Mark against the official solutions; note every lost mark and why.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <h3>Pass 3 · Full papers</h3>
+        <ol class="steps">
+          <li>Sit the 2024/25 final in 2 hours, no notes.</li>
+          <li>Mark it honestly. Anything below 70% identifies a topic to revisit.</li>
+          <li>Repeat with 2023/24, then 2022/23.</li>
+          <li>Keep an error log: topic, question, mistake, fix.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>Pass 4 · Error log only</h3>
+        <ol class="steps">
+          <li>Do not reread everything. Work only from your error log.</li>
+          <li>Re-attempt the exact questions you got wrong.</li>
+          <li>Recite the definitions aloud: degree, girth, Eulerian, equivalence relation, injective.</li>
+          <li>Sleep. Cramming new material the night before costs more than it gains.</li>
+        </ol>
+      </div>
+    </div>
+
+    <h2 id="room">In the exam room</h2>
+    <ul class="checklist">
+      <li><strong>Read all five questions first</strong> (2 minutes). Note which parts are quick wins.</li>
+      <li><strong>Do the quick wins first.</strong> Set operations, cardinality, function evaluation, girth, AP/GP nth term: these are 1–3 marks each and build confidence.</li>
+      <li><strong>Show the method.</strong> “Row sums are … so the degree sequence is …” earns more than the bare sequence.</li>
+      <li><strong>Write definitions.</strong> If a question says “justify”, the definition is the justification.</li>
+      <li><strong>Draw the truth table fully.</strong> A final column without intermediate columns loses parsing marks.</li>
+      <li><strong>Label graph diagrams</strong> and mark the cycle you are using for girth.</li>
+      <li><strong>Check the sum of degrees is even</strong> before claiming a graph exists.</li>
+      <li><strong>Substitute back</strong> into set-construction and inverse-function answers.</li>
+      <li><strong>Watch the index</strong> in AP/GP questions: is the first term \(a_0\) or \(a_1\)?</li>
+      <li><strong>If stuck, start the definition.</strong> Partial marks are real; a blank page scores zero.</li>
+      <li><strong>Leave 5 minutes</strong> to check arithmetic and that every sub-part has an answer.</li>
+    </ul>
+
+    <div class="tip">
+      <span class="box-label">The 60% rule</span>
+      <p>Most of the paper is routine application of a dozen methods. If you can do every worked answer on this page from memory, you are already at a comfortable pass. The remaining marks come from careful justification and arithmetic, not from exotic theory.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="topics/06-graphs-and-networks.html">
+        <span class="dir">Previous</span>
+        <span class="ttl">← 06 · Graphs &amp; Networks</span>
+      </a>
+      <a class="next" href="cheatsheet.html">
+        <span class="dir">Reference</span>
+        <span class="ttl">Formula Cheat Sheet →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Exam Papers Guide · compiled from the official SETU papers and marking schemes</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="script.js"></script>
+</body>
+</html>

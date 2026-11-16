@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Graphs and networks notes: graph definitions, degree sequences and the handshaking lemma, common graph families, adjacency and incidence matrices, walks, trails, paths, cycles, girth, connectivity, Eulerian and Hamiltonian graphs, trees, minimum spanning trees, Kruskal's algorithm and NetworkX.">
+<meta name="theme-color" content="#0f2727">
+<title>06 · Graphs &amp; Networks — Discrete Mathematics Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]], processEscapes: true },
+    svg: { fontCache: "global" },
+    options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] }
+  };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+<div class="progress-track"><div class="progress-bar"></div></div>
+
+<aside class="sidebar" aria-label="Topic navigation">
+  <a class="brand" href="../index.html">
+    <span class="brand-mark">DM</span>
+    <span class="brand-text">
+      <span class="brand-title">Discrete Mathematics</span>
+      <span class="brand-sub">Study Notes</span>
+    </span>
+  </a>
+  <div class="nav-label">Module</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../index.html"><span class="nav-num">00</span> Overview</a></li>
+  </ul>
+  <div class="nav-label">Topics</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="01-computational-thinking.html"><span class="nav-num">01</span> Computational Thinking</a></li>
+    <li><a class="nav-link" href="02-logic.html"><span class="nav-num">02</span> Logic</a></li>
+    <li><a class="nav-link" href="03-collections.html"><span class="nav-num">03</span> Collections</a></li>
+    <li><a class="nav-link" href="04-relations-and-functions.html"><span class="nav-num">04</span> Relations &amp; Functions</a></li>
+    <li><a class="nav-link" href="05-enumeration.html"><span class="nav-num">05</span> Enumeration</a></li>
+    <li><a class="nav-link active" href="06-graphs-and-networks.html"><span class="nav-num">06</span> Graphs &amp; Networks</a></li>
+  </ul>
+  <div class="nav-label">Reference</div>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="../exam-papers.html"><span class="nav-num">✎</span> Exam Papers Guide</a></li>
+    <li><a class="nav-link" href="../cheatsheet.html"><span class="nav-num">∑</span> Formula Cheat Sheet</a></li>
+    <li><a class="nav-link" href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener"><span class="nav-num">↗</span> Official Course Site</a></li>
+  </ul>
+  <div class="sidebar-foot">Notes compiled from the official lecture handouts for the SETU Discrete Mathematics module (Autumn 2026/27).</div>
+</aside>
+<div class="nav-overlay"></div>
+
+<div class="main">
+  <header class="topbar">
+    <button class="menu-btn" data-menu-toggle aria-label="Open navigation" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../index.html">Discrete Mathematics</a><span class="sep">/</span><span>Topic 06</span>
+    </nav>
+    <div class="topbar-spacer"></div>
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <input class="search-input" type="search" placeholder="Jump to a section…" aria-label="Search sections on this page" data-search>
+      <span class="search-kbd">/</span>
+      <div class="search-results" data-search-results></div>
+    </div>
+    <button class="icon-btn" data-theme-toggle aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg class="icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </header>
+
+  <main class="content" id="main">
+    <header class="page-head">
+      <span class="kicker">Topic 06</span>
+      <h1>Graphs &amp; Networks</h1>
+      <p class="lede">A graph is a set of vertices joined by edges — the simplest possible model of a network. This topic gives you the vocabulary to describe one, the matrix tools to store one, and the algorithms to decide whether it can be traversed or connected cheaply.</p>
+      <div class="meta-row">
+        <span class="pill">2 lectures</span>
+        <span class="pill amber">Networks</span>
+        <span class="pill blue">Graph algorithms</span>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <p class="toc-title">In this topic</p>
+      <ol>
+        <li><a href="#why">Why graphs matter</a></li>
+        <li><a href="#what">What is a graph?</a></li>
+        <li><a href="#jargon">Graph jargon</a></li>
+        <li><a href="#degree">Degree and the handshaking lemma</a></li>
+        <li><a href="#degree-sequence">Degree sequences and graphicality</a></li>
+        <li><a href="#families">Common graph families</a></li>
+        <li><a href="#matrices">Adjacency and incidence matrices</a></li>
+        <li><a href="#walks">Walks, trails, paths, cycles, girth</a></li>
+        <li><a href="#connected">Connectivity</a></li>
+        <li><a href="#eulerian">Eulerian graphs</a></li>
+        <li><a href="#hamiltonian">Hamiltonian graphs</a></li>
+        <li><a href="#trees">Trees and spanning trees</a></li>
+        <li><a href="#kruskal">Kruskal's algorithm</a></li>
+        <li><a href="#networkx">Graphs in Python with NetworkX</a></li>
+        <li><a href="#exam-recipes">Exam question recipes</a></li>
+        <li><a href="#exam">Exam checklist</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="why">Why graphs matter</h2>
+    <p>A graph throws away everything about a situation except <strong>what is connected to what</strong>. That is exactly the information you need for networks:</p>
+    <div class="grid-3">
+      <div class="mini-card">
+        <h4>Computer networks</h4>
+        <p>Routers are vertices, cables are edges. “Is there a route?” becomes “is there a path?”; “what is the cheapest network?” becomes a minimum spanning tree.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Social networks</h4>
+        <p>People are vertices, friendships are edges. Degree measures popularity; connected components measure isolated groups.</p>
+      </div>
+      <div class="mini-card">
+        <h4>Maps and logistics</h4>
+        <p>Cities and roads, wells and pipelines, tasks and dependencies. Euler tours answer “can I traverse every road once?”; Hamiltonian tours answer “can I visit every city once?”.</p>
+      </div>
+    </div>
+
+    <p>The exam tests this topic in a small number of very predictable ways: <strong>degree sequences</strong>, <strong>girth</strong>, <strong>adjacency matrices</strong>, and <strong>classifying a graph as Eulerian or semi-Eulerian</strong>. The <a href="../exam-papers.html">Exam Papers Guide</a> collects the actual questions; this page supplies the theory behind them.</p>
+
+    <h2 id="what">What is a graph?</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Simple graph</span>
+      <p>A <strong>simple graph</strong> \(G\) consists of a non-empty finite set \(V(G)\) of <strong>vertices</strong> (or nodes) and a set \(E(G)\) of two-element subsets of \(V(G)\), called <strong>edges</strong>. We write \(G=(V,E)\).</p>
+      <p>Each edge \(\{u,v\}\) joins two distinct vertices \(u\) and \(v\). There is at most one edge between any pair, and no vertex is joined to itself.</p>
+    </div>
+
+    <p>A <strong>general graph</strong> relaxes both restrictions:</p>
+    <ul>
+      <li><strong>Parallel edges</strong> — two or more edges joining the same pair of vertices. Also called a multigraph.</li>
+      <li><strong>Loop</strong> — an edge from a vertex to itself. A loop contributes \(2\) to the degree of that vertex.</li>
+      <li><strong>Directed graph</strong> (digraph) — each edge has an arrow, so \((u,v)\) and \((v,u)\) are different. Used for relations in Topic 04.</li>
+      <li><strong>Weighted graph</strong> — each edge carries a number (cost, distance, time). Minimum spanning trees use weights.</li>
+    </ul>
+
+    <div class="figure">
+      <svg viewBox="0 0 360 180" role="img" aria-label="A general graph with a loop and parallel edges">
+        <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+          <path d="M60 50 L150 40"/>
+          <path d="M60 50 L120 130"/>
+          <path d="M150 40 L210 110"/>
+          <path d="M120 130 L210 110"/>
+          <path d="M150 40 L270 55"/>
+          <path d="M210 110 L270 55"/>
+          <path d="M210 110 L300 140"/>
+          <path d="M270 55 Q300 75 300 140"/>
+          <path d="M270 55 Q315 85 300 140"/>
+          <path d="M60 50 Q35 35 28 52 Q22 70 42 66"/>
+        </g>
+        <g fill="currentColor">
+          <circle cx="60" cy="50" r="4.5"/><circle cx="150" cy="40" r="4.5"/>
+          <circle cx="120" cy="130" r="4.5"/><circle cx="210" cy="110" r="4.5"/>
+          <circle cx="270" cy="55" r="4.5"/><circle cx="300" cy="140" r="4.5"/>
+        </g>
+        <g font-size="12" fill="currentColor">
+          <text x="48" y="42">u</text><text x="152" y="32">v</text>
+          <text x="108" y="150">w</text><text x="216" y="128">x</text>
+          <text x="276" y="47">y</text><text x="308" y="146">z</text>
+        </g>
+      </svg>
+      <p class="figcaption">A general graph: a loop at \(u\), parallel edges between \(y\) and \(z\), and a vertex \(x\) of high degree.</p>
+    </div>
+
+    <p>Two trivial-but-useful special cases: the <strong>null graph</strong> \(N_n\) has \(n\) vertices and no edges; the <strong>empty graph</strong> is usually another name for it.</p>
+
+    <h2 id="jargon">Graph jargon</h2>
+    <p>These words appear in every graph question, so learn them precisely.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Adjacent</strong> vertices</td><td>Two vertices joined by an edge.</td></tr>
+          <tr><td><strong>Incident</strong></td><td>An edge is incident with each of its two endpoints; the endpoints are incident with the edge.</td></tr>
+          <tr><td><strong>Adjacent</strong> edges</td><td>Two edges sharing a vertex.</td></tr>
+          <tr><td><strong>Parallel edges</strong></td><td>Two or more edges joining the same pair of vertices.</td></tr>
+          <tr><td><strong>Loop</strong></td><td>An edge with the same vertex at both ends; adds 2 to the degree.</td></tr>
+          <tr><td><strong>Isolated vertex</strong></td><td>A vertex of degree 0.</td></tr>
+          <tr><td><strong>End-vertex</strong></td><td>A vertex of degree 1 (also called a leaf).</td></tr>
+          <tr><td><strong>Walk</strong></td><td>A sequence of edges \(v_0v_1, v_1v_2, \ldots, v_{m-1}v_m\). Its <strong>length</strong> is the number of edges \(m\).</td></tr>
+          <tr><td><strong>Trail</strong></td><td>A walk with no repeated edge. Vertices may repeat.</td></tr>
+          <tr><td><strong>Path</strong></td><td>A trail with no repeated vertex (except possibly the start = end).</td></tr>
+          <tr><td><strong>Closed</strong></td><td>A walk, trail or path whose start and end are the same vertex.</td></tr>
+          <tr><td><strong>Cycle</strong></td><td>A closed path containing at least one edge. A cycle of length 3 is a <strong>triangle</strong>.</td></tr>
+          <tr><td><strong>Connected</strong></td><td>Every pair of vertices is joined by a path.</td></tr>
+          <tr><td><strong>Component</strong></td><td>A maximal connected subgraph.</td></tr>
+          <tr><td><strong>Tree</strong></td><td>A connected graph with no cycles.</td></tr>
+          <tr><td><strong>Forest</strong></td><td>A graph with no cycles; each component is a tree.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Walk vs trail vs path</span>
+      <p>They are nested: every path is a trail, and every trail is a walk, but not conversely. A walk may repeat edges and vertices; a trail may repeat vertices but not edges; a path repeats neither. Exam questions often say “path” when they mean “walk” — answer the definition, and state which one you are using.</p>
+    </div>
+
+    <h2 id="degree">Degree and the handshaking lemma</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Degree</span>
+      <p>The <strong>degree</strong> of a vertex \(v\), written \(\deg(v)\), is the number of edges incident with \(v\). A loop contributes \(2\).</p>
+      <p>The <strong>degree sequence</strong> of a graph lists the degrees of all vertices in non-decreasing order, with repetitions.</p>
+    </div>
+
+    <p>For the graph in the figure above:</p>
+    <div class="formula">\[ \deg(u)=3,\quad \deg(v)=3,\quad \deg(w)=2,\quad \deg(x)=3,\quad \deg(y)=4,\quad \deg(z)=4 \]</div>
+    <p>so the degree sequence is</p>
+    <div class="formula">\[ (2,3,3,3,4,4) \quad\text{or, written non-decreasingly,}\quad 2,3,3,3,4,4. \]</div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Handshaking lemma</span>
+      <p>In any graph,</p>
+      <p>\[ \sum_{v\in V(G)} \deg(v) = 2\,|E(G)|. \]</p>
+      <p>That is, the sum of all degrees is twice the number of edges. Consequently, the number of vertices of odd degree is even.</p>
+    </div>
+
+    <p><strong>Why it is true.</strong> Every edge has two endpoints, so each edge contributes exactly 2 to the total degree count: once at each end. A loop contributes 2 at its single endpoint, which is why the convention “a loop counts twice” is forced on us.</p>
+
+    <p>This gives two instant checks on any degree sequence:</p>
+    <ul>
+      <li>The sum of the degrees must be <strong>even</strong>.</li>
+      <li>Therefore it is impossible to have an odd number of odd-degree vertices.</li>
+    </ul>
+
+    <div class="example">
+      <span class="box-label">Example · Edges from a degree sequence</span>
+      <p>A graph has degree sequence \((2,2,3,3,4)\). The sum is \(14\), so it has \(14/2=7\) edges.</p>
+      <p>The adjacency matrix in the 2022/23 exam had row sums \(2,2,3,3,4\); the same calculation gives \(7\) edges. You do <em>not</em> need to count entries in the matrix one by one.</p>
+    </div>
+
+    <h2 id="degree-sequence">Degree sequences and graphicality</h2>
+    <p>A sequence of non-negative integers is called <strong>graphical</strong> if it is the degree sequence of some simple graph. The exam asks you to decide whether a given sequence is graphical and to justify the answer.</p>
+
+    <h3 id="graphical-checks">The quick checks</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Check</th><th>What it rules out</th></tr></thead>
+        <tbody>
+          <tr><td>Sum of degrees is even</td><td>Sequences that would need half an edge.</td></tr>
+          <tr><td>Every degree \(0 \le d \le n-1\)</td><td>A simple graph on \(n\) vertices has no vertex joined to itself, and at most \(n-1\) neighbours.</td></tr>
+          <tr><td>If \(d=n-1\) appears, then every other degree is at least 1</td><td>A universal vertex is adjacent to everybody, so nobody can be isolated.</td></tr>
+          <tr><td>Havel–Hakimi reduction</td><td>Everything else.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Method · Havel–Hakimi</span>
+      <p>To test whether \((d_1,\ldots,d_n)\) with \(d_1\ge d_2\ge\cdots\ge d_n\) is graphical:</p>
+      <ol>
+        <li>Remove the largest degree \(d_1\).</li>
+        <li>Subtract \(1\) from the next \(d_1\) largest degrees.</li>
+        <li>If any entry becomes negative, the sequence is <strong>not</strong> graphical.</li>
+        <li>Reorder and repeat. The sequence is graphical exactly when you reach all zeros.</li>
+      </ol>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the exam sequence \((3,3,5,5,5,5)\)</span>
+      <p>Write it in descending order: \((5,5,5,5,3,3)\). Remove the leading \(5\) and subtract 1 from the next five entries:</p>
+      <div class="formula">\[ (5,5,5,5,3,3) \;\longrightarrow\; (4,4,4,2,2). \]</div>
+      <p>Repeat: remove \(4\), subtract 1 from the next four:</p>
+      <div class="formula">\[ (4,4,4,2,2) \;\longrightarrow\; (3,3,1,1). \]</div>
+      <p>Repeat: remove \(3\), subtract 1 from the next three:</p>
+      <div class="formula">\[ (3,3,1,1) \;\longrightarrow\; (2,0,0). \]</div>
+      <p>Repeat: remove \(2\), subtract 1 from the next two entries. The second entry is \(0\), so it becomes \(-1\):</p>
+      <div class="formula">\[ (2,0,0) \;\longrightarrow\; (-1,-1). \]</div>
+      <p>A negative entry means <strong>no simple graph</strong> has this degree sequence. The answer to the exam question is therefore “No”, with the Havel–Hakimi reduction as the justification.</p>
+      <p><strong>Faster reason.</strong> Four vertices have degree 5, so each of them is joined to <em>all</em> five other vertices. In particular, both degree-3 vertices are adjacent to all four degree-5 vertices, which already gives them degree at least 4 — contradicting degree 3. So no simple graph exists. Either argument earns the marks; Havel–Hakimi is the safest to write out.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · valid and invalid sequences</span>
+      <p><strong>(a) \((1,1,2,2,3,4,4,5,5)\)</strong> has odd sum \(27\), so it is <strong>not</strong> graphical.</p>
+      <p><strong>(b) \((2,2,2,3,5,6,6,6)\)</strong> has sum \(32\), even. Descending: \((6,6,6,5,3,2,2,2)\). Remove \(6\), subtract from the next six: \((5,5,4,2,1,1,2)\to(5,5,4,2,2,1,1)\). Remove \(5\): \((4,3,1,1,0,1)\to(4,3,1,1,1,0)\). Remove \(4\): \((2,0,0,0,0)\). Remove \(2\): \((-1,-1,0,0)\). Negative, so <strong>not graphical</strong>. (It also has a vertex of degree 6 in an 8-vertex graph, forcing all others to have degree at least 1 — but one has degree 0? No, the smallest is 2. Still, the reduction settles it.)</p>
+      <p><strong>(c) \((1,2,3,4,5,6,7)\)</strong> has sum \(1+2+3+4+5+6+7=28\), which is even. But it has \(n=7\) vertices and a degree of 7, which is impossible in a simple graph (maximum \(n-1=6\)). So <strong>not graphical</strong>.</p>
+    </div>
+
+    <div class="note">
+      <span class="box-label">The pigeonhole proof</span>
+      <p>“A simple graph with at least two vertices has two vertices of the same degree.” There are only \(n\) possible degrees \(0,1,\ldots,n-1\), but degree \(0\) and degree \(n-1\) cannot both occur (an isolated vertex cannot coexist with a universal vertex). So at most \(n-1\) distinct degree values are available for \(n\) vertices — pigeonhole gives a repeat. This is a favourite short proof question.</p>
+    </div>
+
+    <h2 id="families">Common graph families</h2>
+    <p>Learn this table by heart. Exam questions ask for the girth, degree sequence, edge count, bipartiteness, or Eulerian/Hamiltonian status of these families.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Graph</th><th>Description</th><th>Vertices</th><th>Edges</th><th>Degree</th><th>Girth</th></tr></thead>
+        <tbody>
+          <tr><td>\(N_n\)</td><td>Null graph — no edges</td><td>\(n\)</td><td>\(0\)</td><td>0</td><td>undefined (no cycle)</td></tr>
+          <tr><td>\(K_n\)</td><td>Complete graph — every pair adjacent</td><td>\(n\)</td><td>\(\binom{n}{2}=\frac{n(n-1)}{2}\)</td><td>\(n-1\)</td><td>3 for \(n\ge3\)</td></tr>
+          <tr><td>\(C_n\)</td><td>Cycle graph — one cycle through all vertices</td><td>\(n\ge3\)</td><td>\(n\)</td><td>2</td><td>\(n\)</td></tr>
+          <tr><td>\(P_n\)</td><td>Path graph — \(C_n\) with one edge removed</td><td>\(n\ge3\)</td><td>\(n-1\)</td><td>1 at the ends, 2 inside</td><td>none (acyclic)</td></tr>
+          <tr><td>\(W_n\)</td><td>Wheel — \(C_{n-1}\) plus a hub joined to every rim vertex</td><td>\(n\ge4\)</td><td>\(2(n-1)\)</td><td>hub \(n-1\), rim 3</td><td>3</td></tr>
+          <tr><td>\(K_{r,s}\)</td><td>Complete bipartite — every one of \(r\) joined to every one of \(s\)</td><td>\(r+s\)</td><td>\(rs\)</td><td>\(s\) on one side, \(r\) on the other</td><td>4 if \(r,s\ge2\); none if one side is 1 (a star is a tree)</td></tr>
+          <tr><td>\(Q_k\)</td><td>\(k\)-cube — vertices are \(k\)-bit strings, edges flip one bit</td><td>\(2^k\)</td><td>\(k2^{k-1}\)</td><td>\(k\)</td><td>4 for \(k\ge2\)</td></tr>
+          <tr><td>Petersen</td><td>The standard cubic graph on 10 vertices</td><td>10</td><td>15</td><td>3</td><td>5</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="graph-gallery">
+      <div class="figure">
+        <svg viewBox="0 0 140 130" role="img" aria-label="K4 complete graph">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M30 25 L110 25 L70 105 Z M30 25 L70 65 M110 25 L70 65 M70 105 L70 65"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="30" cy="25" r="4"/><circle cx="110" cy="25" r="4"/>
+            <circle cx="70" cy="105" r="4"/><circle cx="70" cy="65" r="4"/>
+          </g>
+          <text x="18" y="18" font-size="12" fill="currentColor">a</text>
+          <text x="114" y="18" font-size="12" fill="currentColor">b</text>
+          <text x="74" y="120" font-size="12" fill="currentColor">c</text>
+          <text x="76" y="61" font-size="12" fill="currentColor">d</text>
+        </svg>
+        <p class="figcaption">\(K_4\): every pair joined.</p>
+      </div>
+      <div class="figure">
+        <svg viewBox="0 0 140 130" role="img" aria-label="C6 cycle graph">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M70 15 L110 40 L110 90 L70 115 L30 90 L30 40 Z"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="70" cy="15" r="4"/><circle cx="110" cy="40" r="4"/>
+            <circle cx="110" cy="90" r="4"/><circle cx="70" cy="115" r="4"/>
+            <circle cx="30" cy="90" r="4"/><circle cx="30" cy="40" r="4"/>
+          </g>
+        </svg>
+        <p class="figcaption">\(C_6\): one cycle, girth 6.</p>
+      </div>
+      <div class="figure">
+        <svg viewBox="0 0 140 130" role="img" aria-label="W6 wheel graph">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M70 12 L108 37 L108 88 L70 113 L32 88 L32 37 Z"/>
+            <path d="M70 62 L70 12 M70 62 L108 37 M70 62 L108 88 M70 62 L70 113 M70 62 L32 88 M70 62 L32 37"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="70" cy="62" r="4"/><circle cx="70" cy="12" r="4"/>
+            <circle cx="108" cy="37" r="4"/><circle cx="108" cy="88" r="4"/>
+            <circle cx="70" cy="113" r="4"/><circle cx="32" cy="88" r="4"/>
+            <circle cx="32" cy="37" r="4"/>
+          </g>
+        </svg>
+        <p class="figcaption">\(W_6\): hub + 5-cycle rim.</p>
+      </div>
+      <div class="figure">
+        <svg viewBox="0 0 140 130" role="img" aria-label="K3,3 complete bipartite graph">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M35 30 L105 30 M35 30 L105 65 M35 30 L105 100 M35 65 L105 30 M35 65 L105 65 M35 65 L105 100 M35 100 L105 30 M35 100 L105 65 M35 100 L105 100"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="35" cy="30" r="4"/><circle cx="35" cy="65" r="4"/><circle cx="35" cy="100" r="4"/>
+            <circle cx="105" cy="30" r="4"/><circle cx="105" cy="65" r="4"/><circle cx="105" cy="100" r="4"/>
+          </g>
+          <text x="10" y="26" font-size="12" fill="currentColor">A</text>
+          <text x="10" y="61" font-size="12" fill="currentColor">B</text>
+          <text x="10" y="96" font-size="12" fill="currentColor">C</text>
+          <text x="114" y="26" font-size="12" fill="currentColor">x</text>
+          <text x="114" y="61" font-size="12" fill="currentColor">y</text>
+          <text x="114" y="96" font-size="12" fill="currentColor">z</text>
+        </svg>
+        <p class="figcaption">\(K_{3,3}\): bipartite, girth 4.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Bipartite test</span>
+      <p>A graph is <strong>bipartite</strong> exactly when its vertices can be 2-coloured so that every edge joins different colours. Equivalently, it contains <strong>no odd cycle</strong>. So \(C_n\) is bipartite iff \(n\) is even, \(K_n\) is bipartite only for \(n\le2\), and every tree is bipartite.</p>
+    </div>
+
+    <h3 id="girth">Girth</h3>
+    <div class="definition">
+      <span class="box-label">Definition · Girth</span>
+      <p>The <strong>girth</strong> of a graph is the length of its shortest cycle. A graph with no cycle has no (finite) girth. A loop has girth 1 and a pair of parallel edges has girth 2, so only simple graphs have girth at least 3.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the four graphs the exam always uses</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Graph</th><th>Girth</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>\(K_9\)</td><td>3</td><td>Complete, so any three vertices form a triangle.</td></tr>
+            <tr><td>\(K_{5,7}\)</td><td>4</td><td>Bipartite, so no odd cycle. Two vertices on one side plus two on the other make a 4-cycle.</td></tr>
+            <tr><td>\(C_8\)</td><td>8</td><td>The only cycle is the whole 8-cycle.</td></tr>
+            <tr><td>\(W_8\)</td><td>3</td><td>Two adjacent rim vertices plus the hub form a triangle.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Marks are usually \(2\) per graph: one for the number and one for identifying the cycle or the reason.</p>
+    </div>
+
+    <h2 id="matrices">Adjacency and incidence matrices</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Adjacency matrix</span>
+      <p>Label the vertices \(1,2,\ldots,n\). The <strong>adjacency matrix</strong> \(A\) is the \(n\times n\) matrix whose \((i,j)\)-entry is the number of edges joining vertex \(i\) to vertex \(j\).</p>
+      <ul>
+        <li>A loop at \(i\) contributes \(2\) to \(a_{ii}\) (some texts use 1; the module uses 2).</li>
+        <li>Parallel edges produce an entry greater than 1.</li>
+        <li>For an undirected graph, \(A\) is <strong>symmetric</strong>: \(a_{ij}=a_{ji}\).</li>
+      </ul>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Reading a graph from its adjacency matrix</span>
+      <ul>
+        <li>The <strong>degree of vertex \(i\)</strong> is the sum of row \(i\) (equivalently, column \(i\)).</li>
+        <li>The number of edges is \(\frac{1}{2}\sum_{i,j} a_{ij}\), or half the sum of the degrees.</li>
+        <li>The graph is <strong>simple</strong> iff every entry is \(0\) or \(1\) and every diagonal entry is \(0\).</li>
+        <li>The entry \((A^k)_{ij}\) counts the number of walks of length \(k\) from \(i\) to \(j\).</li>
+      </ul>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · the 2022/23 exam matrix</span>
+      <p>The matrix</p>
+      <div class="formula">\[ A=\begin{pmatrix} 0&1&1&2&0\\ 1&0&0&0&1\\ 1&0&0&1&1\\ 2&0&1&0&0\\ 0&1&1&0&0 \end{pmatrix} \]</div>
+      <p><strong>(i) Is \(G\) simple?</strong> No: the entry \(a_{14}=2\) means there are two edges between vertex 1 and vertex 4 (parallel edges). A simple graph would have only 0s and 1s.</p>
+      <p><strong>(ii) Degree sequence?</strong> Row sums: \(0+1+1+2+0=4\); \(1+0+0+0+1=2\); \(1+0+0+1+1=3\); \(2+0+1+0+0=3\); \(0+1+1+0+0=2\). Sorted: \((2,2,3,3,4)\).</p>
+      <p><strong>(iii) Number of edges?</strong> Sum of degrees \(=4+2+3+3+2=14\), so \(|E|=14/2=7\).</p>
+      <p>Notice that the diagonal is all zeros, so there are no loops. The only obstruction to simplicity is the 2.</p>
+    </div>
+
+    <div class="definition">
+      <span class="box-label">Definition · Incidence matrix</span>
+      <p>Label the vertices \(1,\ldots,n\) and the edges \(e_1,\ldots,e_m\). The <strong>incidence matrix</strong> \(M\) is the \(n\times m\) matrix whose \((i,j)\)-entry is \(1\) if vertex \(i\) is incident with edge \(j\), and \(0\) otherwise. A loop contributes \(2\) in its column.</p>
+      <ul>
+        <li>Every column sums to \(2\) — an edge has two endpoints.</li>
+        <li>Parallel edges give identical columns.</li>
+        <li>An all-zero row is an isolated vertex.</li>
+      </ul>
+    </div>
+
+    <h2 id="walks">Walks, trails, paths, cycles, girth</h2>
+    <p>The definitions are in the <a href="#jargon">jargon table</a>. The exam-relevant facts are:</p>
+    <ul>
+      <li>A <strong>path</strong> has distinct vertices, so its length is at most \(n-1\).</li>
+      <li>A <strong>cycle</strong> in a simple graph has length at least 3 (a triangle), and at most \(n\).</li>
+      <li>A graph is <strong>connected</strong> iff every pair of vertices has a path between them.</li>
+      <li>A <strong>tree</strong> has exactly one path between every pair of vertices.</li>
+      <li>The <strong>girth</strong> is the length of the shortest cycle; a tree has none.</li>
+    </ul>
+
+    <div class="example">
+      <span class="box-label">Example · reading a walk off a graph</span>
+      <p>In a graph with vertices \(v,w,x,y,z\), the sequence</p>
+      <div class="formula">\[ v\to w\to x\to y\to z\to z\to y\to w \]</div>
+      <p>is a <strong>walk</strong> of length 7: it repeats the edge \(y\!-\!z\) and the vertices \(y,z\). It is not a trail. By contrast \(v\to w\to x\to y\to z\) is a path of length 4, and \(v\to w\to x\to y\to v\) is a cycle of length 4.</p>
+    </div>
+
+    <h2 id="connected">Connectivity</h2>
+    <p>A graph can fail to be connected in two ways: it can split into separate <strong>components</strong>, or it can be held together by a small number of edges or vertices. The exam occasionally asks for the connectivity numbers of standard graphs.</p>
+
+    <div class="definition">
+      <span class="box-label">Definition · Cutset, bridge, connectivity</span>
+      <ul>
+        <li>A <strong>disconnecting set</strong> is a set of edges whose removal disconnects the graph.</li>
+        <li>A <strong>cutset</strong> is a minimal disconnecting set — no proper subset disconnects the graph.</li>
+        <li>A <strong>bridge</strong> is a cutset with one edge.</li>
+        <li>The <strong>edge connectivity</strong> \(\lambda(G)\) is the size of the smallest cutset.</li>
+        <li>A <strong>separating set</strong> is a set of vertices whose removal disconnects the graph; a single such vertex is a <strong>cut-vertex</strong>.</li>
+        <li>The <strong>vertex connectivity</strong> \(\kappa(G)\) is the size of the smallest separating set.</li>
+      </ul>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Whitney's inequality</span>
+      <p>For any connected graph \(G\),</p>
+      <p>\[ \kappa(G) \le \lambda(G) \le \delta(G), \]</p>
+      <p>where \(\delta(G)\) is the minimum degree. If \(G\) has a bridge then \(\lambda(G)=1\); if it has a cut-vertex then \(\kappa(G)=1\).</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · connectivity of standard graphs</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Graph</th><th>\(\kappa(G)\)</th><th>\(\lambda(G)\)</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td>\(C_6\)</td><td>2</td><td>2</td><td>Removing any one vertex or edge leaves a path, still connected; removing two opposite vertices disconnects it.</td></tr>
+            <tr><td>\(W_6\)</td><td>3</td><td>3</td><td>The hub plus two rim vertices disconnects the rim; rim vertices have degree 3, so \(\delta=3\).</td></tr>
+            <tr><td>\(K_{4,7}\)</td><td>4</td><td>4</td><td>Remove the 4 vertices on the smaller side to isolate the other side; \(\delta=4\).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p>Also useful: a simple graph on \(n\) vertices with more than \(\frac{(n-1)(n-2)}{2}\) edges is automatically connected. If it had two components, putting all edges in the largest possible component would still not reach that many edges.</p>
+
+    <h2 id="eulerian">Eulerian graphs</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Eulerian and semi-Eulerian</span>
+      <p>A connected graph \(G\) is <strong>Eulerian</strong> if there is a <strong>closed trail</strong> containing every edge exactly once. Such a trail is an <strong>Euler tour</strong>.</p>
+      <p>A non-Eulerian connected graph is <strong>semi-Eulerian</strong> if there is an <strong>open trail</strong> containing every edge exactly once.</p>
+      <p>Key point: an Euler tour traverses every <em>edge</em> once; vertices may repeat.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Euler's criterion (1736)</span>
+      <p>A connected graph is <strong>Eulerian</strong> if and only if every vertex has <strong>even degree</strong>.</p>
+      <p>A connected graph is <strong>semi-Eulerian</strong> if and only if it has <strong>exactly two vertices of odd degree</strong>. Any Euler trail must start at one odd-degree vertex and finish at the other.</p>
+      <p>A connected graph with more than two odd-degree vertices has neither an Euler tour nor an Euler trail.</p>
+    </div>
+
+    <p><strong>Why it is true.</strong> Every time a trail passes through a vertex it uses two edges — one in, one out. So all edges at an internal vertex pair up, forcing even degree. In a closed tour the start vertex also pairs up. In an open trail only the start and end have an unpaired edge, so exactly those two can be odd.</p>
+
+    <div class="example">
+      <span class="box-label">Example · classify these graphs</span>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Graph</th><th>Degrees</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>\(K_5\)</td><td>all 4 (even)</td><td>Eulerian</td></tr>
+            <tr><td>\(K_{2,3}\)</td><td>three vertices of degree 2, two of degree 3</td><td>Exactly two odd (the side of size 2), so semi-Eulerian</td></tr>
+            <tr><td>Petersen</td><td>all 3 (odd), ten vertices</td><td>Ten odd vertices — neither</td></tr>
+            <tr><td>\(C_n\)</td><td>all 2</td><td>Eulerian for every \(n\ge3\)</td></tr>
+            <tr><td>\(W_n\)</td><td>hub \(n-1\), rim all 3</td><td>Neither for every \(n\ge4\): the rim contributes \(n-1\ge3\) odd vertices, so there are more than two odd degrees</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="box-label">Fleury's algorithm</span>
+      <p>To actually draw an Euler tour: start anywhere, erase edges as you traverse them, and <strong>use a bridge only when there is no alternative</strong>. This guarantees you do not strand part of the graph. The exam rarely asks you to run it, but it explains why greedy wandering can fail.</p>
+    </div>
+
+    <h2 id="hamiltonian">Hamiltonian graphs</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Hamiltonian</span>
+      <p>A connected graph is <strong>Hamiltonian</strong> if there is a closed trail that passes through every <strong>vertex</strong> exactly once (returning to the start). This is a <strong>Hamiltonian cycle</strong>.</p>
+      <p>A graph is <strong>semi-Hamiltonian</strong> if there is an open path through every vertex exactly once.</p>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Euler vs Hamilton</span>
+      <p>Euler is about <strong>edges</strong>; Hamilton is about <strong>vertices</strong>. Euler has a clean iff criterion; Hamilton has no known simple necessary-and-sufficient condition, and deciding it is NP-complete. Do not apply Euler's degree test to a Hamiltonian question.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Ore and Dirac</span>
+      <p><strong>Ore (1960).</strong> If \(G\) is a simple graph with \(n\ge3\) vertices and \(\deg(v)+\deg(w)\ge n\) for every pair of non-adjacent vertices \(v,w\), then \(G\) is Hamiltonian.</p>
+      <p><strong>Dirac (1952).</strong> If \(G\) is simple with \(n\ge3\) and \(\deg(v)\ge n/2\) for every vertex, then \(G\) is Hamiltonian.</p>
+      <p>These conditions are <em>sufficient</em>, not necessary: a graph can be Hamiltonian and fail them.</p>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Example · which families are Hamiltonian?</span>
+      <ul>
+        <li>\(K_n\) is Hamiltonian for every \(n\ge3\).</li>
+        <li>\(K_{r,s}\) is Hamiltonian iff \(r=s\ge2\). A Hamiltonian cycle must alternate sides, so the sides must be equal; \(K_{2,2}=C_4\) works.</li>
+        <li>\(W_n\) is Hamiltonian for every \(n\ge4\): go round the rim.</li>
+        <li>\(Q_k\) is Hamiltonian for every \(k\ge2\) (Gray code order).</li>
+        <li>A bipartite graph with an odd number of vertices cannot be Hamiltonian: a cycle alternates sides, so it has even length and uses equally many vertices from each side.</li>
+      </ul>
+    </div>
+
+    <h2 id="trees">Trees and spanning trees</h2>
+
+    <div class="definition">
+      <span class="box-label">Definition · Tree, forest, spanning tree</span>
+      <p>A <strong>forest</strong> is a graph with no cycles. A connected forest is a <strong>tree</strong>.</p>
+      <p>A <strong>spanning tree</strong> of a connected graph \(G\) is a subgraph that is a tree and contains every vertex of \(G\). A <strong>minimum spanning tree</strong> (MST) is a spanning tree of minimum total edge weight.</p>
+    </div>
+
+    <div class="theorem">
+      <span class="box-label">Theorem · Characterisations of a tree</span>
+      <p>For a graph \(T\) with \(n\) vertices, the following are equivalent:</p>
+      <ol>
+        <li>\(T\) is a tree.</li>
+        <li>\(T\) has no cycles and \(n-1\) edges.</li>
+        <li>\(T\) is connected and has \(n-1\) edges.</li>
+        <li>\(T\) is connected and every edge is a bridge.</li>
+        <li>Every two vertices are joined by exactly one path.</li>
+        <li>\(T\) has no cycles, but adding any new edge creates exactly one cycle.</li>
+      </ol>
+    </div>
+
+    <p>Consequences you should be able to quote:</p>
+    <ul>
+      <li>A tree on \(n\) vertices has exactly \(n-1\) edges and at least two leaves (for \(n\ge2\)).</li>
+      <li>Every connected graph has a spanning tree; you get one by repeatedly deleting an edge from a cycle.</li>
+      <li>A spanning tree of a connected graph on \(n\) vertices has \(n-1\) edges, whatever the graph.</li>
+      <li>An MST is not unique when several edges have the same weight, but its total weight is unique.</li>
+    </ul>
+
+    <h2 id="kruskal">Kruskal's algorithm</h2>
+    <p>Kruskal builds an MST greedily:</p>
+    <ol class="steps">
+      <li>Sort all edges by weight, smallest first.</li>
+      <li>Consider each edge in order. Add it to the tree <strong>unless it creates a cycle</strong>.</li>
+      <li>Stop when you have added \(n-1\) edges. The result is a minimum spanning tree.</li>
+    </ol>
+
+    <div class="example">
+      <span class="box-label">Worked example · Kruskal on the lecture graph</span>
+      <p>Eight vertices, and the edges in increasing weight order:</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Order</th><th>Edge</th><th>Weight</th><th>Action</th><th>Running total</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>\((0,1)\)</td><td>4</td><td>add</td><td>4</td></tr>
+            <tr><td>2</td><td>\((4,5)\)</td><td>5</td><td>add</td><td>9</td></tr>
+            <tr><td>3</td><td>\((0,5)\)</td><td>6</td><td>add</td><td>15</td></tr>
+            <tr><td>4</td><td>\((3,7)\)</td><td>7</td><td>add</td><td>22</td></tr>
+            <tr><td>5</td><td>\((5,6)\)</td><td>8</td><td>add</td><td>30</td></tr>
+            <tr><td>6</td><td>\((2,3)\)</td><td>9</td><td>add</td><td>39</td></tr>
+            <tr><td>7</td><td>\((4,6)\)</td><td>10</td><td>skip — would close a cycle</td><td>39</td></tr>
+            <tr><td>8</td><td>\((3,4)\)</td><td>11</td><td>add — now 7 edges</td><td>50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The MST has edges \(\{(0,1),(4,5),(0,5),(3,7),(5,6),(2,3),(3,4)\}\) and total weight \(50\). Seven edges connect eight vertices, as a spanning tree must.</p>
+    </div>
+
+    <div class="tip">
+      <span class="box-label">Exam technique for Kruskal</span>
+      <p>Always show the sorted edge list and state “skip — cycle” for each rejected edge. Method marks are for the greedy decision, not just the final tree. When weights tie, either choice gives a valid MST; say so if asked “how many such trees?”.</p>
+    </div>
+
+    <p><strong>Prim's algorithm</strong> is the other standard MST algorithm: start at any vertex and repeatedly add the cheapest edge that connects a new vertex to the growing tree. Both algorithms produce an MST; Kruskal is usually easier to carry out by hand when the edge list is given.</p>
+
+    <h2 id="networkx">Graphs in Python with NetworkX</h2>
+    <p>The module shows <code>networkx</code> as the Python graph library. You are unlikely to have to write a full program in the exam, but you should recognise the API and be able to say what a short snippet does.</p>
+
+    <div class="code-block">
+      <div class="code-head"><span class="code-dots"><span></span><span></span><span></span></span><span class="code-filename">graph_basics.py</span><span class="code-lang">python</span></div>
+      <pre><code>import networkx as nx
+
+G = nx.Graph()
+G.add_edge('a', 'b', weight=0.1)
+G.add_edge('b', 'c', weight=1.5)
+G.add_edge('a', 'c', weight=1.0)
+G.add_edge('c', 'd', weight=2.2)
+
+print('Nodes =', G.nodes())
+print('Edges =', G.edges())
+print('Path  =', nx.shortest_path(G, 'b', 'd'))
+
+# Nodes = ['a', 'b', 'c', 'd']
+# Edges = [('a', 'b'), ('a', 'c'), ('b', 'c'), ('c', 'd')]
+# Path  = ['b', 'c', 'd']</code></pre>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Task</th><th>NetworkX call</th></tr></thead>
+        <tbody>
+          <tr><td>Create an undirected graph</td><td><code>g = nx.Graph()</code></td></tr>
+          <tr><td>Add one node / many nodes</td><td><code>g.add_node(1)</code> / <code>g.add_nodes_from([8,15])</code></td></tr>
+          <tr><td>Add one edge / many edges</td><td><code>g.add_edge(1,2)</code> / <code>g.add_edges_from([(1,2),(1,3)])</code></td></tr>
+          <tr><td>Number of vertices / edges</td><td><code>g.number_of_nodes()</code> or <code>g.order()</code>; <code>g.number_of_edges()</code> or <code>g.size()</code></td></tr>
+          <tr><td>Neighbours / degree of a node</td><td><code>g.neighbors(1)</code> / <code>g.degree(1)</code></td></tr>
+          <tr><td>Iterate over nodes</td><td><code>for node in g.nodes(): ...</code></td></tr>
+          <tr><td>Iterate over edges with weights</td><td><code>for u, v, d in g.edges(data=True): print(d['weight'])</code></td></tr>
+          <tr><td>Shortest path</td><td><code>nx.shortest_path(g, 'b', 'd')</code></td></tr>
+          <tr><td>Minimum spanning tree</td><td><code>nx.minimum_spanning_tree(g)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>A node can be any hashable object — a string, a number, even a function. Edge attributes are stored in a dictionary, and the special key <code>'weight'</code> is what the weighted algorithms use.</p>
+
+    <h2 id="exam-recipes">Exam question recipes</h2>
+    <p>These are the four graph questions that have actually appeared. Each recipe is the exact sequence of steps that earns full marks.</p>
+
+    <div class="split">
+      <div class="panel">
+        <h3>1 · “Does a simple graph with this degree sequence exist?”</h3>
+        <ol class="steps">
+          <li>Sort the sequence descending.</li>
+          <li>Check the sum is even and every degree is at most \(n-1\).</li>
+          <li>Run Havel–Hakimi until you reach zeros (yes) or a negative entry (no).</li>
+          <li>Write one sentence: “A negative entry cannot be a degree, so no simple graph exists.”</li>
+          <li>If asked to draw one, construct it from the successful reduction — add edges from the highest-degree vertex to the next highest.</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>2 · “Write down the girth of \(K_9\), \(K_{5,7}\), \(C_8\), \(W_8\).”</h3>
+        <ol class="steps">
+          <li>\(K_n\): girth 3 for \(n\ge3\) (triangle).</li>
+          <li>\(K_{r,s}\): girth 4 when both sides have at least 2 (no odd cycles, and a 4-cycle exists).</li>
+          <li>\(C_n\): girth \(n\).</li>
+          <li>\(W_n\): girth 3 (hub + adjacent rim vertices).</li>
+          <li>Give the cycle or the reason, not just the number.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="panel">
+        <h3>3 · “Here is an adjacency matrix…”</h3>
+        <ol class="steps">
+          <li><strong>Simple?</strong> Check every entry is 0 or 1, and the diagonal is all 0. Any 2 means parallel edges; any diagonal 1 means a loop.</li>
+          <li><strong>Degree sequence?</strong> Add each row, then sort the sums non-decreasingly.</li>
+          <li><strong>Number of edges?</strong> Add all degrees and divide by 2 (handshaking lemma).</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>4 · “Classify as Eulerian / semi-Eulerian / neither.”</h3>
+        <ol class="steps">
+          <li>Check the graph is connected (ignore isolated vertices).</li>
+          <li>Count the odd-degree vertices.</li>
+          <li>0 odd → Eulerian. Exactly 2 odd → semi-Eulerian. Otherwise → neither.</li>
+          <li>For a named family, compute the degree pattern first: \(K_n\) all \(n-1\); \(C_n\) all 2; \(W_n\) hub \(n-1\), rim 3; \(K_{r,s}\) degrees \(s\) and \(r\).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="example">
+      <span class="box-label">Full worked answer · degree sequence (3,3,5,5,5,5)</span>
+      <p><strong>Question.</strong> Draw a graph with degree sequence \((3,3,5,5,5,5)\). Does there exist a <em>simple</em> graph with this degree sequence? Justify your answer.</p>
+      <p><strong>Answer.</strong> Sort descending: \((5,5,5,5,3,3)\). Apply Havel–Hakimi:</p>
+      <div class="formula">\[
+        (5,5,5,5,3,3)\to(4,4,4,2,2)\to(3,3,1,1)\to(2,0,0)\to(-1,-1).
+      \]</div>
+      <p>The negative entry shows the sequence is not graphical, so <strong>no simple graph</strong> has degree sequence \((3,3,5,5,5,5)\). A <em>general</em> graph can have it: a vertex of degree 5 can be joined to all five others, and the remaining edges can be supplied with parallel edges if necessary.</p>
+    </div>
+
+    <h2 id="exam">Exam checklist</h2>
+    <div class="split">
+      <div class="panel">
+        <h3>Can you…</h3>
+        <ul class="checklist">
+          <li>Define vertex, edge, degree, path, trail, cycle, connected, tree.</li>
+          <li>State and use the handshaking lemma.</li>
+          <li>Test a degree sequence with Havel–Hakimi and justify the verdict.</li>
+          <li>Quote the edge count, degree, and girth of \(K_n\), \(C_n\), \(P_n\), \(W_n\), \(K_{r,s}\), \(Q_k\).</li>
+          <li>Decide whether a graph is bipartite, and use “no odd cycle”.</li>
+          <li>Read degrees and edge counts from an adjacency matrix.</li>
+          <li>Decide whether a matrix represents a simple graph.</li>
+          <li>Classify a graph as Eulerian, semi-Eulerian, or neither using odd degrees.</li>
+          <li>State Ore's and Dirac's sufficient conditions for Hamiltonian graphs.</li>
+          <li>List the equivalent characterisations of a tree.</li>
+          <li>Run Kruskal's algorithm and state the MST weight.</li>
+          <li>Recognise basic NetworkX calls.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Common traps</h3>
+        <ul>
+          <li>Sorting the degree sequence in the wrong direction — the definition is non-decreasing, but Havel–Hakimi is easier descending.</li>
+          <li>Forgetting that a loop adds 2, not 1, to the degree.</li>
+          <li>Saying “no simple graph” without a reason. The negative entry in Havel–Hakimi is the reason.</li>
+          <li>Confusing girth with diameter. Girth is the shortest <em>cycle</em>, not the longest shortest path.</li>
+          <li>Saying \(W_n\) has an \(n\)-cycle. It has a hub plus an \((n-1)\)-cycle rim.</li>
+          <li>Using Euler's even-degree test for a Hamiltonian question.</li>
+          <li>Forgetting to divide the degree sum by 2 when counting edges.</li>
+          <li>Counting a walk as a path when it repeats a vertex.</li>
+          <li>Claiming an MST is unique when edge weights tie.</li>
+          <li>Drawing a graph with a degree larger than \(n-1\) — impossible in a simple graph.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning">
+      <span class="box-label">Before you submit</span>
+      <p>Every graph answer should name the object and the test: “not simple because \(a_{14}=2\)”, “semi-Eulerian because exactly two vertices have odd degree”, “girth 4 because \(K_{5,7}\) is bipartite and contains a 4-cycle”. A bare number rarely gets full marks.</p>
+    </div>
+
+    <nav class="pager" aria-label="Page navigation">
+      <a href="05-enumeration.html">
+        <span class="dir">Previous topic</span>
+        <span class="ttl">← 05 · Enumeration</span>
+      </a>
+      <a class="next" href="../exam-papers.html">
+        <span class="dir">Reference</span>
+        <span class="ttl">Exam Papers Guide →</span>
+      </a>
+    </nav>
+
+    <footer class="page-footer">
+      <span>Topic 06 · Graphs &amp; Networks</span>
+      <span><a href="https://setu-discretemathematics.github.io/live/" target="_blank" rel="noopener">Official course site ↗</a></span>
+    </footer>
+  </main>
+</div>
+
+<button class="back-top" aria-label="Back to top">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+</button>
+<script src="../script.js"></script>
+</body>
+</html>
